@@ -185,8 +185,6 @@ class _MyHomePageState extends State<MyHomePage> {
             }
           }
 
-          sharedPreferences.commit();
-
           var finalBacNote = bacTotalGrade / totalOfCoefficients;
           if (!finalBacNote.isNaN) {
             Navigator.push(
