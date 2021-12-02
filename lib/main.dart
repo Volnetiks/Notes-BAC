@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'grades_screen.dart';
 
@@ -97,8 +98,22 @@ class _MyHomePageState extends State<MyHomePage> {
     TextEditingController()
   ];
 
+  Future<void> getSavedValues() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    for (int i = 0; i < 13; i++) {
+      if (sharedPreferences.containsKey(classes[i])) {
+        print(classes[i]);
+        TextEditingController textEditingController = controllers[i];
+        var grade = sharedPreferences.getDouble(classes[i])!;
+        textEditingController.text = grade.toStringAsFixed(2);
+        grades[i] = grade;
+      }
+    }
+  }
+
   @override
   void initState() {
+    getSavedValues();
     super.initState();
   }
 
@@ -152,17 +167,26 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).buttonColor,
-        onPressed: () {
+        onPressed: () async {
+          // SAVES DATA
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+
           var coefficients = [6, 6, 6, 6, 8, 6, 2, 16, 16, 5, 5, 8, 10];
           var bacTotalGrade = 0.0;
           var totalOfCoefficients = 0;
           int index = 0;
           for (int i = 0; i < 13; i++) {
             if (grades[i] != null) {
+              print(classes[i]);
+              sharedPreferences.setDouble(classes[i], grades[i]!);
               bacTotalGrade += grades[i]! * coefficients[i];
               totalOfCoefficients += coefficients[i];
             }
           }
+
+          sharedPreferences.commit();
+
           var finalBacNote = bacTotalGrade / totalOfCoefficients;
           if (!finalBacNote.isNaN) {
             Navigator.push(
