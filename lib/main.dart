@@ -1,3 +1,4 @@
+import 'package:bac_note/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
         disabledColor: Colors.grey.shade300,
         fontFamily: 'SFUI',
       ),
-      home: const MyHomePage(),
+      home: const HomePage(),
     );
   }
 }
