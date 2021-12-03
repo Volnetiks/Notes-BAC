@@ -1,3 +1,4 @@
+import 'package:bac_note/widgets/grade_item.dart';
 import 'package:flutter/material.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -35,6 +36,12 @@ class _HomePageState extends State<HomePage> {
         currentIndex: _currentIndex,
         onTap: (i) => setState(() => _currentIndex = i),
       ),
+      body: ListView.builder(
+          itemCount: 3,
+          itemExtent: 100,
+          itemBuilder: (context, index) {
+            return GradeItem();
+          }),
     );
   }
 }
