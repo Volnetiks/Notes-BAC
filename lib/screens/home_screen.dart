@@ -1,8 +1,10 @@
 import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
+import 'package:bac_note/widgets/grades_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -66,6 +68,13 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SizedBox(
+            height: 250,
+            child: GradesChart.withSampleData(),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 250,
             child: Padding(
@@ -85,16 +94,7 @@ class _HomePageState extends State<HomePage> {
                     return StaggeredTile.fit(2);
                   }),
             ),
-            // child: ListView.builder(
-            //     physics: NeverScrollableScrollPhysics(),
-            //     itemCount: 5,
-            //     itemExtent: 100,
-            //     itemBuilder: (context, index) {
-            //       return GradeItem(
-            //         values: ['Chapter $index', 'Class $index', 'Date $index'],
-            //       );
-            //     }),
-          )
+          ),
         ],
       ),
     );
