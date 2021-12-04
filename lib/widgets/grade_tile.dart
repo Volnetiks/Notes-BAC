@@ -1,10 +1,10 @@
+import 'package:bac_note/models/grade.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class GradeTile extends StatefulWidget {
-  final pourcent;
-  final List<String> values;
-  const GradeTile({required this.pourcent, required this.values});
+  final Grade grade;
+  const GradeTile({required this.grade});
 
   @override
   _GradeTileState createState() => _GradeTileState();
@@ -13,8 +13,7 @@ class GradeTile extends StatefulWidget {
 class _GradeTileState extends State<GradeTile> {
   @override
   Widget build(BuildContext context) {
-    var pourcent = widget.pourcent;
-    List<String> values = widget.values;
+    Grade grade = widget.grade;
 
     return AnimatedContainer(
       duration: Duration(milliseconds: 1500),
@@ -29,7 +28,7 @@ class _GradeTileState extends State<GradeTile> {
           Row(
             children: [
               Expanded(
-                child: Text(values[0],
+                child: Text(grade.name,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 17,
@@ -42,7 +41,7 @@ class _GradeTileState extends State<GradeTile> {
             height: 5,
           ),
           Text(
-            values[1],
+            grade.grade_class,
             overflow: TextOverflow.ellipsis,
             maxLines: 10,
             style: TextStyle(color: Colors.grey, height: 1.3, fontSize: 12),
@@ -52,21 +51,21 @@ class _GradeTileState extends State<GradeTile> {
           ),
           Row(children: [
             Text(
-              values[2],
+              grade.date.toString(),
               style: TextStyle(color: Colors.grey, fontSize: 11),
             ),
             Flexible(fit: FlexFit.tight, child: SizedBox()),
             Text(
-              '$pourcent%',
+              grade.result.toString() + '%',
               style: TextStyle(
-                  color: pourcent > 50 ? Colors.blue : Colors.red[400],
+                  color: grade.result > 50 ? Colors.blue : Colors.red[400],
                   fontSize: 11),
             ),
             LinearPercentIndicator(
               width: 70.0,
               lineHeight: 4.0,
-              percent: pourcent / 100,
-              progressColor: pourcent > 50 ? Colors.blue : Colors.red[500],
+              percent: grade.result / 100,
+              progressColor: grade.result > 50 ? Colors.blue : Colors.red[500],
             )
           ])
         ],

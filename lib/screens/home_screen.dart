@@ -1,3 +1,4 @@
+import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -12,6 +13,30 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var _currentIndex = 0;
+
+  List<Grade> grades = [
+    Grade(
+        date: DateTime.now(),
+        grade_class: "Maths",
+        name: "Chapter 5",
+        result: 80),
+    Grade(
+        date: DateTime.now(),
+        grade_class: "History",
+        name: "Chapter 1",
+        result: 75),
+    Grade(
+        date: DateTime.now(),
+        grade_class: "French",
+        name: "Reading Test 3",
+        result: 30),
+    Grade(
+        date: DateTime.now(),
+        grade_class: "English",
+        name: "New Zealand",
+        result: 90),
+    Grade(date: DateTime.now(), grade_class: "IT", name: "Network", result: 40),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -49,16 +74,11 @@ class _HomePageState extends State<HomePage> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 20,
                   crossAxisSpacing: 5,
-                  itemCount: 5,
+                  itemCount: grades.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return GradeTile(
-                      pourcent: 20 * index,
-                      values: [
-                        'Exam Name $index',
-                        "Class $index",
-                        "Date $index"
-                      ],
+                      grade: grades[index],
                     );
                   },
                   staggeredTileBuilder: (int index) {
