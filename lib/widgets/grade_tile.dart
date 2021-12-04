@@ -3,7 +3,8 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 class GradeTile extends StatefulWidget {
   final pourcent;
-  const GradeTile({required this.pourcent});
+  final List<String> values;
+  const GradeTile({required this.pourcent, required this.values});
 
   @override
   _GradeTileState createState() => _GradeTileState();
@@ -13,6 +14,7 @@ class _GradeTileState extends State<GradeTile> {
   @override
   Widget build(BuildContext context) {
     var pourcent = widget.pourcent;
+    List<String> values = widget.values;
 
     return AnimatedContainer(
       duration: Duration(milliseconds: 1500),
@@ -27,7 +29,7 @@ class _GradeTileState extends State<GradeTile> {
           Row(
             children: [
               Expanded(
-                child: Text("Title",
+                child: Text(values[0],
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 17,
@@ -40,7 +42,7 @@ class _GradeTileState extends State<GradeTile> {
             height: 5,
           ),
           Text(
-            "Text",
+            values[1],
             overflow: TextOverflow.ellipsis,
             maxLines: 10,
             style: TextStyle(color: Colors.grey, height: 1.3, fontSize: 12),
@@ -50,7 +52,7 @@ class _GradeTileState extends State<GradeTile> {
           ),
           Row(children: [
             Text(
-              "Date",
+              values[2],
               style: TextStyle(color: Colors.grey, fontSize: 11),
             ),
             Flexible(fit: FlexFit.tight, child: SizedBox()),

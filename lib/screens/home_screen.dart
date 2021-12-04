@@ -1,4 +1,3 @@
-import 'package:bac_note/widgets/grade_item.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -54,11 +53,13 @@ class _HomePageState extends State<HomePage> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return GradeTile(
-                      pourcent: 30,
+                      pourcent: 20 * index,
+                      values: [
+                        'Exam Name $index',
+                        "Class $index",
+                        "Date $index"
+                      ],
                     );
-                    // return GradeItem(
-                    //   values: ['Chapter $index', 'Class $index', 'Date $index'],
-                    // );
                   },
                   staggeredTileBuilder: (int index) {
                     return StaggeredTile.fit(2);
