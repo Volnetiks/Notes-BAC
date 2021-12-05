@@ -36,8 +36,17 @@ class _GradesChartState extends State<GradesChart> {
     averageGrade /= widget.grades.length;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0, left: 25),
+          child: Text("Note moyenne: " + averageGrade.toStringAsFixed(2),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: Theme.of(context).primaryColor)),
+        ),
         SizedBox(
           width: MediaQuery.of(context).size.width,
           child: AspectRatio(
@@ -54,10 +63,6 @@ class _GradesChartState extends State<GradesChart> {
             ),
           ),
         ),
-        SizedBox(
-            width: 60,
-            height: 34,
-            child: Text(averageGrade.toStringAsFixed(2))),
       ],
     );
   }

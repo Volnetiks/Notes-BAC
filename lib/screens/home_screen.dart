@@ -17,30 +17,37 @@ class _HomePageState extends State<HomePage> {
 
   List<Grade> grades = [
     Grade(
-        date: DateTime.now(),
+        date: DateTime(2010, 11, 9),
         grade_class: "Maths",
         name: "Chapter 5",
-        result: 80),
+        result: 100),
     Grade(
-        date: DateTime.now(),
+        date: DateTime(2010, 8, 9),
         grade_class: "History",
         name: "Chapter 1",
-        result: 75),
+        result: 100),
     Grade(
-        date: DateTime.now(),
+        date: DateTime(2010, 6, 9),
         grade_class: "French",
         name: "Reading Test 3",
-        result: 30),
+        result: 90),
     Grade(
-        date: DateTime.now(),
+        date: DateTime(2010, 9, 9),
         grade_class: "English",
         name: "New Zealand",
-        result: 90),
+        result: 10),
+    Grade(
+        date: DateTime(2010, 12, 9),
+        grade_class: "Polish",
+        name: "Verbs",
+        result: 70),
     Grade(date: DateTime.now(), grade_class: "IT", name: "Network", result: 40),
   ];
 
   @override
   Widget build(BuildContext context) {
+    grades.sort((a, b) => a.date.compareTo(b.date));
+
     return Scaffold(
       bottomNavigationBar: SalomonBottomBar(
         items: [
@@ -78,9 +85,9 @@ class _HomePageState extends State<HomePage> {
               child: StaggeredGridView.countBuilder(
                   crossAxisCount: 2,
                   mainAxisSpacing: 20,
-                  crossAxisSpacing: 5,
                   itemCount: grades.length,
                   shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return GradeTile(
                       grade: grades[index],
