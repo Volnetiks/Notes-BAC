@@ -1,6 +1,8 @@
 import 'package:bac_note/models/grade.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:intl/intl.dart';
 
 class GradeTile extends StatefulWidget {
   final Grade grade;
@@ -14,6 +16,8 @@ class _GradeTileState extends State<GradeTile> {
   @override
   Widget build(BuildContext context) {
     Grade grade = widget.grade;
+
+    initializeDateFormatting('fr_FR', null);
 
     return AnimatedContainer(
       duration: Duration(milliseconds: 1500),
@@ -51,7 +55,8 @@ class _GradeTileState extends State<GradeTile> {
           ),
           Row(children: [
             Text(
-              grade.date.toString(),
+              DateFormat('yMMMd', 'fr_FR').format(grade.date),
+              // grade.date.toString(),
               style: TextStyle(color: Colors.grey, fontSize: 11),
             ),
             Flexible(fit: FlexFit.tight, child: SizedBox()),
