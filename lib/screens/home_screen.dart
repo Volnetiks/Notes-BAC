@@ -50,35 +50,34 @@ class _HomePageState extends State<HomePage> {
         currentIndex: _currentIndex,
         onTap: (i) => setState(() => _currentIndex = i),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: GradesChart(grades: grades),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 250,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: StaggeredGridView.countBuilder(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  itemCount: grades.length,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return GradeTile(
-                      grade: grades[index],
-                    );
-                  },
-                  staggeredTileBuilder: (int index) {
-                    return StaggeredTile.fit(2);
-                  }),
+      body: SafeArea(
+        child: Column(
+          children: [
+            GradesChart(grades: grades),
+            Flexible(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: StaggeredGridView.countBuilder(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20,
+                      itemCount: grades.length,
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return GradeTile(
+                          grade: grades[index],
+                        );
+                      },
+                      staggeredTileBuilder: (int index) {
+                        return StaggeredTile.fit(2);
+                      }),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

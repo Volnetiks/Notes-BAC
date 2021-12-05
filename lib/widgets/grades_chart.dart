@@ -18,10 +18,10 @@ class _GradesChartState extends State<GradesChart> {
     HexColor.fromHex("#5fa2c0"),
   ];
 
-  List<FlSpot> values = [];
-
   @override
   Widget build(BuildContext context) {
+    List<FlSpot> values = [];
+
     double averageGrade = 0;
 
     for (int i = 0; i < widget.grades.length; i++) {
@@ -40,7 +40,7 @@ class _GradesChartState extends State<GradesChart> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 20.0, left: 25),
+          padding: const EdgeInsets.only(top: 20.0, left: 13),
           child: Text("Note moyenne: " + averageGrade.toStringAsFixed(2),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -56,9 +56,8 @@ class _GradesChartState extends State<GradesChart> {
                   borderRadius: BorderRadius.all(Radius.circular(18)),
                   color: Theme.of(context).scaffoldBackgroundColor),
               child: Padding(
-                padding:
-                    EdgeInsets.only(right: 18, left: 12, top: 24, bottom: 12),
-                child: LineChart(mainData()),
+                padding: EdgeInsets.only(right: 18, top: 24, bottom: 12),
+                child: LineChart(mainData(values)),
               ),
             ),
           ),
@@ -67,7 +66,7 @@ class _GradesChartState extends State<GradesChart> {
     );
   }
 
-  LineChartData mainData() {
+  LineChartData mainData(List<FlSpot> values) {
     return LineChartData(
       gridData: FlGridData(
         show: true,

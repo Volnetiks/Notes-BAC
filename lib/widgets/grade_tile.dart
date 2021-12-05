@@ -23,8 +23,9 @@ class _GradeTileState extends State<GradeTile> {
       duration: Duration(milliseconds: 1500),
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-          color: Theme.of(context).unselectedWidgetColor.withOpacity(0.4),
-          border: Border.all(color: Theme.of(context).disabledColor),
+          color: Theme.of(context).unselectedWidgetColor.withOpacity(0.2),
+          border: Border.all(
+              color: Theme.of(context).disabledColor.withOpacity(0.4)),
           borderRadius: BorderRadius.circular(8)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,18 +57,18 @@ class _GradeTileState extends State<GradeTile> {
           Row(children: [
             Text(
               DateFormat('yMMMd', 'fr_FR').format(grade.date),
-              // grade.date.toString(),
               style: TextStyle(color: Colors.grey, fontSize: 11),
             ),
             Flexible(fit: FlexFit.tight, child: SizedBox()),
             Text(
-              grade.result.toString() + '%',
+              grade.resultOutOf20.toStringAsFixed(2),
               style: TextStyle(
-                  color: grade.result > 50 ? Colors.blue : Colors.red[400],
+                  color:
+                      grade.resultOutOf20 > 10 ? Colors.blue : Colors.red[400],
                   fontSize: 11),
             ),
             LinearPercentIndicator(
-              width: 70.0,
+              width: 80.0,
               lineHeight: 4.0,
               percent: grade.result / 100,
               progressColor: grade.result > 50 ? Colors.blue : Colors.red[500],
