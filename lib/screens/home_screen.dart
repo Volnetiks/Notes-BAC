@@ -5,7 +5,6 @@ import 'package:bac_note/widgets/grades_chart_second.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -66,14 +65,11 @@ class _HomePageState extends State<HomePage> {
         onTap: (i) => setState(() => _currentIndex = i),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(
-            height: 400,
-            child: Chart2State(),
-          ),
-          SizedBox(
-            height: 20,
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Chart2State(grades: grades),
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,

@@ -1,8 +1,12 @@
+import 'package:bac_note/extensions/hex_color.dart';
+import 'package:bac_note/models/grade.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class Chart2State extends StatefulWidget {
-  const Chart2State({Key? key}) : super(key: key);
+  final List<Grade> grades;
+
+  const Chart2State({required this.grades});
 
   @override
   _Chart2StateState createState() => _Chart2StateState();
@@ -10,47 +14,50 @@ class Chart2State extends StatefulWidget {
 
 class _Chart2StateState extends State<Chart2State> {
   List<Color> gradientColors = [
-    const Color(0xff23b6e6),
-    const Color(0xff02d39a),
+    HexColor.fromHex("#28a5d5"),
+    HexColor.fromHex("#5fa2c0"),
   ];
 
-  bool showAvg = false;
+  List<FlSpot> values = [];
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    double averageGrade = 0;
+
+    for (int i = 0; i < widget.grades.length; i++) {
+      print(i);
+      values.add(FlSpot(11 / (widget.grades.length - 1) * i,
+          widget.grades[i].result / 10 * 2));
+
+      averageGrade += (widget.grades[i].result / 10 * 2);
+      print(averageGrade);
+    }
+
+    averageGrade /= widget.grades.length;
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AspectRatio(
-          aspectRatio: 1.70,
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(18)),
-                color: Theme.of(context).scaffoldBackgroundColor),
-            child: Padding(
-              padding:
-                  EdgeInsets.only(right: 18, left: 12, top: 24, bottom: 12),
-              child: LineChart(showAvg ? avgData() : mainData()),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: AspectRatio(
+            aspectRatio: 1.70,
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(18)),
+                  color: Theme.of(context).scaffoldBackgroundColor),
+              child: Padding(
+                padding:
+                    EdgeInsets.only(right: 18, left: 12, top: 24, bottom: 12),
+                child: LineChart(mainData()),
+              ),
             ),
           ),
         ),
         SizedBox(
-          width: 60,
-          height: 34,
-          child: TextButton(
-            onPressed: () {
-              setState(() {
-                showAvg = !showAvg;
-              });
-            },
-            child: Text(
-              'avg',
-              style: TextStyle(
-                  fontSize: 12,
-                  color:
-                      showAvg ? Colors.white.withOpacity(0.5) : Colors.white),
-            ),
-          ),
-        ),
+            width: 60,
+            height: 34,
+            child: Text(averageGrade.toStringAsFixed(2))),
       ],
     );
   }
@@ -83,6 +90,7 @@ class _Chart2StateState extends State<Chart2State> {
               fontWeight: FontWeight.bold,
               fontSize: 16),
           getTitles: (value) {
+            print(value.toInt());
             switch (value.toInt()) {
               case 2:
                 return 'MAR';
@@ -105,12 +113,16 @@ class _Chart2StateState extends State<Chart2State> {
           ),
           getTitles: (value) {
             switch (value.toInt()) {
-              case 1:
-                return '10k';
-              case 3:
-                return '30k';
+              case 0:
+                return '0';
               case 5:
-                return '50k';
+                return '5';
+              case 10:
+                return '10';
+              case 15:
+                return '15';
+              case 20:
+                return '20';
             }
             return '';
           },
@@ -124,18 +136,19 @@ class _Chart2StateState extends State<Chart2State> {
       minX: 0,
       maxX: 11,
       minY: 0,
-      maxY: 6,
+      maxY: 20,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: values,
+          // spots: const [
+          //   FlSpot(0, 10),
+          //   FlSpot(2.6, 3.5751),
+          //   FlSpot(4.9, 15.44),
+          //   FlSpot(6.8, 13.44),
+          //   FlSpot(8, 9.44),
+          //   FlSpot(9.5, 17.44),
+          //   FlSpot(11, 6.44),
+          // ],
           isCurved: true,
           colors: gradientColors,
           barWidth: 5,
@@ -148,116 +161,6 @@ class _Chart2StateState extends State<Chart2State> {
             colors:
                 gradientColors.map((color) => color.withOpacity(0.3)).toList(),
           ),
-        ),
-      ],
-    );
-  }
-
-  LineChartData avgData() {
-    return LineChartData(
-      lineTouchData: LineTouchData(enabled: false),
-      gridData: FlGridData(
-        show: true,
-        drawHorizontalLine: true,
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: const Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: const Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 22,
-          getTextStyles: (context, value) => const TextStyle(
-              color: Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 2:
-                return 'MAR';
-              case 5:
-                return 'JUN';
-              case 8:
-                return 'SEP';
-            }
-            return '';
-          },
-          margin: 8,
-          interval: 1,
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          getTextStyles: (context, value) => const TextStyle(
-            color: Color(0xff67727d),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 1:
-                return '10k';
-              case 3:
-                return '30k';
-              case 5:
-                return '50k';
-            }
-            return '';
-          },
-          reservedSize: 32,
-          interval: 1,
-          margin: 12,
-        ),
-        topTitles: SideTitles(showTitles: false),
-        rightTitles: SideTitles(showTitles: false),
-      ),
-      borderData: FlBorderData(
-          show: true,
-          border: Border.all(color: const Color(0xff37434d), width: 1)),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: const [
-            FlSpot(0, 3.44),
-            FlSpot(2.6, 3.44),
-            FlSpot(4.9, 3.44),
-            FlSpot(6.8, 3.44),
-            FlSpot(8, 3.44),
-            FlSpot(9.5, 3.44),
-            FlSpot(11, 3.44),
-          ],
-          isCurved: true,
-          colors: [
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)!,
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)!,
-          ],
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(show: true, colors: [
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)!
-                .withOpacity(0.1),
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)!
-                .withOpacity(0.1),
-          ]),
         ),
       ],
     );
