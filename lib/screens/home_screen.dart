@@ -16,32 +16,12 @@ class _HomePageState extends State<HomePage> {
   var _currentIndex = 0;
 
   List<Grade> grades = [
-    Grade(
-        date: DateTime(2010, 11, 9),
-        grade_class: "Maths",
-        name: "Chapter 5",
-        result: 100),
-    Grade(
-        date: DateTime(2010, 8, 9),
-        grade_class: "History",
-        name: "Chapter 1",
-        result: 100),
-    Grade(
-        date: DateTime(2010, 6, 9),
-        grade_class: "French",
-        name: "Reading Test 3",
-        result: 90),
-    Grade(
-        date: DateTime(2010, 9, 9),
-        grade_class: "English",
-        name: "New Zealand",
-        result: 10),
-    Grade(
-        date: DateTime(2010, 12, 9),
-        grade_class: "Polish",
-        name: "Verbs",
-        result: 70),
-    Grade(date: DateTime.now(), grade_class: "IT", name: "Network", result: 40),
+    Grade.fromResultOutOf20("Maths", "Chapter 5", DateTime(2010, 11, 9), 20),
+    Grade.fromResultOutOf20("History", "Chapter 1", DateTime(2010, 8, 9), 20),
+    Grade.fromResult("French", "Reading Test 3", DateTime(2010, 8, 9), 90),
+    Grade.fromResult("English", "New Zealand", DateTime(2010, 9, 9), 10),
+    Grade.fromResult("Polish", "Verbs", DateTime(2010, 12, 9), 70),
+    Grade.fromResult("IT", "Network", DateTime.now(), 40),
   ];
 
   @override
