@@ -1,7 +1,6 @@
 import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:bac_note/widgets/grades_chart.dart';
-import 'package:bac_note/widgets/grades_chart_second.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -69,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 20),
-            child: Chart2State(grades: grades),
+            child: GradesChart(grades: grades),
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,

@@ -3,16 +3,16 @@ import 'package:bac_note/models/grade.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-class Chart2State extends StatefulWidget {
+class GradesChart extends StatefulWidget {
   final List<Grade> grades;
 
-  const Chart2State({required this.grades});
+  const GradesChart({required this.grades});
 
   @override
-  _Chart2StateState createState() => _Chart2StateState();
+  _GradesChartState createState() => _GradesChartState();
 }
 
-class _Chart2StateState extends State<Chart2State> {
+class _GradesChartState extends State<GradesChart> {
   List<Color> gradientColors = [
     HexColor.fromHex("#28a5d5"),
     HexColor.fromHex("#5fa2c0"),
