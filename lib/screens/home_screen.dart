@@ -12,7 +12,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   var _currentIndex = 0;
 
   List<Grade> grades = [
@@ -24,10 +25,24 @@ class _HomePageState extends State<HomePage> {
     Grade.fromResult("IT", "Network", DateTime.now(), 40),
   ];
 
+  late TabController controller;
+
   String dropdownValue = 'Récentes';
 
   @override
+  void initState() {
+    controller = TabController(length: 3, vsync: this);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    const List<Tab> tabs = <Tab>[
+      Tab(text: 'Zeroth'),
+      Tab(text: 'First'),
+      Tab(text: 'Second'),
+    ];
+
     switch (dropdownValue) {
       case 'Plus ancienne':
         grades.sort((a, b) => a.date.compareTo(b.date));
@@ -46,96 +61,115 @@ class _HomePageState extends State<HomePage> {
         break;
     }
 
-    return Scaffold(
-      bottomNavigationBar: SalomonBottomBar(
-        items: [
-          SalomonBottomBarItem(
-            icon: Icon(Icons.dashboard),
-            title: Text("Dashboard"),
-            selectedColor: Theme.of(context).primaryColor,
-          ),
-          SalomonBottomBarItem(
-            icon: Icon(Icons.grade),
-            title: Text("Grades"),
-            selectedColor: Theme.of(context).primaryColor,
-          ),
-          SalomonBottomBarItem(
-            icon: Icon(Icons.schedule),
-            title: Text("Schedule"),
-            selectedColor: Theme.of(context).primaryColor,
-          ),
-        ],
-        currentIndex: _currentIndex,
-        onTap: (i) => setState(() => _currentIndex = i),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            GradesChart(grades: grades),
-            SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Text("Dernières notes",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 20),
-                  child: DropdownButton<String>(
-                    value: dropdownValue,
-                    icon: Icon(Icons.arrow_downward),
-                    iconSize: 20,
-                    elevation: 16,
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                    underline: Container(
-                      height: 2,
-                      color: Theme.of(context).unselectedWidgetColor,
-                    ),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue!;
-                      });
-                    },
-                    items: ['Plus ancienne', "Récentes", "Notes"]
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem(value: value, child: Text(value));
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Flexible(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: StaggeredGridView.countBuilder(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      itemCount: grades.length,
-                      shrinkWrap: true,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return GradeTile(
-                          grade: grades[index],
-                        );
-                      },
-                      staggeredTileBuilder: (int index) {
-                        return StaggeredTile.fit(2);
-                      }),
-                ),
+    return DefaultTabController(
+      length: 3,
+      initialIndex: 0,
+      child: Builder(
+        builder: (BuildContext context) {
+          final TabController tabController = DefaultTabController.of(context)!;
+          tabController.addListener(() {
+            if (!tabController.indexIsChanging) {}
+          });
+          return Scaffold(
+            // bottomNavigationBar: SalomonBottomBar(
+            //   items: [
+            //     SalomonBottomBarItem(
+            //       icon: Icon(Icons.dashboard),
+            //       title: Text("Dashboard"),
+            //       selectedColor: Theme.of(context).primaryColor,
+            //     ),
+            //     SalomonBottomBarItem(
+            //       icon: Icon(Icons.grade),
+            //       title: Text("Grades"),
+            //       selectedColor: Theme.of(context).primaryColor,
+            //     ),
+            //     SalomonBottomBarItem(
+            //       icon: Icon(Icons.schedule),
+            //       title: Text("Schedule"),
+            //       selectedColor: Theme.of(context).primaryColor,
+            //     ),
+            //   ],
+            //   currentIndex: _currentIndex,
+            //   onTap: (i) => setState(() => _currentIndex = i),
+            // ),
+            appBar: AppBar(
+              bottom: TabBar(
+                tabs: tabs,
               ),
             ),
-          ],
-        ),
+            body: SafeArea(
+              child: Column(
+                children: [
+                  GradesChart(grades: grades),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Text("Dernières notes",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w800, fontSize: 20)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: DropdownButton<String>(
+                          value: dropdownValue,
+                          icon: Icon(Icons.arrow_downward),
+                          iconSize: 20,
+                          elevation: 16,
+                          style:
+                              TextStyle(color: Theme.of(context).primaryColor),
+                          underline: Container(
+                            height: 2,
+                            color: Theme.of(context).unselectedWidgetColor,
+                          ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownValue = newValue!;
+                            });
+                          },
+                          items: ['Plus ancienne', "Récentes", "Notes"]
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem(
+                                value: value, child: Text(value));
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Flexible(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: StaggeredGridView.countBuilder(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 20,
+                            itemCount: grades.length,
+                            shrinkWrap: true,
+                            physics: BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return GradeTile(
+                                grade: grades[index],
+                              );
+                            },
+                            staggeredTileBuilder: (int index) {
+                              return StaggeredTile.fit(2);
+                            }),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
