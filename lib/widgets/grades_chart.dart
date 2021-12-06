@@ -17,6 +17,8 @@ class _GradesChartState extends State<GradesChart> {
   Widget build(BuildContext context) {
     List<FlSpot> values = [];
 
+    widget.grades.sort((a, b) => a.date.compareTo(b.date));
+
     // TODO: fix colors
     List<Color> gradientColors = [
       HexColor.fromHex("#28a5d5").withOpacity(0.3),

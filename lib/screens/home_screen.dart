@@ -24,9 +24,27 @@ class _HomePageState extends State<HomePage> {
     Grade.fromResult("IT", "Network", DateTime.now(), 40),
   ];
 
+  String dropdownValue = 'Récentes';
+
   @override
   Widget build(BuildContext context) {
-    grades.sort((a, b) => a.date.compareTo(b.date));
+    switch (dropdownValue) {
+      case 'Plus ancienne':
+        grades.sort((a, b) => a.date.compareTo(b.date));
+        break;
+
+      case 'Récentes':
+        grades.sort((a, b) => b.date.compareTo(a.date));
+        break;
+
+      case 'Notes':
+        grades.sort((a, b) => b.resultOutOf20.compareTo(a.resultOutOf20));
+        break;
+
+      default:
+        grades.sort((a, b) => a.date.compareTo(b.date));
+        break;
+    }
 
     return Scaffold(
       bottomNavigationBar: SalomonBottomBar(
@@ -54,6 +72,46 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             GradesChart(grades: grades),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Text("Dernières notes",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: DropdownButton<String>(
+                    value: dropdownValue,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: 20,
+                    elevation: 16,
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                    underline: Container(
+                      height: 2,
+                      color: Theme.of(context).unselectedWidgetColor,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownValue = newValue!;
+                      });
+                    },
+                    items: ['Plus ancienne', "Récentes", "Notes"]
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem(value: value, child: Text(value));
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
             Flexible(
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
