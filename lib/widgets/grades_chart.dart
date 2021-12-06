@@ -13,14 +13,16 @@ class GradesChart extends StatefulWidget {
 }
 
 class _GradesChartState extends State<GradesChart> {
-  List<Color> gradientColors = [
-    HexColor.fromHex("#28a5d5"),
-    HexColor.fromHex("#5fa2c0")
-  ];
-
   @override
   Widget build(BuildContext context) {
     List<FlSpot> values = [];
+
+    // TODO: fix colors
+    List<Color> gradientColors = [
+      HexColor.fromHex("#28a5d5").withOpacity(0.3),
+      HexColor.fromHex("#5fa2c0").withOpacity(0.3),
+      Colors.transparent
+    ];
 
     double averageGrade = 0;
     double lowestGrade = 20;
@@ -46,7 +48,7 @@ class _GradesChartState extends State<GradesChart> {
           child: Text("Note moyenne: " + averageGrade.toStringAsFixed(2),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 15,
+                  fontSize: 22,
                   color: Theme.of(context).primaryColor)),
         ),
         SizedBox(
@@ -59,7 +61,7 @@ class _GradesChartState extends State<GradesChart> {
                   color: Theme.of(context).scaffoldBackgroundColor),
               child: Padding(
                 padding: EdgeInsets.only(right: 18, top: 24, bottom: 12),
-                child: LineChart(mainData(values, lowestGrade)),
+                child: LineChart(mainData(values, lowestGrade, gradientColors)),
               ),
             ),
           ),
@@ -68,23 +70,12 @@ class _GradesChartState extends State<GradesChart> {
     );
   }
 
-  LineChartData mainData(List<FlSpot> values, double lowestGrade) {
-    List<Color> belowBarColors = gradientColors;
-    belowBarColors.add(Colors.transparent);
-
+  LineChartData mainData(
+      List<FlSpot> values, double lowestGrade, List<Color> gradientColors) {
     return LineChartData(
       gridData: FlGridData(
         show: true,
         drawVerticalLine: false,
-        // getDrawingHorizontalLine: (value) {
-        //   return FlLine(color: const Color(0xff37434d), strokeWidth: 1);
-        // },
-        // getDrawingVerticalLine: (value) {
-        //   return FlLine(
-        //     color: const Color(0xff37434d),
-        //     strokeWidth: 1,
-        //   );
-        // },
       ),
       titlesData: FlTitlesData(
         show: true,
@@ -165,8 +156,7 @@ class _GradesChartState extends State<GradesChart> {
             gradientFrom: Offset(1, 0),
             gradientTo: Offset(1, 1),
             gradientColorStops: [0.15],
-            colors:
-                belowBarColors.map((color) => color.withOpacity(0.3)).toList(),
+            colors: gradientColors,
           ),
         ),
       ],
