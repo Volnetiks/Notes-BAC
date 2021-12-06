@@ -33,4 +33,9 @@ class Grade {
         result: result,
         resultOutOf20: result / 10 * 2);
   }
+
+  @override
+  String toString() {
+    return grade_class + "  " + name;
+  }
 }

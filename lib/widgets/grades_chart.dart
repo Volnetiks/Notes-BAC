@@ -16,8 +16,9 @@ class _GradesChartState extends State<GradesChart> {
   @override
   Widget build(BuildContext context) {
     List<FlSpot> values = [];
+    List<Grade> grades = widget.grades;
 
-    widget.grades.sort((a, b) => a.date.compareTo(b.date));
+    grades.sort((a, b) => a.date.compareTo(b.date));
 
     // TODO: fix colors
     List<Color> gradientColors = [
@@ -29,17 +30,16 @@ class _GradesChartState extends State<GradesChart> {
     double averageGrade = 0;
     double lowestGrade = 20;
 
-    for (int i = 0; i < widget.grades.length; i++) {
-      values.add(FlSpot(
-          11 / (widget.grades.length - 1) * i, widget.grades[i].resultOutOf20));
+    for (int i = 0; i < grades.length; i++) {
+      values.add(FlSpot(11 / (grades.length - 1) * i, grades[i].resultOutOf20));
 
-      averageGrade += (widget.grades[i].resultOutOf20);
-      if (lowestGrade > widget.grades[i].resultOutOf20) {
-        lowestGrade = widget.grades[i].resultOutOf20;
+      averageGrade += (grades[i].resultOutOf20);
+      if (lowestGrade > grades[i].resultOutOf20) {
+        lowestGrade = grades[i].resultOutOf20;
       }
     }
 
-    averageGrade /= widget.grades.length;
+    averageGrade /= grades.length;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -92,7 +92,6 @@ class _GradesChartState extends State<GradesChart> {
               fontWeight: FontWeight.bold,
               fontSize: 16),
           getTitles: (value) {
-            print(value.toInt());
             switch (value.toInt()) {
               case 2:
                 return 'MAR';

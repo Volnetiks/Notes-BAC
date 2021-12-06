@@ -14,8 +14,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  var _currentIndex = 0;
-
   List<Grade> grades = [
     Grade.fromResultOutOf20("Maths", "Chapter 5", DateTime(2010, 11, 9), 20),
     Grade.fromResultOutOf20("History", "Chapter 1", DateTime(2010, 8, 9), 20),
@@ -25,83 +23,63 @@ class _HomePageState extends State<HomePage>
     Grade.fromResult("IT", "Network", DateTime.now(), 40),
   ];
 
-  late TabController controller;
-
   String dropdownValue = 'Récentes';
 
   @override
   void initState() {
-    controller = TabController(length: 3, vsync: this);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    const List<Tab> tabs = <Tab>[
-      Tab(text: 'Zeroth'),
-      Tab(text: 'First'),
-      Tab(text: 'Second'),
-    ];
-
-    switch (dropdownValue) {
-      case 'Plus ancienne':
-        grades.sort((a, b) => a.date.compareTo(b.date));
-        break;
-
-      case 'Récentes':
-        grades.sort((a, b) => b.date.compareTo(a.date));
-        break;
-
-      case 'Notes':
-        grades.sort((a, b) => b.resultOutOf20.compareTo(a.resultOutOf20));
-        break;
-
-      default:
-        grades.sort((a, b) => a.date.compareTo(b.date));
-        break;
-    }
-
     return DefaultTabController(
       length: 3,
       initialIndex: 0,
       child: Builder(
         builder: (BuildContext context) {
+          const List<Tab> tabs = <Tab>[
+            Tab(text: 'Zeroth'),
+            Tab(text: 'First'),
+            Tab(text: 'Second'),
+          ];
+
+          switch (dropdownValue) {
+            case 'Plus ancienne':
+              grades.sort((a, b) => a.date.compareTo(b.date));
+              break;
+
+            case 'Récentes':
+              grades.sort((a, b) => b.date.compareTo(a.date));
+              break;
+
+            case 'Notes':
+              grades.sort((a, b) => b.resultOutOf20.compareTo(a.resultOutOf20));
+              break;
+
+            default:
+              grades.sort((a, b) => a.date.compareTo(b.date));
+              break;
+          }
+
           final TabController tabController = DefaultTabController.of(context)!;
-          tabController.addListener(() {
-            if (!tabController.indexIsChanging) {}
-          });
+
           return Scaffold(
-            // bottomNavigationBar: SalomonBottomBar(
-            //   items: [
-            //     SalomonBottomBarItem(
-            //       icon: Icon(Icons.dashboard),
-            //       title: Text("Dashboard"),
-            //       selectedColor: Theme.of(context).primaryColor,
-            //     ),
-            //     SalomonBottomBarItem(
-            //       icon: Icon(Icons.grade),
-            //       title: Text("Grades"),
-            //       selectedColor: Theme.of(context).primaryColor,
-            //     ),
-            //     SalomonBottomBarItem(
-            //       icon: Icon(Icons.schedule),
-            //       title: Text("Schedule"),
-            //       selectedColor: Theme.of(context).primaryColor,
-            //     ),
-            //   ],
-            //   currentIndex: _currentIndex,
-            //   onTap: (i) => setState(() => _currentIndex = i),
-            // ),
             appBar: AppBar(
-              bottom: TabBar(
-                tabs: tabs,
-              ),
-            ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
+                ),
+                backgroundColor: Theme.of(context).unselectedWidgetColor,
+                bottom: const TabBar(
+                  indicatorSize: TabBarIndicatorSize.label,
+                  tabs: tabs,
+                )),
             body: SafeArea(
               child: Column(
                 children: [
                   GradesChart(grades: grades),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Row(
@@ -155,6 +133,7 @@ class _HomePageState extends State<HomePage>
                             shrinkWrap: true,
                             physics: BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
+                              print(grades);
                               return GradeTile(
                                 grade: grades[index],
                               );
