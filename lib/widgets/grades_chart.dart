@@ -15,7 +15,7 @@ class GradesChart extends StatefulWidget {
 class _GradesChartState extends State<GradesChart> {
   List<Color> gradientColors = [
     HexColor.fromHex("#28a5d5"),
-    HexColor.fromHex("#5fa2c0"),
+    HexColor.fromHex("#5fa2c0")
   ];
 
   @override
@@ -23,14 +23,16 @@ class _GradesChartState extends State<GradesChart> {
     List<FlSpot> values = [];
 
     double averageGrade = 0;
+    double lowestGrade = 20;
 
     for (int i = 0; i < widget.grades.length; i++) {
-      print(i);
-      values.add(FlSpot(11 / (widget.grades.length - 1) * i,
-          widget.grades[i].result / 10 * 2));
+      values.add(FlSpot(
+          11 / (widget.grades.length - 1) * i, widget.grades[i].resultOutOf20));
 
-      averageGrade += (widget.grades[i].result / 10 * 2);
-      print(averageGrade);
+      averageGrade += (widget.grades[i].resultOutOf20);
+      if (lowestGrade > widget.grades[i].resultOutOf20) {
+        lowestGrade = widget.grades[i].resultOutOf20;
+      }
     }
 
     averageGrade /= widget.grades.length;
@@ -57,7 +59,7 @@ class _GradesChartState extends State<GradesChart> {
                   color: Theme.of(context).scaffoldBackgroundColor),
               child: Padding(
                 padding: EdgeInsets.only(right: 18, top: 24, bottom: 12),
-                child: LineChart(mainData(values)),
+                child: LineChart(mainData(values, lowestGrade)),
               ),
             ),
           ),
@@ -66,20 +68,23 @@ class _GradesChartState extends State<GradesChart> {
     );
   }
 
-  LineChartData mainData(List<FlSpot> values) {
+  LineChartData mainData(List<FlSpot> values, double lowestGrade) {
+    List<Color> belowBarColors = gradientColors;
+    belowBarColors.add(Colors.transparent);
+
     return LineChartData(
       gridData: FlGridData(
         show: true,
-        drawVerticalLine: true,
-        getDrawingHorizontalLine: (value) {
-          return FlLine(color: const Color(0xff37434d), strokeWidth: 1);
-        },
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: const Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
+        drawVerticalLine: false,
+        // getDrawingHorizontalLine: (value) {
+        //   return FlLine(color: const Color(0xff37434d), strokeWidth: 1);
+        // },
+        // getDrawingVerticalLine: (value) {
+        //   return FlLine(
+        //     color: const Color(0xff37434d),
+        //     strokeWidth: 1,
+        //   );
+        // },
       ),
       titlesData: FlTitlesData(
         show: true,
@@ -136,34 +141,32 @@ class _GradesChartState extends State<GradesChart> {
       ),
       borderData: FlBorderData(
           show: true,
-          border: Border.all(color: const Color(0xff37434d), width: 1)),
+          border: Border(
+            bottom: BorderSide(color: const Color(0xff37434d), width: 1),
+          )),
       minX: 0,
       maxX: 11,
       minY: 0,
-      maxY: 20,
+      maxY: 21,
       lineBarsData: [
         LineChartBarData(
           spots: values,
-          // spots: const [
-          //   FlSpot(0, 10),
-          //   FlSpot(2.6, 3.5751),
-          //   FlSpot(4.9, 15.44),
-          //   FlSpot(6.8, 13.44),
-          //   FlSpot(8, 9.44),
-          //   FlSpot(9.5, 17.44),
-          //   FlSpot(11, 6.44),
-          // ],
           isCurved: true,
-          colors: gradientColors,
+          colors: [HexColor.fromHex("#28a5d5"), HexColor.fromHex("#5fa2c0")],
           barWidth: 5,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
           ),
           belowBarData: BarAreaData(
+            applyCutOffY: true,
+            cutOffY: lowestGrade,
             show: true,
+            gradientFrom: Offset(1, 0),
+            gradientTo: Offset(1, 1),
+            gradientColorStops: [0.15],
             colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+                belowBarColors.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),
       ],
