@@ -20,11 +20,10 @@ class _GradesChartState extends State<GradesChart> {
 
     grades.sort((a, b) => a.date.compareTo(b.date));
 
-    // TODO: fix colors
     List<Color> gradientColors = [
       HexColor.fromHex("#28a5d5").withOpacity(0.3),
       HexColor.fromHex("#5fa2c0").withOpacity(0.3),
-      Colors.transparent
+      Theme.of(context).scaffoldBackgroundColor.withOpacity(0)
     ];
 
     double averageGrade = 0;

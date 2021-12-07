@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.black,
         unselectedWidgetColor: Color.fromRGBO(235, 235, 235, 1),
         buttonColor: Colors.lightBlueAccent,
-        disabledColor: Colors.grey.shade300,
+        disabledColor: Colors.grey.shade500,
         fontFamily: 'SFUI',
       ),
       home: const HomePage(),

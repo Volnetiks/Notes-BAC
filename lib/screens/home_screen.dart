@@ -37,12 +37,19 @@ class _HomePageState extends State<HomePage>
       initialIndex: 0,
       child: Builder(
         builder: (BuildContext context) {
-          const List<Tab> tabs = <Tab>[
+          List<Tab> tabs = <Tab>[
             Tab(
-              text: 'Zeroth',
+              child: Text("Zeroth",
+                  style: TextStyle(color: Theme.of(context).primaryColor)),
             ),
-            Tab(text: 'First'),
-            Tab(text: 'Second'),
+            Tab(
+              child: Text("First",
+                  style: TextStyle(color: Theme.of(context).primaryColor)),
+            ),
+            Tab(
+              child: Text("Second",
+                  style: TextStyle(color: Theme.of(context).primaryColor)),
+            ),
           ];
 
           switch (dropdownValue) {
@@ -67,14 +74,28 @@ class _HomePageState extends State<HomePage>
 
           return Scaffold(
             appBar: AppBar(
+                centerTitle: true,
+                title: Column(
+                  children: [
+                    Text("Student name",
+                        style:
+                            TextStyle(color: Theme.of(context).primaryColor)),
+                    Text(
+                      "Notre Dame De Toutes Aides",
+                      style: TextStyle(
+                          fontSize: 12, color: Theme.of(context).disabledColor),
+                    )
+                  ],
+                ),
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(30),
                   ),
                 ),
                 backgroundColor: Theme.of(context).unselectedWidgetColor,
-                bottom: const TabBar(
+                bottom: TabBar(
                   indicatorSize: TabBarIndicatorSize.label,
+                  indicatorColor: Theme.of(context).primaryColor,
                   tabs: tabs,
                 )),
             body: SafeArea(
@@ -95,27 +116,29 @@ class _HomePageState extends State<HomePage>
                       ),
                       Padding(
                         padding: EdgeInsets.only(right: 20),
-                        child: DropdownButton<String>(
-                          value: dropdownValue,
-                          icon: Icon(Icons.arrow_downward),
-                          iconSize: 20,
-                          elevation: 16,
-                          style:
-                              TextStyle(color: Theme.of(context).primaryColor),
-                          underline: Container(
-                            height: 2,
-                            color: Theme.of(context).unselectedWidgetColor,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: dropdownValue,
+                            icon: Icon(Icons.arrow_downward),
+                            iconSize: 20,
+                            elevation: 16,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                            underline: Container(
+                              height: 2,
+                              color: Theme.of(context).unselectedWidgetColor,
+                            ),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropdownValue = newValue!;
+                              });
+                            },
+                            items: ['Plus ancienne', "Récentes", "Notes"]
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem(
+                                  value: value, child: Text(value));
+                            }).toList(),
                           ),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownValue = newValue!;
-                            });
-                          },
-                          items: ['Plus ancienne', "Récentes", "Notes"]
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem(
-                                value: value, child: Text(value));
-                          }).toList(),
                         ),
                       ),
                     ],
