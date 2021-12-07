@@ -52,24 +52,6 @@ class _HomePageState extends State<HomePage>
             ),
           ];
 
-          switch (dropdownValue) {
-            case 'Plus ancienne':
-              grades.sort((a, b) => a.date.compareTo(b.date));
-              break;
-
-            case 'Récentes':
-              grades.sort((a, b) => b.date.compareTo(a.date));
-              break;
-
-            case 'Notes':
-              grades.sort((a, b) => b.resultOutOf20.compareTo(a.resultOutOf20));
-              break;
-
-            default:
-              grades.sort((a, b) => a.date.compareTo(b.date));
-              break;
-          }
-
           final TabController tabController = DefaultTabController.of(context)!;
 
           return Scaffold(
@@ -158,7 +140,28 @@ class _HomePageState extends State<HomePage>
                             shrinkWrap: true,
                             physics: BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
-                              print(grades);
+                              switch (dropdownValue) {
+                                case 'Plus ancienne':
+                                  grades
+                                      .sort((a, b) => a.date.compareTo(b.date));
+                                  break;
+
+                                case 'Récentes':
+                                  grades
+                                      .sort((a, b) => b.date.compareTo(a.date));
+                                  break;
+
+                                case 'Notes':
+                                  grades.sort((a, b) => b.resultOutOf20
+                                      .compareTo(a.resultOutOf20));
+                                  break;
+
+                                default:
+                                  grades
+                                      .sort((a, b) => a.date.compareTo(b.date));
+                                  break;
+                              }
+
                               return GradeTile(
                                 grade: grades[index],
                               );
