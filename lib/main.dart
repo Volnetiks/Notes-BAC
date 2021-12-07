@@ -17,6 +17,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       darkTheme: ThemeData.dark().copyWith(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
         scaffoldBackgroundColor: Colors.black,
         primaryColor: Colors.white,
         buttonColor: Color.fromRGBO(112, 237, 238, 5),
@@ -26,6 +28,8 @@ class MyApp extends StatelessWidget {
         textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'SFUI'),
       ),
       theme: ThemeData(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
         brightness: Brightness.light,
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Colors.purple,

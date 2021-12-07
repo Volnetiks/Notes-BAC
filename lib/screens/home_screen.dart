@@ -38,7 +38,9 @@ class _HomePageState extends State<HomePage>
       child: Builder(
         builder: (BuildContext context) {
           const List<Tab> tabs = <Tab>[
-            Tab(text: 'Zeroth'),
+            Tab(
+              text: 'Zeroth',
+            ),
             Tab(text: 'First'),
             Tab(text: 'Second'),
           ];
