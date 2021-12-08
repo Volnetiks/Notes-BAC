@@ -1,7 +1,9 @@
 import 'package:bac_note/models/grade.dart';
+import 'package:bac_note/widgets/date_tile.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:bac_note/widgets/grades_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -21,15 +23,44 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     Grade.fromResult("IT", "Network", DateTime.now(), 40),
   ];
 
-  String dropdownValue = 'Récentes';
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // TODO: switch to calendar
-          GradesChart(grades: grades),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0, left: 20),
+            child: Text("Date",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                    color: Theme.of(context).primaryColor)),
+          ),
+          Flexible(
+            child: SizedBox(
+              height: 175,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
+                child: StaggeredGridView.countBuilder(
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 20,
+                  itemCount: grades.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return DateTile();
+                  },
+                  staggeredTileBuilder: (int index) {
+                    return StaggeredTile.count(2, 1.5);
+                  },
+                  crossAxisCount: 2,
+                ),
+              ),
+            ),
+          ),
           const SizedBox(
             height: 5,
           ),
@@ -41,31 +72,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 child: Text("Dernières notes",
                     style:
                         TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right: 20),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    value: dropdownValue,
-                    icon: Icon(Icons.arrow_downward),
-                    iconSize: 20,
-                    elevation: 16,
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                    underline: Container(
-                      height: 2,
-                      color: Theme.of(context).unselectedWidgetColor,
-                    ),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue!;
-                      });
-                    },
-                    items: ['Plus ancienne', "Récentes", "Notes"]
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem(value: value, child: Text(value));
-                    }).toList(),
-                  ),
-                ),
               ),
             ],
           ),
@@ -84,25 +90,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
-                      switch (dropdownValue) {
-                        case 'Plus ancienne':
-                          grades.sort((a, b) => a.date.compareTo(b.date));
-                          break;
-
-                        case 'Récentes':
-                          grades.sort((a, b) => b.date.compareTo(a.date));
-                          break;
-
-                        case 'Notes':
-                          grades.sort((a, b) =>
-                              b.resultOutOf20.compareTo(a.resultOutOf20));
-                          break;
-
-                        default:
-                          grades.sort((a, b) => a.date.compareTo(b.date));
-                          break;
-                      }
-
                       // TODO: Switch to schedule tab
                       return GradeTile(
                         grade: grades[index],
