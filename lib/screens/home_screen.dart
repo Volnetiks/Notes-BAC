@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage>
                     indicatorColor: Theme.of(context).primaryColor,
                     tabs: tabs,
                   )),
-              body: TabBarView(children: [
+              body: const TabBarView(children: [
                 HomeScreenWidget(),
                 ScheduleScreen(),
                 HomeScreenWidget()
