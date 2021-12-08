@@ -3,6 +3,7 @@ import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/widgets/date_tile.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:bac_note/widgets/grades_chart.dart';
+import 'package:bac_note/widgets/schedule_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -41,42 +42,40 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     fontSize: 22,
                     color: Theme.of(context).primaryColor)),
           ),
-          Flexible(
-            child: SizedBox(
-              height: 175,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
-                child: StaggeredGridView.countBuilder(
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 20,
-                  itemCount: grades.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      child: Material(
-                          borderRadius: BorderRadius.circular(8),
-                          color: selectedIndex == index
-                              ? Theme.of(context).buttonColor
-                              : Theme.of(context)
-                                  .unselectedWidgetColor
-                                  .withOpacity(0.4),
-                          child: DateTile(
-                            days: index,
-                          )),
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = index;
-                        });
-                      },
-                    );
-                  },
-                  staggeredTileBuilder: (int index) {
-                    return StaggeredTile.count(2, 1.5);
-                  },
-                  crossAxisCount: 2,
-                ),
+          SizedBox(
+            height: 175,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
+              child: StaggeredGridView.countBuilder(
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 20,
+                itemCount: grades.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    child: Material(
+                        borderRadius: BorderRadius.circular(8),
+                        color: selectedIndex == index
+                            ? Theme.of(context).buttonColor
+                            : Theme.of(context)
+                                .unselectedWidgetColor
+                                .withOpacity(0.4),
+                        child: DateTile(
+                          days: index,
+                        )),
+                    onTap: () {
+                      setState(() {
+                        selectedIndex = index;
+                      });
+                    },
+                  );
+                },
+                staggeredTileBuilder: (int index) {
+                  return StaggeredTile.count(2, 1.5);
+                },
+                crossAxisCount: 2,
               ),
             ),
           ),
@@ -88,7 +87,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             children: [
               const Padding(
                 padding: EdgeInsets.only(left: 20),
-                child: Text("Dernières notes",
+                child: Text("Prochain cours",
                     style:
                         TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
               ),
@@ -97,27 +96,21 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           SizedBox(
             height: 20,
           ),
-          Flexible(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: StaggeredGridView.countBuilder(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 20,
-                    itemCount: grades.length,
-                    shrinkWrap: true,
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      // TODO: Switch to schedule tab
-                      return GradeTile(
-                        grade: grades[index],
-                      );
-                    },
-                    staggeredTileBuilder: (int index) {
-                      return StaggeredTile.fit(2);
-                    }),
-              ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: StaggeredGridView.countBuilder(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 20,
+                  itemCount: grades.length,
+                  shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ScheduleTile();
+                  },
+                  staggeredTileBuilder: (int index) {
+                    return StaggeredTile.fit(2);
+                  }),
             ),
           ),
         ],
