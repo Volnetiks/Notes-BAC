@@ -1,3 +1,4 @@
+import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/widgets/date_tile.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
@@ -22,6 +23,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     Grade.fromResult("Polish", "Verbs", DateTime(2010, 12, 9), 70),
     Grade.fromResult("IT", "Network", DateTime.now(), 40),
   ];
+
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,23 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   scrollDirection: Axis.horizontal,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return DateTile();
+                    return GestureDetector(
+                      child: Material(
+                          borderRadius: BorderRadius.circular(8),
+                          color: selectedIndex == index
+                              ? Theme.of(context).buttonColor
+                              : Theme.of(context)
+                                  .unselectedWidgetColor
+                                  .withOpacity(0.4),
+                          child: DateTile(
+                            days: index,
+                          )),
+                      onTap: () {
+                        setState(() {
+                          selectedIndex = index;
+                        });
+                      },
+                    );
                   },
                   staggeredTileBuilder: (int index) {
                     return StaggeredTile.count(2, 1.5);
