@@ -29,15 +29,15 @@ class _HomePageState extends State<HomePage>
         builder: (BuildContext context) {
           List<Tab> tabs = <Tab>[
             Tab(
-              child: Text("Zeroth",
+              child: Text("Notes",
                   style: TextStyle(color: Theme.of(context).primaryColor)),
             ),
             Tab(
-              child: Text("First",
+              child: Text("Emploi",
                   style: TextStyle(color: Theme.of(context).primaryColor)),
             ),
             Tab(
-              child: Text("Second",
+              child: Text("Autres",
                   style: TextStyle(color: Theme.of(context).primaryColor)),
             ),
           ];
