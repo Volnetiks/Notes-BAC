@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.volnetiks.bac_note">
    <application
-        android:label="Note BAC"
-        android:icon="@mipmap/launcher_icon">
+        android:label="bac_note"
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

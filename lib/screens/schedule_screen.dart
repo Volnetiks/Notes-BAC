@@ -6,6 +6,7 @@ import 'package:bac_note/widgets/grades_chart.dart';
 import 'package:bac_note/widgets/schedule_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -16,6 +17,8 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
+  static const platform = MethodChannel('samples.volnetiks.dev/ecoledirecte');
+
   List<Grade> grades = [
     Grade.fromResultOutOf20("Maths", "Chapter 5", DateTime(2010, 11, 9), 20),
     Grade.fromResultOutOf20("History", "Chapter 1", DateTime(2010, 8, 9), 20),
@@ -29,6 +32,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    getScheduleFromEcoleDirecte();
+
     return SafeArea(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -116,5 +121,17 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> getScheduleFromEcoleDirecte() async {
+    String batteryLevel;
+    try {
+      final int result = await platform.invokeMethod('getBatteryLevel');
+      batteryLevel = 'Battery level at $result % .';
+    } on PlatformException catch (e) {
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
+    }
+
+    print(batteryLevel);
   }
 }
