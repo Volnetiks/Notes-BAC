@@ -1,13 +1,13 @@
 package com.volnetiks.bac_note;
 
-import android.content.ContextWrapper;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
+import android.os.AsyncTask;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
+import fr.benco11.jlibecoledirecte.Session;
+import fr.benco11.jlibecoledirecte.exceptions.EcoleDirecteLoginException;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodChannel;
@@ -16,36 +16,36 @@ public class MainActivity extends FlutterActivity {
 
     private static final String CHANNEL = "samples.volnetiks.dev/ecoledirecte";
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL).setMethodCallHandler((call, result) -> {
-            if (call.method.equals("getBatteryLevel")) {
-                int batteryLevel = getBatteryLevel();
+            if (call.method.equals("loginToEcoleDirecte")) {
+                class NameLoader extends AsyncTask<String, Integer, String> {
+                    @Override
+                    protected String doInBackground(String... strings) {
+                        Session session = new Session(call.argument("username"), call.argument("password"));
+                        try {
+                            session.connect();
+                            String name = session.getAccount().getPrenom() + " " + session.getAccount().getNom();
+                            return name;
+                        } catch (EcoleDirecteLoginException e) {
+                            e.printStackTrace();
+                            return "Not Implemented";
+                        }
+                    }
 
-                if (batteryLevel != -1) {
-                    result.success(batteryLevel);
-                } else {
-                    result.error("UNAVAILABLE", "Battery level not available.", null);
+                    @Override
+                    protected void onPostExecute(String s) {
+                        result.success(s);
+                    }
                 }
+
+                new NameLoader().execute();
             } else {
                 result.notImplemented();
             }
         });
-    }
-
-    private int getBatteryLevel() {
-        int batteryLevel = -1;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            BatteryManager batteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
-            batteryLevel = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
-        } else {
-            Intent intent = new ContextWrapper(getApplicationContext()).
-                    registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-            batteryLevel = (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) * 100) /
-                    intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-        }
-
-        return batteryLevel;
     }
 }

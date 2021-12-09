@@ -124,14 +124,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   }
 
   Future<void> getScheduleFromEcoleDirecte() async {
-    String batteryLevel;
     try {
-      final int result = await platform.invokeMethod('getBatteryLevel');
-      batteryLevel = 'Battery level at $result % .';
+      String name = await platform.invokeMethod('loginToEcoleDirecte',
+          {"username": "thomas.bechu", "password": "Atom3geek"});
+      print(name);
     } on PlatformException catch (e) {
-      batteryLevel = "Failed to get battery level: '${e.message}'.";
+      print("errror");
     }
-
-    print(batteryLevel);
   }
 }
