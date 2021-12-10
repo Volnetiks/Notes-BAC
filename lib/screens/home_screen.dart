@@ -3,6 +3,7 @@ import 'package:bac_note/screens/schedule_screen.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:bac_note/widgets/grades_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,8 +15,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  String studentName = "";
+
+  static const platform = MethodChannel('samples.volnetiks.dev/ecoledirecte');
+
   @override
   void initState() {
+    getStudentName();
     super.initState();
   }
 
@@ -48,7 +54,7 @@ class _HomePageState extends State<HomePage>
                   centerTitle: true,
                   title: Column(
                     children: [
-                      Text("Student name",
+                      Text(studentName,
                           style:
                               TextStyle(color: Theme.of(context).primaryColor)),
                       Text(
@@ -78,6 +84,13 @@ class _HomePageState extends State<HomePage>
         },
       ),
     );
+  }
+
+  Future<void> getStudentName() async {
+    String name = await platform.invokeMethod("getStudentName");
+    setState(() {
+      studentName = name;
+    });
   }
 }
 
