@@ -1,4 +1,5 @@
 import 'package:bac_note/extensions/hex_color.dart';
+import 'package:bac_note/models/cours.dart';
 import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/widgets/date_tile.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'dart:convert';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({Key? key}) : super(key: key);
@@ -19,14 +21,7 @@ class ScheduleScreen extends StatefulWidget {
 class _ScheduleScreenState extends State<ScheduleScreen> {
   static const platform = MethodChannel('samples.volnetiks.dev/ecoledirecte');
 
-  List<Grade> grades = [
-    Grade.fromResultOutOf20("Maths", "Chapter 5", DateTime(2010, 11, 9), 20),
-    Grade.fromResultOutOf20("History", "Chapter 1", DateTime(2010, 8, 9), 20),
-    Grade.fromResult("French", "Reading Test 3", DateTime(2010, 8, 9), 90),
-    Grade.fromResult("English", "New Zealand", DateTime(2010, 9, 9), 10),
-    Grade.fromResult("Polish", "Verbs", DateTime(2010, 12, 9), 70),
-    Grade.fromResult("IT", "Network", DateTime.now(), 40),
-  ];
+  List<Cours> classes = [];
 
   int selectedIndex = 0;
 
@@ -54,7 +49,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               child: StaggeredGridView.countBuilder(
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 20,
-                itemCount: grades.length,
+                itemCount: classes.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
@@ -107,11 +102,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               child: StaggeredGridView.countBuilder(
                   crossAxisCount: 2,
                   mainAxisSpacing: 20,
-                  itemCount: grades.length,
+                  itemCount: classes.length,
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return ScheduleTile();
+                    return ScheduleTile(cours: classes[index]);
                   },
                   staggeredTileBuilder: (int index) {
                     return StaggeredTile.fit(2);
@@ -125,8 +120,20 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   Future<void> getScheduleFromEcoleDirecte() async {
     try {
-      String name = await platform.invokeMethod('getStudentName');
-      print(name);
+      String coursString = await platform.invokeMethod('getEmploiDuTemps');
+      List body = jsonDecode(coursString);
+      List<Cours> cours = [];
+      for (int i = 0; i < body.length; i++) {
+        Cours cour = Cours.fromJSON(body[i]);
+        cours.add(cour);
+      }
+
+      cours.sort((Cours cours1, Cours cours2) =>
+          cours1.startDate.compareTo(cours2.startDate));
+
+      setState(() {
+        classes = cours;
+      });
     } on PlatformException catch (e) {
       print("errror");
     }

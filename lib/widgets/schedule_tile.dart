@@ -1,4 +1,6 @@
 import 'package:bac_note/extensions/hex_color.dart';
+import 'package:bac_note/extensions/string.dart';
+import 'package:bac_note/models/cours.dart';
 import 'package:bac_note/models/grade.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -6,6 +8,10 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:intl/intl.dart';
 
 class ScheduleTile extends StatefulWidget {
+  final Cours cours;
+
+  ScheduleTile({required this.cours});
+
   @override
   _ScheduleTileState createState() => _ScheduleTileState();
 }
@@ -14,6 +20,8 @@ class _ScheduleTileState extends State<ScheduleTile> {
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting('fr_FR', null);
+
+    DateFormat format = new DateFormat.Hm();
 
     return AnimatedContainer(
       duration: Duration(milliseconds: 1500),
@@ -29,7 +37,7 @@ class _ScheduleTileState extends State<ScheduleTile> {
           Row(
             children: [
               Expanded(
-                child: Text("Nom du cours",
+                child: Text(widget.cours.text.toLowerCase().capitalize(),
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 17,
@@ -43,12 +51,14 @@ class _ScheduleTileState extends State<ScheduleTile> {
           ),
           Row(children: [
             Text(
-              "Professeur",
+              widget.cours.prof,
               style: TextStyle(color: Colors.grey, height: 1.3, fontSize: 12),
             ),
             Flexible(fit: FlexFit.tight, child: SizedBox()),
             Text(
-              "8:10 - 9:05",
+              format.format(widget.cours.startDate) +
+                  " - " +
+                  format.format(widget.cours.endDate),
               style: TextStyle(
                   color: HexColor.fromHex("#868fca"),
                   fontSize: 15,
@@ -58,7 +68,7 @@ class _ScheduleTileState extends State<ScheduleTile> {
           SizedBox(
             height: 5,
           ),
-          Text("Salle",
+          Text(widget.cours.salle.replaceAll("<S.LYCEE->", ""),
               overflow: TextOverflow.ellipsis,
               maxLines: 10,
               style: TextStyle(color: Colors.grey, fontSize: 11))
