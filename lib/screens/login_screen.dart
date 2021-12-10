@@ -1,6 +1,7 @@
 import 'package:bac_note/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,6 +14,14 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController usernameController = TextEditingController();
 
   TextEditingController passwdController = TextEditingController();
+
+  bool isChecked = false;
+
+  @override
+  void initState() {
+    checkForIds();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -53,6 +62,9 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextFormField(
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      keyboardType: TextInputType.visiblePassword,
                       controller: usernameController,
                       cursorColor: Theme.of(context).primaryColor,
                       decoration: InputDecoration(
@@ -72,6 +84,8 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextFormField(
+                      enableSuggestions: false,
+                      autocorrect: false,
                       obscureText: true,
                       controller: passwdController,
                       cursorColor: Theme.of(context).primaryColor,
@@ -96,10 +110,30 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: () {
                   connect();
+                  if (isChecked) {
+                    saveIdsToPreferences();
+                  }
                 },
                 child: Text("Connexion"),
                 style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).primaryColor.withOpacity(0.6)),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Checkbox(
+                    value: isChecked,
+                    fillColor: MaterialStateProperty.resolveWith(
+                        (states) => Theme.of(context).unselectedWidgetColor),
+                    checkColor: Theme.of(context).primaryColor,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked = value!;
+                      });
+                    },
+                  ),
+                  Text("Se souvenir de moi")
+                ],
               )
             ],
           ),
@@ -131,9 +165,22 @@ class _LoginPageState extends State<LoginPage> {
               child: child,
             );
           }));
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      //   return HomePage();
-      // }));
+    }
+  }
+
+  Future<void> saveIdsToPreferences() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("username", usernameController.text);
+    sharedPreferences.setString("password", passwdController.text);
+  }
+
+  Future<void> checkForIds() async {
+    print("test");
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.containsKey("username")) {
+      usernameController.text = sharedPreferences.getString("username")!;
+      passwdController.text = sharedPreferences.getString("password")!;
+      connect();
     }
   }
 }
