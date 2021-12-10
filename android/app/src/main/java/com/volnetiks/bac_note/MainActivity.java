@@ -16,16 +16,18 @@ public class MainActivity extends FlutterActivity {
 
     private static final String CHANNEL = "samples.volnetiks.dev/ecoledirecte";
 
+    private static Session session;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL).setMethodCallHandler((call, result) -> {
-            if (call.method.equals("loginToEcoleDirecte")) {
-                class NameLoader extends AsyncTask<String, Integer, String> {
+            if (call.method.equals("connect")) {
+                class ConnectionLoader extends AsyncTask<String, Integer, String> {
                     @Override
                     protected String doInBackground(String... strings) {
-                        Session session = new Session(call.argument("username"), call.argument("password"));
+                        session = new Session(call.argument("username"), call.argument("password"));
                         try {
                             session.connect();
                             String name = session.getAccount().getPrenom() + " " + session.getAccount().getNom();
@@ -42,7 +44,9 @@ public class MainActivity extends FlutterActivity {
                     }
                 }
 
-                new NameLoader().execute();
+                new ConnectionLoader().execute();
+            } else if(call.method.equals("getStudentName")) {
+                result.success(session.getAccount().getPrenom() + " " + session.getAccount().getNom());
             } else {
                 result.notImplemented();
             }

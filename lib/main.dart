@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         disabledColor: Colors.grey.shade500,
         fontFamily: 'SFUI',
       ),
-      home: const LoginPage(),
+      home: LoginPage(),
     );
   }
 }

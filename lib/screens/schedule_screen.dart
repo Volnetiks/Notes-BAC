@@ -125,8 +125,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   Future<void> getScheduleFromEcoleDirecte() async {
     try {
-      String name = await platform.invokeMethod('loginToEcoleDirecte',
-          {"username": "thomas.bechu", "password": "Atom3geek"});
+      String name = await platform.invokeMethod('getStudentName');
       print(name);
     } on PlatformException catch (e) {
       print("errror");
