@@ -11,6 +11,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({Key? key}) : super(key: key);
 
@@ -26,9 +28,13 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   int selectedIndex = 0;
 
   @override
-  Widget build(BuildContext context) {
-    getScheduleFromEcoleDirecte();
+  void initState() {
+    getScheduleFromEcoleDirecte(0);
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -49,7 +55,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               child: StaggeredGridView.countBuilder(
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 20,
-                itemCount: classes.length,
+                itemCount: 7,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
@@ -68,6 +74,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     onTap: () {
                       setState(() {
                         selectedIndex = index;
+                        getScheduleFromEcoleDirecte(index);
                       });
                     },
                   );
@@ -118,9 +125,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  Future<void> getScheduleFromEcoleDirecte() async {
+  Future<void> getScheduleFromEcoleDirecte(int index) async {
     try {
-      String coursString = await platform.invokeMethod('getEmploiDuTemps');
+      DateTime time = DateTime.now().add(Duration(days: index));
+      String coursString = await platform.invokeMethod('getEmploiDuTempsOn',
+          {'date': DateFormat('dd-MM-yyyy').format(time)});
       List body = jsonDecode(coursString);
       List<Cours> cours = [];
       for (int i = 0; i < body.length; i++) {

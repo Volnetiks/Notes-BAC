@@ -334,13 +334,39 @@ public class Session {
 	public String getEmploiDuTemps() throws EcoleDirecteUnknownConnectionException {
 		if(!account.getTypeCompte().equals("E")) throw new EcoleDirecteUnknownConnectionException();
 
-		List<Cours> coursOfDay = new ArrayList<>();
-
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 			JSONObject item = new JSONObject();
 			item.put("dateDebut", formatter.format(Calendar.getInstance().getTime()));
 			item.put("dateFin", formatter.format(Calendar.getInstance().getTime()));
+			item.put("token", token);
+
+
+			String request = HttpUtils.sendRequest("https://api.ecoledirecte.com/v3/E/" +
+					this.id +
+					"/emploidutemps.awp?verbe=get&", "data=" + item.toString(), "POST", true, true);
+
+			JSONObject obj = new JSONObject(request);
+
+			JSONArray arr = obj.getJSONArray("data");
+
+			return arr.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+
+	public String getEmploiDuTempsOn(String date) throws EcoleDirecteUnknownConnectionException {
+		if(!account.getTypeCompte().equals("E")) throw new EcoleDirecteUnknownConnectionException();
+
+		try {
+			JSONObject item = new JSONObject();
+			item.put("dateDebut", date);
+			item.put("dateFin", date);
 			item.put("token", token);
 
 

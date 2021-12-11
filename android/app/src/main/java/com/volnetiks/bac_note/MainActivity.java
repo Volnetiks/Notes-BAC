@@ -8,6 +8,8 @@ import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,9 +60,28 @@ public class MainActivity extends FlutterActivity {
                 class EmploiDuTempsLoader extends AsyncTask<String, Integer, String> {
                     @Override
                     protected String doInBackground(String... strings) {
-                        List<String> coursJson = new ArrayList<>();
                         try {
                             String cours = session.getEmploiDuTemps();
+                            return cours;
+                        } catch (EcoleDirecteUnknownConnectionException e) {
+                            e.printStackTrace();
+                            return "";
+                        }
+                    }
+
+                    @Override
+                    protected void onPostExecute(String cours) {
+                        result.success(cours);
+                    }
+                }
+
+                new EmploiDuTempsLoader().execute();
+            } else if(call.method.equals("getEmploiDuTempsOn")) {
+                class EmploiDuTempsLoader extends AsyncTask<String, Integer, String> {
+                    @Override
+                    protected String doInBackground(String... strings) {
+                        try {
+                            String cours = session.getEmploiDuTempsOn(call.argument("date"));
                             return cours;
                         } catch (EcoleDirecteUnknownConnectionException e) {
                             e.printStackTrace();
