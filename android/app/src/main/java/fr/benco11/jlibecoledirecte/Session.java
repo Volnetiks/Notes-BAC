@@ -5,7 +5,6 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
-import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -24,6 +23,8 @@ import fr.benco11.jlibecoledirecte.login.Account;
 import fr.benco11.jlibecoledirecte.login.LoginJson;
 import fr.benco11.jlibecoledirecte.student.*;
 import fr.benco11.jlibecoledirecte.utils.HttpUtils;
+import io.flutter.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -272,65 +273,6 @@ public class Session {
 		}
 	}
 
-//	public List<Cours> getEmploiDuTemps() throws EcoleDirecteUnknownConnectionException {
-//		if(!account.getTypeCompte().equals("E")) throw new EcoleDirecteUnknownConnectionException();
-//
-//		List<Cours> coursOfDay = new ArrayList<>();
-//
-//		try {
-//			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-//			JSONObject item = new JSONObject();
-//			item.put("dateDebut", formatter.format(Calendar.getInstance().getTime()));
-//			item.put("dateFin", formatter.format(Calendar.getInstance().getTime()));
-//			item.put("token", token);
-//
-//
-//			String request = HttpUtils.sendRequest("https://api.ecoledirecte.com/v3/E/" +
-//					this.id +
-//					"/emploidutemps.awp?verbe=get&", "data=" + item.toString(), "POST", true, true);
-//
-//			JSONObject obj = new JSONObject(request);
-//
-//			JSONArray arr = obj.getJSONArray("data");
-//
-//			for (int i = 0; i < arr.length(); i++)
-//			{
-//				Cours cours = new Cours(
-//						arr.getJSONObject(i).getString("start_date"),
-//						arr.getJSONObject(i).getString("end_date"),
-//						arr.getJSONObject(i).getString("classe"),
-//						arr.getJSONObject(i).getString("classeCode"),
-//						arr.getJSONObject(i).getString("prof"),
-//						arr.getJSONObject(i).getString("matiere"),
-//						arr.getJSONObject(i).getString("salle"),
-//						arr.getJSONObject(i).getString("codeMatiere"),
-//						arr.getJSONObject(i).getString("typeCours"),
-//						arr.getJSONObject(i).getString("icone"),
-//						arr.getJSONObject(i).getString("text"),
-//						arr.getJSONObject(i).getString("groupe"),
-//						arr.getJSONObject(i).getString("groupeCode"),
-//						arr.getJSONObject(i).getBoolean("dispensable"),
-//						arr.getJSONObject(i).getBoolean("isFlexible"),
-//						arr.getJSONObject(i).getBoolean("isAnnule"),
-//						arr.getJSONObject(i).getBoolean("isModifie"),
-//						arr.getJSONObject(i).getBoolean("contenuDeSeance"),
-//						arr.getJSONObject(i).getBoolean("devoirAFaire"),
-//						arr.getJSONObject(i).getInt("dispense"),
-//						arr.getJSONObject(i).getInt("classeId"),
-//						arr.getJSONObject(i).getInt("groupeId")
-//				);
-//
-//				coursOfDay.add(cours);
-//			}
-//		} catch (IOException | ParseException e) {
-//			e.printStackTrace();
-//		} catch (JSONException e) {
-//			e.printStackTrace();
-//		}
-//
-//		return coursOfDay;
-//	}
-
 	public String getEmploiDuTemps() throws EcoleDirecteUnknownConnectionException {
 		if(!account.getTypeCompte().equals("E")) throw new EcoleDirecteUnknownConnectionException();
 
@@ -369,7 +311,6 @@ public class Session {
 			item.put("dateFin", date);
 			item.put("token", token);
 
-
 			String request = HttpUtils.sendRequest("https://api.ecoledirecte.com/v3/E/" +
 					this.id +
 					"/emploidutemps.awp?verbe=get&", "data=" + item.toString(), "POST", true, true);
@@ -379,7 +320,6 @@ public class Session {
 			JSONArray arr = obj.getJSONArray("data");
 
 			return arr.toString();
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {

@@ -104,21 +104,34 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             height: 20,
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: StaggeredGridView.countBuilder(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  itemCount: classes.length,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return ScheduleTile(cours: classes[index]);
-                  },
-                  staggeredTileBuilder: (int index) {
-                    return StaggeredTile.fit(2);
-                  }),
-            ),
+            child: classes.isNotEmpty
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: StaggeredGridView.countBuilder(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 20,
+                        itemCount: classes.length,
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return ScheduleTile(cours: classes[index]);
+                        },
+                        staggeredTileBuilder: (int index) {
+                          return StaggeredTile.fit(2);
+                        }),
+                  )
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text('Aucun cours',
+                            style: TextStyle(fontSize: 17, color: Colors.grey))
+                      ],
+                    ),
+                  ),
           ),
         ],
       ),
@@ -128,21 +141,26 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   Future<void> getScheduleFromEcoleDirecte(int index) async {
     try {
       DateTime time = DateTime.now().add(Duration(days: index));
+      print(DateFormat('dd-MM-yyyy').format(time));
       String coursString = await platform.invokeMethod('getEmploiDuTempsOn',
-          {'date': DateFormat('dd-MM-yyyy').format(time)});
-      List body = jsonDecode(coursString);
-      List<Cours> cours = [];
-      for (int i = 0; i < body.length; i++) {
-        Cours cour = Cours.fromJSON(body[i]);
-        cours.add(cour);
+          {'date': DateFormat('yyyy-MM-dd hh:mm').format(time)});
+      if (coursString.isNotEmpty) {
+        List body = jsonDecode(coursString);
+        List<Cours> cours = [];
+        for (int i = 0; i < body.length; i++) {
+          Cours cour = Cours.fromJSON(body[i]);
+          cours.add(cour);
+        }
+
+        print(coursString);
+
+        cours.sort((Cours cours1, Cours cours2) =>
+            cours1.startDate.compareTo(cours2.startDate));
+
+        setState(() {
+          classes = cours;
+        });
       }
-
-      cours.sort((Cours cours1, Cours cours2) =>
-          cours1.startDate.compareTo(cours2.startDate));
-
-      setState(() {
-        classes = cours;
-      });
     } on PlatformException catch (e) {
       print("errror");
     }
