@@ -1,9 +1,10 @@
+import 'package:intl/intl.dart';
+
 class Note {
   String codeMatiere,
       codePeriode,
       codeSousMatiere,
       coef,
-      date,
       dateSaisie,
       devoir,
       libelleMatiere,
@@ -11,6 +12,7 @@ class Note {
   bool enLettre, nonSignificatif, valeurisee;
   List<String> elementsProgramme;
   double note, minClasse, moyenneClasse, maxClasse, noteSur;
+  DateTime date;
 
   Note(
       {required this.codeMatiere,
@@ -38,7 +40,7 @@ class Note {
       codePeriode: json["codePeriode"],
       codeSousMatiere: json["codeSousMatiere"],
       coef: json["coef"],
-      date: json["date"],
+      date: DateFormat("yyyy-M-d").parse(json["date"]),
       dateSaisie: json["dateSaisie"],
       devoir: json["devoir"],
       libelleMatiere: json["libelleMatiere"],

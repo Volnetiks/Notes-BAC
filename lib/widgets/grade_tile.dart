@@ -58,7 +58,7 @@ class _GradeTileState extends State<GradeTile> {
           ),
           Row(children: [
             Text(
-              grade.date,
+              DateFormat('yMMMd', 'fr_FR').format(grade.date),
               style: TextStyle(color: Colors.grey, fontSize: 11),
             ),
             Flexible(fit: FlexFit.tight, child: SizedBox()),

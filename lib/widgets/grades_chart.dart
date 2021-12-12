@@ -2,6 +2,7 @@ import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 
 class GradesChart extends StatefulWidget {
   final List<Note> grades;
@@ -28,17 +29,25 @@ class _GradesChartState extends State<GradesChart> {
 
     double averageGrade = 0;
     double lowestGrade = 20;
+    double totalCoefficients = 0;
 
     for (int i = 0; i < grades.length; i++) {
-      values.add(FlSpot(11 / (grades.length - 1) * i, grades[i].note));
+      totalCoefficients += double.parse(grades[i].coef);
+      averageGrade += (grades[i].note / grades[i].noteSur * 20);
+      print(grades[i].note);
+      print(totalCoefficients);
+      print((averageGrade) / (totalCoefficients));
+      print("------------------");
 
-      averageGrade += (grades[i].note);
+      values.add(FlSpot(
+          11 / (grades.length - 1) * i, (averageGrade) / totalCoefficients));
+
       if (lowestGrade > grades[i].note) {
         lowestGrade = grades[i].note;
       }
     }
 
-    averageGrade /= grades.length;
+    averageGrade /= totalCoefficients;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
