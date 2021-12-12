@@ -46,7 +46,11 @@ class _GradesChartState extends State<GradesChart> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 20.0, left: 13),
-          child: Text("Note moyenne: " + averageGrade.toStringAsFixed(2),
+          child: Text(
+              "Note moyenne: " +
+                  (averageGrade.isNaN
+                      ? "Aucune notes"
+                      : averageGrade.toStringAsFixed(2)),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 22,

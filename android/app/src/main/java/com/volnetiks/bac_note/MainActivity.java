@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.benco11.jlibecoledirecte.Session;
+import fr.benco11.jlibecoledirecte.exceptions.EcoleDirecteAccountTypeException;
+import fr.benco11.jlibecoledirecte.exceptions.EcoleDirecteIOException;
 import fr.benco11.jlibecoledirecte.exceptions.EcoleDirecteLoginException;
 import fr.benco11.jlibecoledirecte.exceptions.EcoleDirecteUnknownConnectionException;
 import fr.benco11.jlibecoledirecte.student.Cours;
@@ -96,6 +98,28 @@ public class MainActivity extends FlutterActivity {
                 }
 
                 new EmploiDuTempsLoader().execute();
+            } else if(call.method.equals("getNotes")) {
+                class NotesLoader extends AsyncTask<String, Integer, String> {
+                    @Override
+                    protected String doInBackground(String... strings) {
+                        try {
+                            String json = session.getGrades();
+                            return "";
+                        } catch (EcoleDirecteIOException e) {
+                            e.printStackTrace();
+                        } catch (EcoleDirecteAccountTypeException e) {
+                            e.printStackTrace();
+                        }
+                        return "";
+                    }
+
+                    @Override
+                    protected void onPostExecute(String grade) {
+                        result.success(grade);
+                    }
+                }
+
+                new NotesLoader().execute();
             } else {
                 result.notImplemented();
             }

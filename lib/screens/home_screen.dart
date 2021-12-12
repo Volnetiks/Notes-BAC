@@ -102,16 +102,17 @@ class HomeScreenWidget extends StatefulWidget {
 }
 
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
-  List<Grade> grades = [
-    Grade.fromResultOutOf20("Maths", "Chapter 5", DateTime(2010, 11, 9), 20),
-    Grade.fromResultOutOf20("History", "Chapter 1", DateTime(2010, 8, 9), 20),
-    Grade.fromResult("French", "Reading Test 3", DateTime(2010, 8, 9), 90),
-    Grade.fromResult("English", "New Zealand", DateTime(2010, 9, 9), 10),
-    Grade.fromResult("Polish", "Verbs", DateTime(2010, 12, 9), 70),
-    Grade.fromResult("IT", "Network", DateTime.now(), 40),
-  ];
+  List<Grade> grades = [];
 
   String dropdownValue = 'Récentes';
+
+  static const platform = MethodChannel('samples.volnetiks.dev/ecoledirecte');
+
+  @override
+  void initState() {
+    getNotes();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -205,5 +206,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         ],
       ),
     );
+  }
+
+  Future<void> getNotes() async {
+    String code = await platform.invokeMethod('getNotes');
   }
 }

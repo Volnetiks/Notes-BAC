@@ -138,14 +138,14 @@ public class Session {
 	public List<Grade> getAverageGrades() throws EcoleDirecteAccountTypeException, EcoleDirecteUnknownConnectionException, EcoleDirecteIOException {
 		if(!account.getTypeCompte().equals("E"))
 			throw new EcoleDirecteAccountTypeException(1);
-		
+
 		try {
 			String r = HttpUtils.sendRequest(ECOLEDIRECTE_STUDENTS_SECTION_URL + id + ECOLEDIRECTE_STUDENTS_NOTEGET_URL, ECOLEDIRECTE_JSON_DATA_START_TOKEN + token + "\"}", "POST", true, true);
 			GradeJson gradeJson = new Gson().fromJson(r, GradeJson.class);
 			if(gradeJson.getCode() != 200) {
 				throw new EcoleDirecteUnknownConnectionException();
 			}
-			
+
 			ArrayList<Grade> averageGradesList = new ArrayList<>();
 			gradeJson.getData().getPeriodes().forEach(e -> e.getEnsembleMatieres().getDisciplines().forEach(a -> {
 					if(a.getAverage().length() > 0)
@@ -153,7 +153,7 @@ public class Session {
 				}
 			));
 			return averageGradesList;
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new EcoleDirecteIOException();
@@ -195,6 +195,29 @@ public class Session {
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new EcoleDirecteIOException();
+		}
+	}
+
+	public String getGrades() throws EcoleDirecteAccountTypeException, EcoleDirecteIOException {
+		if(!account.getTypeCompte().equals("E"))
+			throw new EcoleDirecteAccountTypeException(1);
+
+		try {
+			String request = HttpUtils.sendRequest("https://api.ecoledirecte.com/v3/eleves/" +
+					this.id +
+					"/notes.awp?verbe=get&", ECOLEDIRECTE_JSON_DATA_START_TOKEN + token + "\"}", "POST", true, true);
+
+			JSONObject object = new JSONObject(request);
+			JSONObject data = object.getJSONObject("data");
+			JSONArray arr = data.getJSONArray("notes");
+
+			return arr.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new EcoleDirecteIOException();
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return "";
 		}
 	}
 	
@@ -396,30 +419,30 @@ public class Session {
 	 * @throws EcoleDirecteIOException une erreur réseau a eu lieu
 	 */
 	
-	public List<Grade> getMaxAverageGrades() throws EcoleDirecteAccountTypeException, EcoleDirecteUnknownConnectionException, EcoleDirecteIOException {
-		if(!account.getTypeCompte().equals("E"))
-			throw new EcoleDirecteAccountTypeException(1);
-		
-		try {
-			String r = HttpUtils.sendRequest(ECOLEDIRECTE_STUDENTS_SECTION_URL + id + ECOLEDIRECTE_STUDENTS_NOTEGET_URL, ECOLEDIRECTE_JSON_DATA_START_TOKEN + token + "\"}", "POST", true, true);
-			GradeJson gradeJson = new Gson().fromJson(r, GradeJson.class);
-			if(gradeJson.getCode() != 200) {
-				throw new EcoleDirecteUnknownConnectionException();
-			}
-			
-			ArrayList<Grade> averageGradesList = new ArrayList<>();
-			gradeJson.getData().getPeriodes().forEach(e -> e.getEnsembleMatieres().getDisciplines().forEach(a -> {
-					if(a.getMaxAverage().length() > 0)
-						averageGradesList.add(new Grade(a.getMaxAverage(), a.getCoef(), a.getId()));
-				}
-			));
-			return averageGradesList;
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new EcoleDirecteIOException();
-		}
-	}
+//	public List<Grade> getMaxAverageGrades() throws EcoleDirecteAccountTypeException, EcoleDirecteUnknownConnectionException, EcoleDirecteIOException {
+//		if(!account.getTypeCompte().equals("E"))
+//			throw new EcoleDirecteAccountTypeException(1);
+//
+//		try {
+//			String r = HttpUtils.sendRequest(ECOLEDIRECTE_STUDENTS_SECTION_URL + id + ECOLEDIRECTE_STUDENTS_NOTEGET_URL, ECOLEDIRECTE_JSON_DATA_START_TOKEN + token + "\"}", "POST", true, true);
+//			GradeJson gradeJson = new Gson().fromJson(r, GradeJson.class);
+//			if(gradeJson.getCode() != 200) {
+//				throw new EcoleDirecteUnknownConnectionException();
+//			}
+//
+//			ArrayList<Grade> averageGradesList = new ArrayList<>();
+//			gradeJson.getData().getPeriodes().forEach(e -> e.getEnsembleMatieres().getDisciplines().forEach(a -> {
+//					if(a.getMaxAverage().length() > 0)
+//						averageGradesList.add(new Grade(a.getMaxAverage(), a.getCoef(), a.getId()));
+//				}
+//			));
+//			return averageGradesList;
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			throw new EcoleDirecteIOException();
+//		}
+//	}
 	
 	/**
 	 * Récupère la liste des meilleures moyennes d'un trimestre
