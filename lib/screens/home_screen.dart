@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/models/note.dart';
 import 'package:bac_note/screens/schedule_screen.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
