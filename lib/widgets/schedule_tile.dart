@@ -1,7 +1,6 @@
 import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/extensions/string.dart';
 import 'package:bac_note/models/cours.dart';
-import 'package:bac_note/models/grade.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:percent_indicator/percent_indicator.dart';
