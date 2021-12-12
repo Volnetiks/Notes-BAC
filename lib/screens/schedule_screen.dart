@@ -1,6 +1,5 @@
 import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/cours.dart';
-import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/widgets/date_tile.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:bac_note/widgets/grades_chart.dart';

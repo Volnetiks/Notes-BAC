@@ -1,5 +1,4 @@
 import 'package:bac_note/extensions/hex_color.dart';
-import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';

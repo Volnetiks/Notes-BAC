@@ -1,5 +1,4 @@
 import 'package:bac_note/extensions/string.dart';
-import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
