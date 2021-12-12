@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:bac_note/models/grade.dart';
+import 'package:bac_note/models/note.dart';
 import 'package:bac_note/screens/schedule_screen.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:bac_note/widgets/grades_chart.dart';
@@ -102,7 +105,7 @@ class HomeScreenWidget extends StatefulWidget {
 }
 
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
-  List<Grade> grades = [];
+  List<Note> grades = [];
 
   String dropdownValue = 'Récentes';
 
@@ -184,8 +187,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                           break;
 
                         case 'Notes':
-                          grades.sort((a, b) =>
-                              b.resultOutOf20.compareTo(a.resultOutOf20));
+                          grades.sort((a, b) => b.note.compareTo(a.note));
                           break;
 
                         default:
@@ -209,6 +211,15 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   }
 
   Future<void> getNotes() async {
-    String code = await platform.invokeMethod('getNotes');
+    String noteJSON = await platform.invokeMethod('getNotes');
+    List<Note> tempGrades = [];
+    List notes = jsonDecode(noteJSON);
+    for (var i = 0; i < notes.length; i++) {
+      Note note = Note.fromJSON(notes[i]);
+      tempGrades.add(note);
+    }
+    setState(() {
+      grades = tempGrades;
+    });
   }
 }

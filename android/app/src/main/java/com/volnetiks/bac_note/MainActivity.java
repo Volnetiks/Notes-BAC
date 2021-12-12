@@ -104,7 +104,7 @@ public class MainActivity extends FlutterActivity {
                     protected String doInBackground(String... strings) {
                         try {
                             String json = session.getGrades();
-                            return "";
+                            return json;
                         } catch (EcoleDirecteIOException e) {
                             e.printStackTrace();
                         } catch (EcoleDirecteAccountTypeException e) {

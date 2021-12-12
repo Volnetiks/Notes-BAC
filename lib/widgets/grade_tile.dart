@@ -1,11 +1,13 @@
+import 'package:bac_note/extensions/string.dart';
 import 'package:bac_note/models/grade.dart';
+import 'package:bac_note/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:intl/intl.dart';
 
 class GradeTile extends StatefulWidget {
-  final Grade grade;
+  final Note grade;
   const GradeTile({required this.grade});
 
   @override
@@ -15,7 +17,7 @@ class GradeTile extends StatefulWidget {
 class _GradeTileState extends State<GradeTile> {
   @override
   Widget build(BuildContext context) {
-    Grade grade = widget.grade;
+    Note grade = widget.grade;
 
     initializeDateFormatting('fr_FR', null);
 
@@ -33,7 +35,8 @@ class _GradeTileState extends State<GradeTile> {
           Row(
             children: [
               Expanded(
-                child: Text(grade.name,
+                child: Text(
+                    grade.devoir.toLowerCase().capitalize().replaceAll("_", ""),
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 17,
@@ -46,7 +49,7 @@ class _GradeTileState extends State<GradeTile> {
             height: 5,
           ),
           Text(
-            grade.grade_class,
+            grade.codeMatiere,
             overflow: TextOverflow.ellipsis,
             maxLines: 10,
             style: TextStyle(color: Colors.grey, height: 1.3, fontSize: 12),
@@ -56,22 +59,25 @@ class _GradeTileState extends State<GradeTile> {
           ),
           Row(children: [
             Text(
-              DateFormat('yMMMd', 'fr_FR').format(grade.date),
+              grade.date,
               style: TextStyle(color: Colors.grey, fontSize: 11),
             ),
             Flexible(fit: FlexFit.tight, child: SizedBox()),
             Text(
-              grade.resultOutOf20.toStringAsFixed(2),
+              grade.note.toStringAsFixed(2),
               style: TextStyle(
-                  color:
-                      grade.resultOutOf20 > 10 ? Colors.blue : Colors.red[400],
+                  color: grade.note > (grade.noteSur / 2)
+                      ? Colors.blue
+                      : Colors.red[400],
                   fontSize: 11),
             ),
             LinearPercentIndicator(
               width: 80.0,
               lineHeight: 4.0,
-              percent: grade.result / 100,
-              progressColor: grade.result > 50 ? Colors.blue : Colors.red[500],
+              percent: grade.note / grade.noteSur,
+              progressColor: grade.note > (grade.noteSur / 2)
+                  ? Colors.blue
+                  : Colors.red[500],
             )
           ])
         ],

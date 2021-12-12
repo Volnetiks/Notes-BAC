@@ -1,10 +1,11 @@
 import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/grade.dart';
+import 'package:bac_note/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class GradesChart extends StatefulWidget {
-  final List<Grade> grades;
+  final List<Note> grades;
 
   const GradesChart({required this.grades});
 
@@ -16,7 +17,7 @@ class _GradesChartState extends State<GradesChart> {
   @override
   Widget build(BuildContext context) {
     List<FlSpot> values = [];
-    List<Grade> grades = widget.grades;
+    List<Note> grades = widget.grades;
 
     grades.sort((a, b) => a.date.compareTo(b.date));
 
@@ -30,11 +31,11 @@ class _GradesChartState extends State<GradesChart> {
     double lowestGrade = 20;
 
     for (int i = 0; i < grades.length; i++) {
-      values.add(FlSpot(11 / (grades.length - 1) * i, grades[i].resultOutOf20));
+      values.add(FlSpot(11 / (grades.length - 1) * i, grades[i].note));
 
-      averageGrade += (grades[i].resultOutOf20);
-      if (lowestGrade > grades[i].resultOutOf20) {
-        lowestGrade = grades[i].resultOutOf20;
+      averageGrade += (grades[i].note);
+      if (lowestGrade > grades[i].note) {
+        lowestGrade = grades[i].note;
       }
     }
 
