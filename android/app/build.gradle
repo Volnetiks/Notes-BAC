@@ -25,7 +25,7 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -36,15 +36,20 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.volnetiks.bac_note"
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        multiDexEnabled true
     }
 
     dependencies {
         implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
-        implementation 'org.json:json:20211205'
         compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
     buildTypes {
@@ -52,6 +57,10 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+
+            minifyEnabled false   // Add this line
+            shrinkResources false // Add this line
+            useProguard false
         }
     }
 }
