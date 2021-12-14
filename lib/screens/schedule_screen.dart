@@ -151,8 +151,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           cours.add(cour);
         }
 
-        print(coursString);
-
         cours.sort((Cours cours1, Cours cours2) =>
             cours1.startDate.compareTo(cours2.startDate));
 

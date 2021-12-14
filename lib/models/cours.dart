@@ -51,7 +51,7 @@ class Cours {
   });
 
   factory Cours.fromJSON(Map<String, dynamic> json) {
-    DateFormat format = new DateFormat("yyyy-M-d hh:mm");
+    DateFormat format = new DateFormat("yyyy-M-d HH:m");
 
     return Cours(
       start_date: json["start_date"],
