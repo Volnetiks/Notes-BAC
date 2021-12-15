@@ -42,7 +42,7 @@ class _ScheduleTileState extends State<ScheduleTile> {
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor)),
-              )
+              ),
             ],
           ),
           SizedBox(
@@ -55,11 +55,15 @@ class _ScheduleTileState extends State<ScheduleTile> {
             ),
             Flexible(fit: FlexFit.tight, child: SizedBox()),
             Text(
-              format.format(widget.cours.startDate) +
-                  " - " +
-                  format.format(widget.cours.endDate),
+              widget.cours.isAnnule
+                  ? "Cours annulé."
+                  : format.format(widget.cours.startDate) +
+                      " - " +
+                      format.format(widget.cours.endDate),
               style: TextStyle(
-                  color: HexColor.fromHex("#868fca"),
+                  color: widget.cours.isAnnule
+                      ? Colors.red.shade400
+                      : HexColor.fromHex("#868fca"),
                   fontSize: 15,
                   fontWeight: FontWeight.bold),
             ),

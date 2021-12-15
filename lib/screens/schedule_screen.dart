@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:bac_note/extensions/hex_color.dart';
+import 'package:bac_note/extensions/string.dart';
 import 'package:bac_note/models/cours.dart';
 import 'package:bac_note/widgets/date_tile.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
@@ -59,23 +62,25 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return GestureDetector(
-                    child: Material(
-                        borderRadius: BorderRadius.circular(8),
-                        color: selectedIndex == index
-                            ? Theme.of(context).buttonColor
-                            : Theme.of(context)
-                                .unselectedWidgetColor
-                                .withOpacity(0.4),
-                        child: DateTile(
-                          days: index,
-                        )),
-                    onTap: () {
-                      setState(() {
-                        selectedIndex = index;
-                        getScheduleFromEcoleDirecte(index);
-                      });
-                    },
+                  return Center(
+                    child: GestureDetector(
+                      child: Material(
+                          borderRadius: BorderRadius.circular(8),
+                          color: selectedIndex == index
+                              ? Theme.of(context).buttonColor
+                              : Theme.of(context)
+                                  .unselectedWidgetColor
+                                  .withOpacity(0.4),
+                          child: DateTile(
+                            days: index,
+                          )),
+                      onTap: () {
+                        setState(() {
+                          selectedIndex = index;
+                          getScheduleFromEcoleDirecte(index);
+                        });
+                      },
+                    ),
                   );
                 },
                 staggeredTileBuilder: (int index) {
@@ -103,7 +108,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             height: 20,
           ),
           Expanded(
-            child: classes.isNotEmpty
+            child: classes.isNotEmpty &&
+                    classes[0].text.toLowerCase() != "congés"
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: StaggeredGridView.countBuilder(
