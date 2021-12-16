@@ -171,6 +171,7 @@ class _ClassDialogState extends State<ClassDialog>
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // TODO: implement work to do
                             Text("Bientôt",
                                 style: TextStyle(
                                     fontSize: 12,
