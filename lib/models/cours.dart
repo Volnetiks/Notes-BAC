@@ -60,7 +60,7 @@ class Cours {
       classeCode: json["classeCode"],
       prof: json["prof"],
       matiere: json["matiere"],
-      salle: json["salle"],
+      salle: json["salle"].replaceAll("<S.LYCEE->", ""),
       codeMatiere: json["codeMatiere"],
       typeCours: json["typeCours"],
       icone: json["icone"],

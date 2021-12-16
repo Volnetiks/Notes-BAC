@@ -82,7 +82,7 @@ class _ScheduleTileState extends State<ScheduleTile> {
             SizedBox(
               height: 5,
             ),
-            Text(widget.cours.salle.replaceAll("<S.LYCEE->", ""),
+            Text(widget.cours.salle,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 10,
                 style: TextStyle(color: Colors.grey, fontSize: 11))
