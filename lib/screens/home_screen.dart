@@ -117,6 +117,13 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   }
 
   @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
