@@ -40,6 +40,7 @@ dependencies:
   percent_indicator: ^3.4.0
   fl_chart: ^0.40.5
   intl: ^0.17.0
+  page_transition: ^2.0.4
   
 flutter_icons:
   android: "launcher_icon"
