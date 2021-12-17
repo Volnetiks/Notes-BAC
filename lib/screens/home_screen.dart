@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bac_note/models/note.dart';
+import 'package:bac_note/screens/grade_screen.dart';
 import 'package:bac_note/screens/schedule_screen.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:bac_note/widgets/grades_chart.dart';
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage>
                   style: TextStyle(color: Theme.of(context).primaryColor)),
             ),
             Tab(
-              child: Text("Autres",
+              child: Text("BAC",
                   style: TextStyle(color: Theme.of(context).primaryColor)),
             ),
           ];
@@ -81,7 +82,7 @@ class _HomePageState extends State<HomePage>
               body: const TabBarView(children: [
                 HomeScreenWidget(),
                 ScheduleScreen(),
-                HomeScreenWidget()
+                GradeScreen()
               ]));
         },
       ),
