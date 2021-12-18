@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class GradeScreen extends StatefulWidget {
   const GradeScreen({Key? key}) : super(key: key);
@@ -9,6 +9,8 @@ class GradeScreen extends StatefulWidget {
 }
 
 class _GradeScreenState extends State<GradeScreen> {
+  // TODO: Redesign the whole page
+
   Map<String, double> dataMap = {
     "Histoire-Geographie": 6,
     "LVA": 6,
@@ -25,6 +27,8 @@ class _GradeScreenState extends State<GradeScreen> {
     "Grand Oral": 10,
   };
 
+  double grade = 15.68;
+
   @override
   void initState() {
     super.initState();
@@ -34,28 +38,36 @@ class _GradeScreenState extends State<GradeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: PieChart(
-        dataMap: dataMap,
-        initialAngleInDegree: 0,
-        animationDuration: Duration(milliseconds: 1000),
-        chartType: ChartType.ring,
-        chartRadius: MediaQuery.of(context).size.width / 3.2,
-        ringStrokeWidth: 32,
-        chartLegendSpacing: 32,
-        chartValuesOptions: const ChartValuesOptions(
-          showChartValuesOutside: true,
-          showChartValueBackground: false,
-          showChartValues: false,
-          chartValueStyle:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        legendOptions: const LegendOptions(
-            showLegendsInRow: false,
-            showLegends: false,
-            legendShape: BoxShape.circle,
-            legendPosition: LegendPosition.right,
-            legendTextStyle:
-                TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularPercentIndicator(
+                radius: 250.0,
+                lineWidth: 17.0,
+                animation: true,
+                animationDuration: 700,
+                percent: grade * 5 / 100,
+                center: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('$grade', style: const TextStyle(fontSize: 40)),
+                    Text("Mention bien",
+                        style: TextStyle(
+                          color: Theme.of(context).disabledColor,
+                        ))
+                  ],
+                ),
+                startAngle: 180,
+                circularStrokeCap: CircularStrokeCap.round,
+                progressColor: Colors.green.shade500,
+                backgroundColor: Theme.of(context).unselectedWidgetColor,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
