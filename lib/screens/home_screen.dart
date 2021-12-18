@@ -225,6 +225,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
       Note note = Note.fromJSON(notes[i]);
       tempGrades.add(note);
     }
+
     setState(() {
       grades = tempGrades;
     });
