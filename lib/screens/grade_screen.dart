@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:bac_note/models/note.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class GradeScreen extends StatefulWidget {
@@ -27,10 +31,13 @@ class _GradeScreenState extends State<GradeScreen> {
     "Grand Oral": 10,
   };
 
-  double grade = 15.68;
+  double grade = 10;
+
+  static const platform = MethodChannel('samples.volnetiks.dev/ecoledirecte');
 
   @override
   void initState() {
+    getNotes();
     super.initState();
   }
 
@@ -53,7 +60,8 @@ class _GradeScreenState extends State<GradeScreen> {
                 center: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('$grade', style: const TextStyle(fontSize: 40)),
+                    Text(grade.toStringAsFixed(2),
+                        style: const TextStyle(fontSize: 40)),
                     Text("Mention bien",
                         style: TextStyle(
                           color: Theme.of(context).disabledColor,
@@ -70,5 +78,23 @@ class _GradeScreenState extends State<GradeScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> getNotes() async {
+    double totalCoefficients = 0;
+    double totalGrade = 0;
+    String noteJSON = await platform.invokeMethod('getNotes');
+    List notes = jsonDecode(noteJSON);
+    for (var i = 0; i < notes.length; i++) {
+      totalCoefficients += double.parse(notes[i]["coef"]);
+      totalGrade +=
+          (double.parse(notes[i]["valeur"].toString().replaceAll(",", ".")) /
+              double.parse(notes[i]["noteSur"]) *
+              20);
+    }
+
+    setState(() {
+      grade = (totalGrade / totalCoefficients);
+    });
   }
 }
