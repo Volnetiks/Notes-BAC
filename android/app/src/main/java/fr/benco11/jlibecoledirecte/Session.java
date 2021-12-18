@@ -159,6 +159,31 @@ public class Session {
 			throw new EcoleDirecteIOException();
 		}
 	}
+
+	public String getAverageGradesString() throws EcoleDirecteAccountTypeException, EcoleDirecteUnknownConnectionException, EcoleDirecteIOException {
+		if(!account.getTypeCompte().equals("E"))
+			throw new EcoleDirecteAccountTypeException(1);
+
+		try {
+			String r = HttpUtils.sendRequest(ECOLEDIRECTE_STUDENTS_SECTION_URL + id + ECOLEDIRECTE_STUDENTS_NOTEGET_URL, ECOLEDIRECTE_JSON_DATA_START_TOKEN + token + "\"}", "POST", true, true);
+			GradeJson gradeJson = new Gson().fromJson(r, GradeJson.class);
+			if(gradeJson.getCode() != 200) {
+				throw new EcoleDirecteUnknownConnectionException();
+			}
+
+			ArrayList<Grade> averageGradesList = new ArrayList<>();
+			gradeJson.getData().getPeriodes().forEach(e -> e.getEnsembleMatieres().getDisciplines().forEach(a -> {
+						if(a.getAverage().length() > 0)
+							averageGradesList.add(new Grade(a.getAverage(), a.getCoef(), a.getId()));
+					}
+			));
+
+			return new Gson().toJson(averageGradesList);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new EcoleDirecteIOException();
+		}
+	}
 	
 	/**
 	 * Récupère la liste des moyennes d'un trimestre

@@ -120,6 +120,30 @@ public class MainActivity extends FlutterActivity {
                 }
 
                 new NotesLoader().execute();
+            } else if(call.method.equals("getAverage")) {
+                class AverageLoader extends AsyncTask<String, Integer, String> {
+                    @Override
+                    protected String doInBackground(String... strings) {
+                        try {
+                            String json = session.getAverageGradesString();
+                            return json;
+                        } catch (EcoleDirecteIOException e) {
+                            e.printStackTrace();
+                        } catch (EcoleDirecteAccountTypeException e) {
+                            e.printStackTrace();
+                        } catch (EcoleDirecteUnknownConnectionException e) {
+                            e.printStackTrace();
+                        }
+                        return "";
+                    }
+
+                    @Override
+                    protected void onPostExecute(String grade) {
+                        result.success(grade);
+                    }
+                }
+
+                new AverageLoader().execute();
             } else {
                 result.notImplemented();
             }

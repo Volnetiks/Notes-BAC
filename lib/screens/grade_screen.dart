@@ -31,7 +31,7 @@ class _GradeScreenState extends State<GradeScreen> {
     "Grand Oral": 10,
   };
 
-  double grade = 10;
+  double grade = -1;
 
   static const platform = MethodChannel('samples.volnetiks.dev/ecoledirecte');
 
@@ -45,56 +45,62 @@ class _GradeScreenState extends State<GradeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularPercentIndicator(
-                radius: 250.0,
-                lineWidth: 17.0,
-                animation: true,
-                animationDuration: 700,
-                percent: grade * 5 / 100,
-                center: Column(
+      body: grade == -1
+          ? Center(
+              child: Text(
+                "Aucun résultat.",
+                style: TextStyle(
+                    fontSize: 25, color: Theme.of(context).disabledColor),
+              ),
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(grade.toStringAsFixed(2),
-                        style: const TextStyle(fontSize: 40)),
-                    Text("Mention bien",
-                        style: TextStyle(
-                          color: Theme.of(context).disabledColor,
-                        ))
+                    CircularPercentIndicator(
+                      radius: 250.0,
+                      lineWidth: 17.0,
+                      animation: true,
+                      animationDuration: 700,
+                      percent: grade * 5 / 100,
+                      center: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(grade.toStringAsFixed(2),
+                              style: const TextStyle(fontSize: 40)),
+                          Text("Mention bien",
+                              style: TextStyle(
+                                color: Theme.of(context).disabledColor,
+                              ))
+                        ],
+                      ),
+                      startAngle: 180,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      progressColor: Colors.green.shade500,
+                      backgroundColor: Theme.of(context).unselectedWidgetColor,
+                    ),
                   ],
                 ),
-                startAngle: 180,
-                circularStrokeCap: CircularStrokeCap.round,
-                progressColor: Colors.green.shade500,
-                backgroundColor: Theme.of(context).unselectedWidgetColor,
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            ),
     );
   }
 
   Future<void> getNotes() async {
     double totalCoefficients = 0;
     double totalGrade = 0;
-    String noteJSON = await platform.invokeMethod('getNotes');
-    List notes = jsonDecode(noteJSON);
-    for (var i = 0; i < notes.length; i++) {
-      totalCoefficients += double.parse(notes[i]["coef"]);
+    String noteJSON = await platform.invokeMethod('getAverage');
+    List averages = jsonDecode(noteJSON);
+    for (int i = 0; i < averages.length; i++) {
+      totalCoefficients += int.parse(averages[i]["coef"]) + 1;
       totalGrade +=
-          (double.parse(notes[i]["valeur"].toString().replaceAll(",", ".")) /
-              double.parse(notes[i]["noteSur"]) *
-              20);
+          double.parse(averages[i]["note"].toString().replaceAll(",", "."));
     }
 
     setState(() {
-      grade = (totalGrade / totalCoefficients);
+      grade = totalGrade / totalCoefficients;
     });
   }
 }
