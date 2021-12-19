@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:bac_note/models/note.dart';
+import 'package:bac_note/widgets/coefficient_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class GradeScreen extends StatefulWidget {
@@ -59,6 +61,9 @@ class _GradeScreenState extends State<GradeScreen> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    SizedBox(
+                      height: 30,
+                    ),
                     CircularPercentIndicator(
                       radius: 250.0,
                       lineWidth: 17.0,
@@ -81,6 +86,33 @@ class _GradeScreenState extends State<GradeScreen> {
                       progressColor: Colors.green.shade500,
                       backgroundColor: Theme.of(context).unselectedWidgetColor,
                     ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Flexible(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: StaggeredGridView.countBuilder(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 12,
+                              itemCount: dataMap.length,
+                              shrinkWrap: true,
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return CoefficientTile(
+                                    name: dataMap.keys.elementAt(index),
+                                    coefficient:
+                                        dataMap.values.elementAt(index));
+                              },
+                              staggeredTileBuilder: (int index) {
+                                return StaggeredTile.fit(1);
+                              }),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ],
