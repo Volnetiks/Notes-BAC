@@ -27,12 +27,24 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   List<Cours> classes = [];
 
+  ScrollController scrollController = ScrollController();
+
   int selectedIndex = 0;
+  int dateItems = 7;
 
   @override
   void initState() {
     getScheduleFromEcoleDirecte(0);
     super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        print("test");
+        setState(() {
+          dateItems += 7;
+        });
+      }
+    });
   }
 
   @override
@@ -62,9 +74,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             child: Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
               child: StaggeredGridView.countBuilder(
+                controller: scrollController,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 20,
-                itemCount: 7,
+                itemCount: dateItems,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
