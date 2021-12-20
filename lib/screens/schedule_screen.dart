@@ -39,7 +39,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        print("test");
         setState(() {
           dateItems += 7;
         });
