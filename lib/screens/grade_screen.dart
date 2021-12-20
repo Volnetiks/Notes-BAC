@@ -135,9 +135,14 @@ class _GradeScreenState extends State<GradeScreen> {
     String noteJSON = await platform.invokeMethod('getAverage');
     List averages = jsonDecode(noteJSON);
     for (int i = 0; i < averages.length; i++) {
-      totalCoefficients += int.parse(averages[i]["coef"]) + 1;
-      totalGrade +=
-          double.parse(averages[i]["note"].toString().replaceAll(",", "."));
+      print(averages[i]["discipline"]);
+      if (averages[i]["discipline"] != "Enseignement Général" &&
+          averages[i]["discipline"] != "Enseignement de spécialité" &&
+          averages[i]["discipline"] != "Matières facultatives") {
+        totalCoefficients += int.parse(averages[i]["coef"]) + 1;
+        totalGrade +=
+            double.parse(averages[i]["note"].toString().replaceAll(",", "."));
+      }
     }
 
     setState(() {

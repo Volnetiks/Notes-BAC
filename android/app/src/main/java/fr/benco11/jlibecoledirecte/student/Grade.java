@@ -3,6 +3,7 @@ package fr.benco11.jlibecoledirecte.student;
 public class Grade {
 	private String coef;
 	private String note;
+	private String discipline;
 	private int disciplineId;
 
 	/**
@@ -16,6 +17,12 @@ public class Grade {
 		this.note = note;
 		this.coef = coef;
 		this.disciplineId = disciplineId;
+	}
+
+	public Grade(String coef, String note, String discipline) {
+		this.coef = coef;
+		this.note = note;
+		this.discipline = discipline;
 	}
 
 	/**
