@@ -44,6 +44,13 @@ class _GradeScreenState extends State<GradeScreen> {
   }
 
   @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: grade == -1

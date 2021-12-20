@@ -33,6 +33,13 @@ class _CoefficientDialogState extends State<CoefficientDialog>
   }
 
   @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: Material(
