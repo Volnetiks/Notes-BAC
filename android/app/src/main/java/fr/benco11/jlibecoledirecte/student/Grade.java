@@ -19,10 +19,11 @@ public class Grade {
 		this.disciplineId = disciplineId;
 	}
 
-	public Grade(String coef, String note, String discipline) {
+	public Grade(String coef, String note, String discipline, int disciplineId) {
 		this.coef = coef;
 		this.note = note;
 		this.discipline = discipline;
+		this.disciplineId = disciplineId;
 	}
 
 	/**

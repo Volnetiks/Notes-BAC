@@ -174,7 +174,7 @@ public class Session {
 			ArrayList<Grade> averageGradesList = new ArrayList<>();
 			gradeJson.getData().getPeriodes().forEach(e -> e.getEnsembleMatieres().getDisciplines().forEach(a -> {
 						if(a.getAverage().length() > 0)
-							averageGradesList.add(new Grade(a.getCoef(), a.getAverage(), a.getDiscipline()));
+							averageGradesList.add(new Grade(a.getCoef(), a.getAverage(), a.getDiscipline(), a.getId()));
 					}
 			));
 

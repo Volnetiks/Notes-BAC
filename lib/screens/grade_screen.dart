@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/models/note.dart';
 import 'package:bac_note/widgets/coefficient_tile.dart';
 import 'package:flutter/material.dart';
@@ -15,23 +16,40 @@ class GradeScreen extends StatefulWidget {
 }
 
 class _GradeScreenState extends State<GradeScreen> {
-  // TODO: Redesign the whole page
+  List<double> coefficients = [
+    6,
+    6,
+    6,
+    6,
+    8,
+    6,
+    2,
+    16,
+    16,
+    5,
+    5,
+    8,
+    10,
+  ];
 
-  Map<String, double> dataMap = {
-    "Histoire-Geographie": 6,
-    "LVA": 6,
-    "LVB": 6,
-    "Enseignement scientifique": 6,
-    "Enseignement de spécialité de 1re": 8,
-    "EPS": 6,
-    "EMC": 2,
-    "Spécialité 1": 16,
-    "Spécialité 2": 16,
-    "Oral de français": 5,
-    "Ecrit de français": 5,
-    "Philosophie": 8,
-    "Grand Oral": 10,
-  };
+  List<String> names = [
+    "Histoire-Geographie",
+    "LVA",
+    "LVB",
+    "Enseignement scientifique",
+    "Enseignement de spécialité de 1re",
+    "EPS",
+    "EMC",
+    "Spécialité 1",
+    "Spécialité 2",
+    "Oral de français",
+    "Ecrit de français",
+    "Philosophie",
+    "Grand Oral",
+  ];
+
+  List<Grade> grades =
+      List.filled(13, Grade(coefficient: 0, name: "", grade: 0));
 
   double grade = -1;
 
@@ -109,12 +127,9 @@ class _GradeScreenState extends State<GradeScreen> {
                               crossAxisSpacing: 12,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: dataMap.length,
+                              itemCount: names.length,
                               itemBuilder: (context, index) {
-                                return CoefficientTile(
-                                  coefficient: dataMap.values.elementAt(index),
-                                  name: dataMap.keys.elementAt(index),
-                                );
+                                return CoefficientTile(grade: grades[index]);
                               },
                               staggeredTileBuilder: (int index) {
                                 return StaggeredTile.fit(1);
@@ -134,15 +149,23 @@ class _GradeScreenState extends State<GradeScreen> {
     double totalGrade = 0;
     String noteJSON = await platform.invokeMethod('getAverage');
     List averages = jsonDecode(noteJSON);
-    for (int i = 0; i < averages.length; i++) {
-      print(averages[i]["discipline"]);
-      if (averages[i]["discipline"] != "Enseignement Général" &&
-          averages[i]["discipline"] != "Enseignement de spécialité" &&
-          averages[i]["discipline"] != "Matières facultatives") {
-        totalCoefficients += int.parse(averages[i]["coef"]) + 1;
-        totalGrade +=
-            double.parse(averages[i]["note"].toString().replaceAll(",", "."));
-      }
+    averages.removeWhere((element) =>
+        element["discipline"] == "Enseignement Général" ||
+        element["discipline"] == "Enseignement de spécialité" ||
+        element["discipline"] == "Matières facultatives");
+    for (int i = 0; i < 11; i++) {
+      names[i] = averages[i]["discipline"];
+
+      totalCoefficients += coefficients[i];
+      totalGrade +=
+          double.parse(averages[i]["note"].toString().replaceAll(",", ".")) *
+              coefficients[i];
+
+      grades[i] = (Grade(
+          coefficient: coefficients[i],
+          name: names[i],
+          grade: double.parse(
+              averages[i]["note"].toString().replaceAll(",", "."))));
     }
 
     setState(() {

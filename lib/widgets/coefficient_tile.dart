@@ -1,11 +1,11 @@
+import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/widgets/coefficient_dialog.dart';
 import 'package:flutter/material.dart';
 
 class CoefficientTile extends StatefulWidget {
-  final double coefficient;
-  final String name;
+  final Grade grade;
 
-  const CoefficientTile({required this.coefficient, required this.name});
+  const CoefficientTile({required this.grade});
 
   @override
   _CoefficientTileState createState() => _CoefficientTileState();
@@ -36,7 +36,7 @@ class _CoefficientTileState extends State<CoefficientTile> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  widget.name,
+                  widget.grade.name,
                   style: TextStyle(
                       fontSize: 12, color: Theme.of(context).disabledColor),
                   textAlign: TextAlign.center,
@@ -44,7 +44,7 @@ class _CoefficientTileState extends State<CoefficientTile> {
                 SizedBox(
                   height: 5,
                 ),
-                Text("Coefficient ${widget.coefficient}",
+                Text("Coefficient ${widget.grade.coefficient}",
                     style: TextStyle(
                         fontSize: 15,
                         color: Theme.of(context).primaryColor,
@@ -57,7 +57,7 @@ class _CoefficientTileState extends State<CoefficientTile> {
                         fontSize: 12,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold)),
-                Text("Bientôt",
+                Text(widget.grade.grade.toString(),
                     style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).disabledColor,
