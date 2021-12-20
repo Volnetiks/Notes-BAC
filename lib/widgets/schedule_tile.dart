@@ -3,8 +3,6 @@ import 'package:bac_note/extensions/string.dart';
 import 'package:bac_note/models/cours.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:intl/intl.dart';
 
 import 'class_dialog.dart';

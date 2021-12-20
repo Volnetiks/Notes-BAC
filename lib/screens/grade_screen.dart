@@ -53,6 +53,7 @@ class _GradeScreenState extends State<GradeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: grade == -1
           ? Center(
               child: Text(
@@ -61,68 +62,70 @@ class _GradeScreenState extends State<GradeScreen> {
                     fontSize: 25, color: Theme.of(context).disabledColor),
               ),
             )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    CircularPercentIndicator(
-                      radius: 250.0,
-                      lineWidth: 17.0,
-                      animation: true,
-                      animationDuration: 700,
-                      percent: grade * 5 / 100,
-                      center: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(grade.toStringAsFixed(2),
-                              style: const TextStyle(fontSize: 40)),
-                          Text("Mention bien",
-                              style: TextStyle(
-                                color: Theme.of(context).disabledColor,
-                              ))
-                        ],
+          : SafeArea(
+              child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Row(
+                children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 30,
                       ),
-                      startAngle: 180,
-                      circularStrokeCap: CircularStrokeCap.round,
-                      progressColor: Colors.green.shade500,
-                      backgroundColor: Theme.of(context).unselectedWidgetColor,
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Flexible(
-                      child: SizedBox(
+                      CircularPercentIndicator(
+                        radius: 250.0,
+                        lineWidth: 17.0,
+                        animation: true,
+                        animationDuration: 700,
+                        percent: grade * 5 / 100,
+                        center: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(grade.toStringAsFixed(2),
+                                style: const TextStyle(fontSize: 40)),
+                            Text("Mention bien",
+                                style: TextStyle(
+                                  color: Theme.of(context).disabledColor,
+                                ))
+                          ],
+                        ),
+                        startAngle: 180,
+                        circularStrokeCap: CircularStrokeCap.round,
+                        progressColor: Colors.green.shade500,
+                        backgroundColor:
+                            Theme.of(context).unselectedWidgetColor,
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding:
+                              EdgeInsets.only(left: 20, right: 20, top: 10),
                           child: StaggeredGridView.countBuilder(
                               crossAxisCount: 2,
-                              mainAxisSpacing: 20,
+                              mainAxisSpacing: 12,
                               crossAxisSpacing: 12,
-                              itemCount: dataMap.length,
                               shrinkWrap: true,
-                              physics: BouncingScrollPhysics(),
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: dataMap.length,
                               itemBuilder: (context, index) {
                                 return CoefficientTile(
-                                    name: dataMap.keys.elementAt(index),
-                                    coefficient:
-                                        dataMap.values.elementAt(index));
+                                  coefficient: dataMap.values.elementAt(index),
+                                  name: dataMap.keys.elementAt(index),
+                                );
                               },
                               staggeredTileBuilder: (int index) {
                                 return StaggeredTile.fit(1);
                               }),
                         ),
                       ),
-                    )
-                  ],
-                ),
-              ],
-            ),
+                    ],
+                  )
+                ],
+              ),
+            )),
     );
   }
 
