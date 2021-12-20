@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:bac_note/models/grade.dart';
-import 'package:bac_note/models/note.dart';
 import 'package:bac_note/widgets/coefficient_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,31 +19,31 @@ class _GradeScreenState extends State<GradeScreen> {
     6,
     6,
     6,
-    6,
-    8,
-    6,
     2,
-    16,
-    16,
-    5,
-    5,
+    6,
+    6,
     8,
+    16,
+    16,
+    8,
+    5,
+    5,
     10,
   ];
 
   List<String> names = [
-    "Histoire-Geographie",
     "LVA",
     "LVB",
-    "Enseignement scientifique",
-    "Enseignement de spécialité de 1re",
-    "EPS",
+    "Histoire-Geographie",
     "EMC",
+    "Enseignement scientifique",
+    "EPS",
+    "Philosophie",
     "Spécialité 1",
     "Spécialité 2",
+    "Enseignement de spécialité de 1re",
     "Oral de français",
     "Ecrit de français",
-    "Philosophie",
     "Grand Oral",
   ];
 
@@ -82,12 +81,12 @@ class _GradeScreenState extends State<GradeScreen> {
             )
           : SafeArea(
               child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Row(
                 children: [
                   Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       CircularPercentIndicator(
@@ -113,26 +112,26 @@ class _GradeScreenState extends State<GradeScreen> {
                         backgroundColor:
                             Theme.of(context).unselectedWidgetColor,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: Padding(
-                          padding:
-                              EdgeInsets.only(left: 20, right: 20, top: 10),
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 10),
                           child: StaggeredGridView.countBuilder(
                               crossAxisCount: 2,
                               mainAxisSpacing: 12,
                               crossAxisSpacing: 12,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: names.length,
                               itemBuilder: (context, index) {
                                 return CoefficientTile(grade: grades[index]);
                               },
                               staggeredTileBuilder: (int index) {
-                                return StaggeredTile.fit(1);
+                                return const StaggeredTile.fit(1);
                               }),
                         ),
                       ),
@@ -151,23 +150,39 @@ class _GradeScreenState extends State<GradeScreen> {
     List averages = jsonDecode(noteJSON);
     averages.removeWhere((element) =>
         element["discipline"] == "Enseignement Général" ||
-        element["discipline"] == "Enseignement de spécialité" ||
+        element["discipline"] == "Enseignements de spécialité" ||
         element["discipline"] == "Matières facultatives");
-    for (int i = 0; i < 11; i++) {
-      names[i] = averages[i]["discipline"];
+    for (int i = 0; i < averages.length; i++) {
+      if (!names.contains(averages[i]["discipline"])) {
+        names[i] = averages[i]["discipline"];
 
-      totalCoefficients += coefficients[i];
-      totalGrade +=
-          double.parse(averages[i]["note"].toString().replaceAll(",", ".")) *
-              coefficients[i];
+        totalCoefficients += coefficients[i];
+        totalGrade +=
+            double.parse(averages[i]["note"].toString().replaceAll(",", ".")) *
+                coefficients[i];
 
-      grades[i] = (Grade(
-          coefficient: coefficients[i],
-          name: names[i],
-          grade: double.parse(
-              averages[i]["note"].toString().replaceAll(",", "."))));
+        grades[i] = (Grade(
+            coefficient: coefficients[i],
+            name: names[i],
+            grade: double.parse(
+                averages[i]["note"].toString().replaceAll(",", "."))));
+      } else {
+        int index =
+            names.indexWhere((element) => element == averages[i]["discipline"]);
+
+        Grade oldGrade = grades[index];
+        oldGrade.grade +=
+            double.parse(averages[i]["note"].toString().replaceAll(",", "."));
+        oldGrade.grade /= 2;
+      }
     }
 
+    for (int i = 0; i < grades.length; i++) {
+      if (grades[i].name == "") {
+        grades[i] =
+            Grade(coefficient: coefficients[i], name: names[i], grade: -1);
+      }
+    }
     setState(() {
       grade = totalGrade / totalCoefficients;
     });

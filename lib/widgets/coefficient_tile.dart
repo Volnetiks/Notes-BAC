@@ -1,11 +1,15 @@
+import 'package:flutter/material.dart';
+
 import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/widgets/coefficient_dialog.dart';
-import 'package:flutter/material.dart';
 
 class CoefficientTile extends StatefulWidget {
   final Grade grade;
 
-  const CoefficientTile({required this.grade});
+  const CoefficientTile({
+    Key? key,
+    required this.grade,
+  }) : super(key: key);
 
   @override
   _CoefficientTileState createState() => _CoefficientTileState();
@@ -19,8 +23,8 @@ class _CoefficientTileState extends State<CoefficientTile> {
         showDialog(context: context, builder: (context) => CoefficientDialog());
       },
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 1500),
-        padding: EdgeInsets.all(15),
+        duration: const Duration(milliseconds: 1500),
+        padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
             color: Theme.of(context).unselectedWidgetColor.withOpacity(0.4),
             border: Border.all(
@@ -41,7 +45,7 @@ class _CoefficientTileState extends State<CoefficientTile> {
                       fontSize: 12, color: Theme.of(context).disabledColor),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text("Coefficient ${widget.grade.coefficient}",
@@ -49,7 +53,7 @@ class _CoefficientTileState extends State<CoefficientTile> {
                         fontSize: 15,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold)),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text("Note actuelle:",
@@ -57,7 +61,10 @@ class _CoefficientTileState extends State<CoefficientTile> {
                         fontSize: 12,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold)),
-                Text(widget.grade.grade.toString(),
+                Text(
+                    widget.grade.grade == -1
+                        ? "Note non obtenue."
+                        : widget.grade.grade.toString(),
                     style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).disabledColor,
