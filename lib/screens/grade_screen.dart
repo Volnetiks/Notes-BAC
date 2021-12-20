@@ -46,7 +46,6 @@ class _GradeScreenState extends State<GradeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: grade == -1
           ? Center(
               child: Text(
