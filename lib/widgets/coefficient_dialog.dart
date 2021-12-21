@@ -1,10 +1,17 @@
-import 'package:bac_note/extensions/hex_color.dart';
-import 'package:bac_note/extensions/string.dart';
-import 'package:bac_note/models/cours.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:bac_note/extensions/hex_color.dart';
+import 'package:bac_note/models/grade.dart';
+
 class CoefficientDialog extends StatefulWidget {
+  final Grade grade;
+
+  const CoefficientDialog({
+    Key? key,
+    required this.grade,
+  }) : super(key: key);
+
   @override
   _CoefficientDialogState createState() => _CoefficientDialogState();
 }
@@ -16,10 +23,12 @@ class _CoefficientDialogState extends State<CoefficientDialog>
 
   DateFormat format = DateFormat.Hm();
 
+  late TextEditingController _textEditingController;
+
   @override
   void initState() {
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 200));
 
     scaleAnimation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
 
@@ -41,6 +50,9 @@ class _CoefficientDialogState extends State<CoefficientDialog>
 
   @override
   Widget build(BuildContext context) {
+    _textEditingController = TextEditingController(
+        text: widget.grade.grade == -1 ? "" : widget.grade.grade.toString());
+
     return Dialog(
       child: ScaleTransition(
         scale: scaleAnimation,
@@ -52,15 +64,15 @@ class _CoefficientDialogState extends State<CoefficientDialog>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Matiere",
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                SizedBox(
+                Text(widget.grade.name,
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold)),
+                const SizedBox(
                   height: 5,
                 ),
                 Text("Evaluation date",
                     style: TextStyle(color: Theme.of(context).disabledColor)),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -69,7 +81,7 @@ class _CoefficientDialogState extends State<CoefficientDialog>
                       Icons.grading_rounded,
                       color: HexColor.fromHex("#868fca"),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Column(
@@ -79,8 +91,11 @@ class _CoefficientDialogState extends State<CoefficientDialog>
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Theme.of(context).primaryColor)),
-                        SizedBox(height: 2),
-                        Text("note",
+                        const SizedBox(height: 2),
+                        Text(
+                            widget.grade.grade == -1
+                                ? "Note non obtenue"
+                                : widget.grade.grade.toString(),
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Theme.of(context).disabledColor))
@@ -88,7 +103,7 @@ class _CoefficientDialogState extends State<CoefficientDialog>
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -97,6 +112,7 @@ class _CoefficientDialogState extends State<CoefficientDialog>
                       Icons.grading_rounded,
                       color: HexColor.fromHex("#868fca"),
                     ),
+                    // ignore: prefer_const_constructors
                     SizedBox(
                       width: 10,
                     ),
@@ -104,6 +120,8 @@ class _CoefficientDialogState extends State<CoefficientDialog>
                       width: 150,
                       height: 25,
                       child: TextField(
+                        keyboardType: TextInputType.number,
+                        controller: _textEditingController,
                         onChanged: (val) {},
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
@@ -124,7 +142,7 @@ class _CoefficientDialogState extends State<CoefficientDialog>
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -133,7 +151,7 @@ class _CoefficientDialogState extends State<CoefficientDialog>
                       Icons.school_outlined,
                       color: HexColor.fromHex("#868fca"),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Column(
@@ -143,7 +161,7 @@ class _CoefficientDialogState extends State<CoefficientDialog>
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Theme.of(context).primaryColor)),
-                        SizedBox(height: 2),
+                        const SizedBox(height: 2),
                         Text("Bientôt",
                             style: TextStyle(
                                 fontSize: 12,

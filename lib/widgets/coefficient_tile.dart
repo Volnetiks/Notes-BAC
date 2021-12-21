@@ -20,7 +20,9 @@ class _CoefficientTileState extends State<CoefficientTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showDialog(context: context, builder: (context) => CoefficientDialog());
+        showDialog(
+            context: context,
+            builder: (context) => CoefficientDialog(grade: widget.grade));
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 1500),
