@@ -52,6 +52,14 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 15,
                   ),
+                  Text("Utiliser vos identifiants école directe",
+                      style: TextStyle(
+                          color: Theme.of(context).disabledColor,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Image.asset(
                     "assets/logo_ndta.png",
                     width: 200,
