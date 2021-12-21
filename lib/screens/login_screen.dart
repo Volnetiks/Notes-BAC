@@ -178,6 +178,7 @@ class _LoginPageState extends State<LoginPage> {
       if (value == "") {
         setState(() {
           showError = true;
+          passwdController.text = "";
         });
       } else {
         Navigator.of(context).pushReplacement(PageRouteBuilder(
