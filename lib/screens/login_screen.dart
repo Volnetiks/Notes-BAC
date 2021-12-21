@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -35,13 +37,13 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Text("Connectez-vous",
@@ -49,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: Theme.of(context).primaryColor,
                           fontSize: 30,
                           fontWeight: FontWeight.bold)),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Text("Utiliser vos identifiants école directe",
@@ -57,14 +59,14 @@ class _LoginPageState extends State<LoginPage> {
                           color: Theme.of(context).disabledColor,
                           fontSize: 15,
                           fontWeight: FontWeight.bold)),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Image.asset(
                     "assets/logo_ndta.png",
                     width: 200,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   Padding(
@@ -79,16 +81,16 @@ class _LoginPageState extends State<LoginPage> {
                           disabledBorder: InputBorder.none,
                           filled: true,
                           fillColor: Theme.of(context).unselectedWidgetColor,
-                          contentPadding: EdgeInsets.only(left: 20),
+                          contentPadding: const EdgeInsets.only(left: 20),
                           border: OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.circular(10)),
                           hintText: "Identifiant",
-                          hintStyle:
-                              TextStyle(fontSize: 17, color: Colors.grey)),
+                          hintStyle: const TextStyle(
+                              fontSize: 17, color: Colors.grey)),
                     ),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextFormField(
@@ -101,18 +103,18 @@ class _LoginPageState extends State<LoginPage> {
                           disabledBorder: InputBorder.none,
                           filled: true,
                           fillColor: Theme.of(context).unselectedWidgetColor,
-                          contentPadding: EdgeInsets.only(left: 20),
+                          contentPadding: const EdgeInsets.only(left: 20),
                           border: OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.circular(10)),
                           hintText: "Mot de passe",
-                          hintStyle:
-                              TextStyle(fontSize: 17, color: Colors.grey)),
+                          hintStyle: const TextStyle(
+                              fontSize: 17, color: Colors.grey)),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               ElevatedButton(
@@ -122,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                     saveIdsToPreferences();
                   }
                 },
-                child: Text("Connexion"),
+                child: const Text("Connexion"),
                 style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).primaryColor.withOpacity(0.6)),
               ),
@@ -140,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                       });
                     },
                   ),
-                  Text("Se souvenir de moi")
+                  const Text("Se souvenir de moi")
                 ],
               )
             ],
@@ -152,8 +154,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> connect() async {
     if (passwdController.text.isNotEmpty && passwdController.text.isNotEmpty) {
-      print("connection text");
-      String name = await platform.invokeMethod("connect", {
+      await platform.invokeMethod("connect", {
         "username": usernameController.text.toString(),
         "password": passwdController.text.toString()
       });
@@ -183,7 +184,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> checkForIds() async {
-    print("test");
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.containsKey("username")) {
       usernameController.text = sharedPreferences.getString("username")!;

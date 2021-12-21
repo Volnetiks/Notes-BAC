@@ -3,9 +3,12 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class DateTile extends StatefulWidget {
-  final days;
+  final int days;
 
-  const DateTile({required this.days});
+  const DateTile({
+    Key? key,
+    required this.days,
+  }) : super(key: key);
 
   @override
   _DateTileState createState() => _DateTileState();
@@ -17,8 +20,8 @@ class _DateTileState extends State<DateTile> {
     initializeDateFormatting('fr_FR', null);
 
     return AnimatedContainer(
-      duration: Duration(milliseconds: 1500),
-      padding: EdgeInsets.all(15),
+      duration: const Duration(milliseconds: 1500),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
           color: Theme.of(context).unselectedWidgetColor.withOpacity(0.4),
           border: Border.all(
@@ -36,7 +39,7 @@ class _DateTileState extends State<DateTile> {
                       .format(DateTime.now().add(Duration(days: widget.days))),
                   style: TextStyle(
                       fontSize: 15, color: Theme.of(context).disabledColor)),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Text(

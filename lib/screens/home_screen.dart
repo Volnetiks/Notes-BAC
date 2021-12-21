@@ -50,8 +50,6 @@ class _HomePageState extends State<HomePage>
             ),
           ];
 
-          final TabController tabController = DefaultTabController.of(context)!;
-
           return Scaffold(
               appBar: AppBar(
                   centerTitle: true,
@@ -143,11 +141,11 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                         TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
               ),
               Padding(
-                padding: EdgeInsets.only(right: 20),
+                padding: const EdgeInsets.only(right: 20),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: dropdownValue,
-                    icon: Icon(Icons.arrow_downward),
+                    icon: const Icon(Icons.arrow_downward),
                     iconSize: 20,
                     elevation: 16,
                     style: TextStyle(color: Theme.of(context).primaryColor),
@@ -169,7 +167,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Flexible(
@@ -182,7 +180,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                     mainAxisSpacing: 20,
                     itemCount: grades.length,
                     shrinkWrap: true,
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       switch (dropdownValue) {
                         case 'Plus ancienne':
@@ -207,7 +205,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                       );
                     },
                     staggeredTileBuilder: (int index) {
-                      return StaggeredTile.fit(2);
+                      return const StaggeredTile.fit(2);
                     }),
               ),
             ),

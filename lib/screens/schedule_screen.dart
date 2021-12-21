@@ -1,14 +1,10 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
-import 'package:bac_note/extensions/hex_color.dart';
-import 'package:bac_note/extensions/string.dart';
 import 'package:bac_note/models/cours.dart';
 import 'package:bac_note/widgets/date_tile.dart';
-import 'package:bac_note/widgets/grade_tile.dart';
-import 'package:bac_note/widgets/grades_chart.dart';
 import 'package:bac_note/widgets/schedule_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'dart:convert';
@@ -79,7 +75,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 itemCount: dateItems,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return Center(
                     child: GestureDetector(
@@ -103,7 +99,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   );
                 },
                 staggeredTileBuilder: (int index) {
-                  return StaggeredTile.count(2, 1.5);
+                  return const StaggeredTile.count(2, 1.5);
                 },
                 crossAxisCount: 2,
               ),
@@ -114,8 +110,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Padding(
+            children: const [
+              Padding(
                 padding: EdgeInsets.only(left: 20),
                 child: Text("Prochain cours",
                     style:
@@ -123,7 +119,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Expanded(
@@ -136,18 +132,18 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         mainAxisSpacing: 20,
                         itemCount: classes.length,
                         shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           return ScheduleTile(cours: classes[index]);
                         },
                         staggeredTileBuilder: (int index) {
-                          return StaggeredTile.fit(2);
+                          return const StaggeredTile.fit(2);
                         }),
                   )
                 : Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         SizedBox(
                           height: 10,
                         ),
@@ -165,7 +161,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   Future<void> getScheduleFromEcoleDirecte(int index) async {
     try {
       DateTime time = DateTime.now().add(Duration(days: index));
-      print(DateFormat('dd-MM-yyyy').format(time));
       String coursString = await platform.invokeMethod('getEmploiDuTempsOn',
           {'date': DateFormat('yyyy-MM-dd hh:mm').format(time)});
       if (coursString.isNotEmpty) {
@@ -184,7 +179,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         });
       }
     } on PlatformException catch (e) {
-      print("errror");
+      developer.log(e.toString());
     }
   }
 }

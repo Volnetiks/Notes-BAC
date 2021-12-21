@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Grade {
   String name;
   double coefficient;

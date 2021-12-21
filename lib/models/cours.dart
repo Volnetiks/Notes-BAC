@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart';
 
 class Cours {
-  String start_date,
-      end_date,
+  String startDateString,
+      endDateString,
       classe,
       classeCode,
       prof,
@@ -24,8 +24,8 @@ class Cours {
   DateTime startDate, endDate;
 
   Cours({
-    required this.start_date,
-    required this.end_date,
+    required this.startDateString,
+    required this.endDateString,
     required this.classe,
     required this.classeCode,
     required this.prof,
@@ -51,11 +51,11 @@ class Cours {
   });
 
   factory Cours.fromJSON(Map<String, dynamic> json) {
-    DateFormat format = new DateFormat("yyyy-M-d HH:m");
+    DateFormat format = DateFormat("yyyy-M-d HH:m");
 
     return Cours(
-      start_date: json["start_date"],
-      end_date: json["end_date"],
+      startDateString: json["start_date"],
+      endDateString: json["end_date"],
       classe: json["classe"],
       classeCode: json["classeCode"],
       prof: json["prof"],

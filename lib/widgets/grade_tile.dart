@@ -1,13 +1,17 @@
-import 'package:bac_note/extensions/string.dart';
-import 'package:bac_note/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+
+import 'package:bac_note/extensions/string.dart';
+import 'package:bac_note/models/note.dart';
 
 class GradeTile extends StatefulWidget {
   final Note grade;
-  const GradeTile({required this.grade});
+  const GradeTile({
+    Key? key,
+    required this.grade,
+  }) : super(key: key);
 
   @override
   _GradeTileState createState() => _GradeTileState();
@@ -21,8 +25,8 @@ class _GradeTileState extends State<GradeTile> {
     initializeDateFormatting('fr_FR', null);
 
     return AnimatedContainer(
-      duration: Duration(milliseconds: 1500),
-      padding: EdgeInsets.all(15),
+      duration: const Duration(milliseconds: 1500),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
           color: Theme.of(context).unselectedWidgetColor.withOpacity(0.2),
           border: Border.all(
@@ -44,24 +48,25 @@ class _GradeTileState extends State<GradeTile> {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Text(
             grade.codeMatiere,
             overflow: TextOverflow.ellipsis,
             maxLines: 10,
-            style: TextStyle(color: Colors.grey, height: 1.3, fontSize: 12),
+            style:
+                const TextStyle(color: Colors.grey, height: 1.3, fontSize: 12),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Row(children: [
             Text(
               DateFormat('yMMMd', 'fr_FR').format(grade.date),
-              style: TextStyle(color: Colors.grey, fontSize: 11),
+              style: const TextStyle(color: Colors.grey, fontSize: 11),
             ),
-            Flexible(fit: FlexFit.tight, child: SizedBox()),
+            const Flexible(fit: FlexFit.tight, child: SizedBox()),
             Text(
               grade.note.toStringAsFixed(2),
               style: TextStyle(

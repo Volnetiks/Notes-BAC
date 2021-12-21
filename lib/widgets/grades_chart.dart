@@ -1,13 +1,16 @@
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+
 import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/note.dart';
-import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:intl/intl.dart';
 
 class GradesChart extends StatefulWidget {
   final List<Note> grades;
 
-  const GradesChart({required this.grades});
+  const GradesChart({
+    Key? key,
+    required this.grades,
+  }) : super(key: key);
 
   @override
   _GradesChartState createState() => _GradesChartState();
@@ -67,10 +70,10 @@ class _GradesChartState extends State<GradesChart> {
             aspectRatio: 1.70,
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(18)),
+                  borderRadius: const BorderRadius.all(Radius.circular(18)),
                   color: Theme.of(context).scaffoldBackgroundColor),
               child: Padding(
-                padding: EdgeInsets.only(right: 18, top: 24, bottom: 12),
+                padding: const EdgeInsets.only(right: 18, top: 24, bottom: 12),
                 child: LineChart(mainData(values, lowestGrade, gradientColors)),
               ),
             ),
@@ -95,7 +98,7 @@ class _GradesChartState extends State<GradesChart> {
           showTitles: true,
           reservedSize: 22,
           interval: 1,
-          getTextStyles: (context, value) => TextStyle(
+          getTextStyles: (context, value) => const TextStyle(
               color: Color(0xff68737d),
               fontWeight: FontWeight.bold,
               fontSize: 16),
@@ -141,8 +144,8 @@ class _GradesChartState extends State<GradesChart> {
       ),
       borderData: FlBorderData(
           show: true,
-          border: Border(
-            bottom: BorderSide(color: const Color(0xff37434d), width: 1),
+          border: const Border(
+            bottom: BorderSide(color: Color(0xff37434d), width: 1),
           )),
       minX: 0,
       maxX: 11,
@@ -162,8 +165,8 @@ class _GradesChartState extends State<GradesChart> {
             applyCutOffY: true,
             cutOffY: lowestGrade,
             show: true,
-            gradientFrom: Offset(1, 0),
-            gradientTo: Offset(1, 1),
+            gradientFrom: const Offset(1, 0),
+            gradientTo: const Offset(1, 1),
             gradientColorStops: [0.15],
             colors: gradientColors,
           ),

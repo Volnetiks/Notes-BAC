@@ -1,13 +1,17 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/extensions/string.dart';
 import 'package:bac_note/models/cours.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class ClassDialog extends StatefulWidget {
   final Cours cours;
 
-  const ClassDialog({required this.cours});
+  const ClassDialog({
+    Key? key,
+    required this.cours,
+  }) : super(key: key);
 
   @override
   _ClassDialogState createState() => _ClassDialogState();
@@ -22,8 +26,8 @@ class _ClassDialogState extends State<ClassDialog>
 
   @override
   void initState() {
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 200));
 
     scaleAnimation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
 
@@ -59,9 +63,9 @@ class _ClassDialogState extends State<ClassDialog>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(widget.cours.text.toLowerCase().capitalize(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold)),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
@@ -72,7 +76,7 @@ class _ClassDialogState extends State<ClassDialog>
                                 .capitalize(),
                         style:
                             TextStyle(color: Theme.of(context).disabledColor)),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     widget.cours.isAnnule
@@ -100,7 +104,7 @@ class _ClassDialogState extends State<ClassDialog>
                                         style: TextStyle(
                                             color:
                                                 HexColor.fromHex("#868fca"))),
-                                    TextSpan(text: ' à '),
+                                    const TextSpan(text: ' à '),
                                     TextSpan(
                                         text: format
                                             .format(widget.cours.endDate)
@@ -109,7 +113,7 @@ class _ClassDialogState extends State<ClassDialog>
                                             color:
                                                 HexColor.fromHex("#868fca"))),
                                   ])),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
@@ -118,7 +122,7 @@ class _ClassDialogState extends State<ClassDialog>
                           Icons.location_on_outlined,
                           color: HexColor.fromHex("#868fca"),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Column(
@@ -128,7 +132,7 @@ class _ClassDialogState extends State<ClassDialog>
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: Theme.of(context).primaryColor)),
-                            SizedBox(height: 2),
+                            const SizedBox(height: 2),
                             Text("Salle",
                                 style: TextStyle(
                                     fontSize: 12,
@@ -137,7 +141,7 @@ class _ClassDialogState extends State<ClassDialog>
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
@@ -146,7 +150,7 @@ class _ClassDialogState extends State<ClassDialog>
                           Icons.school_outlined,
                           color: HexColor.fromHex("#868fca"),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Column(
@@ -156,7 +160,7 @@ class _ClassDialogState extends State<ClassDialog>
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: Theme.of(context).primaryColor)),
-                            SizedBox(height: 2),
+                            const SizedBox(height: 2),
                             Text("Professeur",
                                 style: TextStyle(
                                     fontSize: 12,
@@ -165,7 +169,7 @@ class _ClassDialogState extends State<ClassDialog>
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
@@ -174,7 +178,7 @@ class _ClassDialogState extends State<ClassDialog>
                           Icons.work_outline_rounded,
                           color: HexColor.fromHex("#868fca"),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Column(
@@ -185,7 +189,7 @@ class _ClassDialogState extends State<ClassDialog>
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: Theme.of(context).primaryColor)),
-                            SizedBox(height: 2),
+                            const SizedBox(height: 2),
                             Text("Devoir à faire",
                                 style: TextStyle(
                                     fontSize: 12,
