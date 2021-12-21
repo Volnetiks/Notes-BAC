@@ -100,7 +100,7 @@ class _GradeScreenState extends State<GradeScreen> {
                           children: [
                             Text(grade.toStringAsFixed(2),
                                 style: const TextStyle(fontSize: 40)),
-                            Text("Mention bien",
+                            Text(getMention(grade),
                                 style: TextStyle(
                                   color: Theme.of(context).disabledColor,
                                 ))
@@ -141,6 +141,18 @@ class _GradeScreenState extends State<GradeScreen> {
               ),
             )),
     );
+  }
+
+  String getMention(double grade) {
+    if (grade < 12) {
+      return "Aucune mention";
+    } else if (grade < 14) {
+      return "Mention assez bien";
+    } else if (grade < 16) {
+      return "Mention bien";
+    } else {
+      return "Mention très bien";
+    }
   }
 
   Future<void> getNotes() async {
