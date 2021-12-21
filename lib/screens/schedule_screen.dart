@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/cours.dart';
 import 'package:bac_note/widgets/date_tile.dart';
 import 'package:bac_note/widgets/schedule_tile.dart';
@@ -82,7 +83,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       child: Material(
                           borderRadius: BorderRadius.circular(8),
                           color: selectedIndex == index
-                              ? Theme.of(context).buttonColor
+                              ? HexColor.fromHex("#5fa2c0")
                               : Theme.of(context)
                                   .unselectedWidgetColor
                                   .withOpacity(0.4),
