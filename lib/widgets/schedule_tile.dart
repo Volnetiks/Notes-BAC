@@ -66,13 +66,18 @@ class _ScheduleTileState extends State<ScheduleTile> {
               Text(
                 widget.cours.isAnnule
                     ? "Cours annulé."
-                    : format.format(widget.cours.startDate) +
-                        " - " +
-                        format.format(widget.cours.endDate),
+                    : isOngoing(widget.cours.startDate, widget.cours.endDate)
+                        ? "En cours"
+                        : format.format(widget.cours.startDate) +
+                            " - " +
+                            format.format(widget.cours.endDate),
                 style: TextStyle(
                     color: widget.cours.isAnnule
                         ? Colors.red.shade400
-                        : HexColor.fromHex("#868fca"),
+                        : isOngoing(
+                                widget.cours.startDate, widget.cours.endDate)
+                            ? HexColor.fromHex("#9faf29")
+                            : HexColor.fromHex("#868fca"),
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
@@ -88,5 +93,10 @@ class _ScheduleTileState extends State<ScheduleTile> {
         ),
       ),
     );
+  }
+
+  bool isOngoing(DateTime startDate, DateTime endDate) {
+    DateTime now = DateTime.now();
+    return startDate.isBefore(now) && endDate.isAfter(now);
   }
 }
