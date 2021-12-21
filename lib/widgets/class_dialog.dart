@@ -80,26 +80,35 @@ class _ClassDialogState extends State<ClassDialog>
                             "Cours annulé.",
                             style: TextStyle(color: Colors.red.shade400),
                           )
-                        : RichText(
-                            text: TextSpan(
-                                text: 'De ',
+                        : isOngoing(
+                                widget.cours.startDate, widget.cours.endDate)
+                            ? Text(
+                                "En cours",
                                 style: TextStyle(
-                                    color: Theme.of(context).disabledColor),
-                                children: [
-                                TextSpan(
-                                    text: format
-                                        .format(widget.cours.startDate)
-                                        .replaceAll(":", "h"),
+                                    color: HexColor.fromHex("#9faf29")),
+                              )
+                            : RichText(
+                                text: TextSpan(
+                                    text: 'De ',
                                     style: TextStyle(
-                                        color: HexColor.fromHex("#868fca"))),
-                                TextSpan(text: ' à '),
-                                TextSpan(
-                                    text: format
-                                        .format(widget.cours.endDate)
-                                        .replaceAll(":", "h"),
-                                    style: TextStyle(
-                                        color: HexColor.fromHex("#868fca"))),
-                              ])),
+                                        color: Theme.of(context).disabledColor),
+                                    children: [
+                                    TextSpan(
+                                        text: format
+                                            .format(widget.cours.startDate)
+                                            .replaceAll(":", "h"),
+                                        style: TextStyle(
+                                            color:
+                                                HexColor.fromHex("#868fca"))),
+                                    TextSpan(text: ' à '),
+                                    TextSpan(
+                                        text: format
+                                            .format(widget.cours.endDate)
+                                            .replaceAll(":", "h"),
+                                        style: TextStyle(
+                                            color:
+                                                HexColor.fromHex("#868fca"))),
+                                  ])),
                     SizedBox(
                       height: 20,
                     ),
@@ -193,5 +202,10 @@ class _ClassDialogState extends State<ClassDialog>
         ),
       ),
     );
+  }
+
+  bool isOngoing(DateTime startDate, DateTime endDate) {
+    DateTime now = DateTime.now();
+    return startDate.isBefore(now) && endDate.isAfter(now);
   }
 }
