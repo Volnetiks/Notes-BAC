@@ -19,6 +19,8 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isChecked = false;
 
+  bool showError = false;
+
   @override
   void initState() {
     checkForIds();
@@ -66,9 +68,24 @@ class _LoginPageState extends State<LoginPage> {
                     "assets/logo_ndta.png",
                     width: 200,
                   ),
-                  const SizedBox(
-                    height: 50,
-                  ),
+                  showError
+                      ? Column(
+                          children: [
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Text(
+                                "Une erreur s'est produite, veuillez vérifier vos identifiants ou réessayer plus tard",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.red.shade400)),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        )
+                      : const SizedBox(
+                          height: 50,
+                        ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextFormField(
@@ -154,26 +171,33 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> connect() async {
     if (passwdController.text.isNotEmpty && passwdController.text.isNotEmpty) {
-      await platform.invokeMethod("connect", {
+      String value = await platform.invokeMethod("connect", {
         "username": usernameController.text.toString(),
         "password": passwdController.text.toString()
       });
-      Navigator.of(context).pushReplacement(PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const HomePage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(0.0, 1.0);
-            const end = Offset.zero;
-            const curve = Curves.ease;
+      if (value == "") {
+        setState(() {
+          showError = true;
+        });
+      } else {
+        Navigator.of(context).pushReplacement(PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const HomePage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(0.0, 1.0);
+              const end = Offset.zero;
+              const curve = Curves.ease;
 
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          }));
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+              );
+            }));
+      }
     }
   }
 

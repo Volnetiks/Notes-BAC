@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,11 +42,10 @@ public class MainActivity extends FlutterActivity {
                         session = new Session(call.argument("username"), call.argument("password"));
                         try {
                             session.connect();
-                            String name = session.getAccount().getPrenom() + " " + session.getAccount().getNom();
-                            return name;
-                        } catch (EcoleDirecteLoginException e) {
+                            return "Connection réussie. ";
+                        } catch (EcoleDirecteLoginException | IOException e) {
                             e.printStackTrace();
-                            return "Not Implemented";
+                            return "";
                         }
                     }
 

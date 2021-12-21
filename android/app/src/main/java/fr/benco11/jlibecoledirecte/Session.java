@@ -63,23 +63,18 @@ public class Session {
 	 * @throws EcoleDirecteLoginException une erreur lors de la connexion s'est produite
 	 */
 	
-	public int connect() throws EcoleDirecteLoginException {
-		try {
-			String r = HttpUtils.sendRequest("https://api.ecoledirecte.com/v3/login.awp", "data={\"identifiant\": \"" + username + "\", \"motdepasse\": \"" + pass + "\"}", "POST", true, true);
-			LoginJson loginJson = new Gson().fromJson(r, LoginJson.class);
-			if(loginJson.getCode() != 200) {
-				throw new EcoleDirecteLoginException(loginJson.getMessage());
-			}
-			
-			token = loginJson.getToken();
-			account = loginJson.getLoginData().getAccount();
-			id = account.getId();
-			idLogin = account.getIdLogin();
-			return 1;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return -1;
+	public int connect() throws EcoleDirecteLoginException, IOException {
+		String r = HttpUtils.sendRequest("https://api.ecoledirecte.com/v3/login.awp", "data={\"identifiant\": \"" + username + "\", \"motdepasse\": \"" + pass + "\"}", "POST", true, true);
+		LoginJson loginJson = new Gson().fromJson(r, LoginJson.class);
+		if(loginJson.getCode() != 200) {
+			throw new EcoleDirecteLoginException(loginJson.getMessage());
 		}
+
+		token = loginJson.getToken();
+		account = loginJson.getLoginData().getAccount();
+		id = account.getId();
+		idLogin = account.getIdLogin();
+		return 1;
 	}
 
 	/**
