@@ -42,6 +42,8 @@ dependencies:
   page_transition: ^2.0.4
   pie_chart: ^5.1.0
   scrollable_positioned_list: ^0.2.3
+  html_unescape: ^2.0.0
+  html: ^0.15.0
 
 flutter_icons:
   android: "launcher_icon"

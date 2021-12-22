@@ -616,4 +616,22 @@ public class Session {
 			throw new EcoleDirecteIOException();
 		}
 	}
+
+	public String getWorkToDo(String date) {
+		if(account.getTypeCompte().equals("E")) {
+
+			// FORMAT: YYYY-MM-DD
+			try {
+				String request = HttpUtils.sendRequest("https://api.ecoledirecte.com/v3/Eleves/" + this.id + "/cahierdetexte/" + date + ".awp?verbe=get", ECOLEDIRECTE_JSON_DATA_START_TOKEN + token + "\"}", "POST", true, true);
+				JSONObject obj = new JSONObject(request);
+
+				return obj.toString();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return "";
+	}
 }

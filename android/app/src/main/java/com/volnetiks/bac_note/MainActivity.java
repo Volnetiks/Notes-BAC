@@ -144,6 +144,21 @@ public class MainActivity extends FlutterActivity {
                 }
 
                 new AverageLoader().execute();
+            } else if(call.method.equals("getWorkToDo")) {
+                class WorkLoader extends AsyncTask<String, Integer, String> {
+                    @Override
+                    protected String doInBackground(String... strings) {
+                        String json = session.getWorkToDo(call.argument("date"));
+                        return json;
+                    }
+
+                    @Override
+                    protected void onPostExecute(String work) {
+                        result.success(work);
+                    }
+                }
+
+                new WorkLoader().execute();
             } else {
                 result.notImplemented();
             }

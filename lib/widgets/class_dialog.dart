@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:html/parser.dart';
+import 'package:html_unescape/html_unescape_small.dart';
 import 'package:intl/intl.dart';
 
 import 'package:bac_note/extensions/hex_color.dart';
@@ -19,13 +24,18 @@ class ClassDialog extends StatefulWidget {
 
 class _ClassDialogState extends State<ClassDialog>
     with SingleTickerProviderStateMixin {
+  static const platform = MethodChannel('samples.volnetiks.dev/ecoledirecte');
+
   late AnimationController controller;
   late Animation<double> scaleAnimation;
 
   DateFormat format = DateFormat.Hm();
 
+  String work = "Aucun travail";
+
   @override
   void initState() {
+    getWorkToDo();
     controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200));
 
@@ -185,12 +195,12 @@ class _ClassDialogState extends State<ClassDialog>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // TODO: implement work to do
-                            Text("Bientôt",
+                            Text("Devoir à faire",
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: Theme.of(context).primaryColor)),
                             const SizedBox(height: 2),
-                            Text("Devoir à faire",
+                            Text(work,
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: Theme.of(context).disabledColor))
@@ -211,5 +221,31 @@ class _ClassDialogState extends State<ClassDialog>
   bool isOngoing(DateTime startDate, DateTime endDate) {
     DateTime now = DateTime.now();
     return startDate.isBefore(now) && endDate.isAfter(now);
+  }
+
+  Future<void> getWorkToDo() async {
+    String json =
+        await platform.invokeMethod("getWorkToDo", {"date": "2022-01-03"});
+    Map<String, dynamic> body = jsonDecode(json);
+    List<dynamic> matieres = body["data"]["matieres"];
+    for (int i = 0; i < matieres.length; i++) {
+      if (matieres[i]["matiere"] == widget.cours.text) {
+        Codec<String, String> stringToBase64 = utf8.fuse(base64);
+        String workHTML =
+            stringToBase64.decode(matieres[i]["aFaire"]["contenu"]);
+        var unescape = HtmlUnescape();
+        setState(() {
+          work = _parseHtmlString(unescape.convert(workHTML));
+        });
+      }
+    }
+  }
+
+  String _parseHtmlString(String htmlString) {
+    final document = parse(htmlString);
+    final String parsedString =
+        parse(document.body!.text).documentElement!.text;
+
+    return parsedString;
   }
 }
