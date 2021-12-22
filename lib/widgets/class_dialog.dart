@@ -54,167 +54,154 @@ class _ClassDialogState extends State<ClassDialog>
   Widget build(BuildContext context) {
     DateFormat dayFormat = DateFormat.EEEE("FR_fr");
 
-    return Center(
-      child: Material(
-        color: Colors.transparent,
-        child: ScaleTransition(
+    return Dialog(
+      child: ScaleTransition(
           scale: scaleAnimation,
-          child: SizedBox(
-            height: 250,
-            width: 250,
-            child: Container(
-              decoration: ShapeDecoration(
-                  color: Theme.of(context).unselectedWidgetColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0))),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.cours.text.toLowerCase().capitalize(),
-                        style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold)),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                        DateTime.now().day == widget.cours.startDate.day
-                            ? "Aujourd'hui"
-                            : dayFormat
-                                .format(widget.cours.startDate)
-                                .capitalize(),
-                        style:
-                            TextStyle(color: Theme.of(context).disabledColor)),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    widget.cours.isAnnule
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.cours.text.toLowerCase().capitalize(),
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold)),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                    DateTime.now().day == widget.cours.startDate.day
+                        ? "Aujourd'hui"
+                        : dayFormat.format(widget.cours.startDate).capitalize(),
+                    style: TextStyle(color: Theme.of(context).disabledColor)),
+                const SizedBox(
+                  height: 5,
+                ),
+                widget.cours.isAnnule
+                    ? Text(
+                        "Cours annulé.",
+                        style: TextStyle(color: Colors.red.shade400),
+                      )
+                    : isOngoing(widget.cours.startDate, widget.cours.endDate)
                         ? Text(
-                            "Cours annulé.",
-                            style: TextStyle(color: Colors.red.shade400),
+                            "En cours",
+                            style:
+                                TextStyle(color: HexColor.fromHex("#9faf29")),
                           )
-                        : isOngoing(
-                                widget.cours.startDate, widget.cours.endDate)
-                            ? Text(
-                                "En cours",
+                        : RichText(
+                            text: TextSpan(
+                                text: 'De ',
                                 style: TextStyle(
-                                    color: HexColor.fromHex("#9faf29")),
-                              )
-                            : RichText(
-                                text: TextSpan(
-                                    text: 'De ',
+                                    color: Theme.of(context).disabledColor),
+                                children: [
+                                TextSpan(
+                                    text: format
+                                        .format(widget.cours.startDate)
+                                        .replaceAll(":", "h"),
                                     style: TextStyle(
-                                        color: Theme.of(context).disabledColor),
-                                    children: [
-                                    TextSpan(
-                                        text: format
-                                            .format(widget.cours.startDate)
-                                            .replaceAll(":", "h"),
-                                        style: TextStyle(
-                                            color:
-                                                HexColor.fromHex("#868fca"))),
-                                    const TextSpan(text: ' à '),
-                                    TextSpan(
-                                        text: format
-                                            .format(widget.cours.endDate)
-                                            .replaceAll(":", "h"),
-                                        style: TextStyle(
-                                            color:
-                                                HexColor.fromHex("#868fca"))),
-                                  ])),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          color: HexColor.fromHex("#868fca"),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(widget.cours.salle,
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Theme.of(context).primaryColor)),
-                            const SizedBox(height: 2),
-                            Text("Salle",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Theme.of(context).disabledColor))
-                          ],
-                        )
-                      ],
+                                        color: HexColor.fromHex("#868fca"))),
+                                const TextSpan(text: ' à '),
+                                TextSpan(
+                                    text: format
+                                        .format(widget.cours.endDate)
+                                        .replaceAll(":", "h"),
+                                    style: TextStyle(
+                                        color: HexColor.fromHex("#868fca"))),
+                              ])),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.location_on_outlined,
+                      color: HexColor.fromHex("#868fca"),
                     ),
                     const SizedBox(
-                      height: 20,
+                      width: 10,
                     ),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.school_outlined,
-                          color: HexColor.fromHex("#868fca"),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(widget.cours.prof,
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Theme.of(context).primaryColor)),
-                            const SizedBox(height: 2),
-                            Text("Professeur",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Theme.of(context).disabledColor))
-                          ],
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.work_outline_rounded,
-                          color: HexColor.fromHex("#868fca"),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // TODO: implement work to do
-                            Text("Devoir à faire",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Theme.of(context).primaryColor)),
-                            const SizedBox(height: 2),
-                            Text(work,
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Theme.of(context).disabledColor))
-                          ],
-                        )
+                        Text(widget.cours.salle,
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).primaryColor)),
+                        const SizedBox(height: 2),
+                        Text("Salle",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).disabledColor))
                       ],
                     )
                   ],
                 ),
-              ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.school_outlined,
+                      color: HexColor.fromHex("#868fca"),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(widget.cours.prof,
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).primaryColor)),
+                        const SizedBox(height: 2),
+                        Text("Professeur",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).disabledColor))
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.work_outline_rounded,
+                      color: HexColor.fromHex("#868fca"),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // TODO: implement work to do
+                        Text("Devoir à faire",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).primaryColor)),
+                        const SizedBox(height: 2),
+                        Container(
+                          constraints: BoxConstraints(
+                              maxWidth:
+                                  MediaQuery.of(context).size.width * 0.5),
+                          child: Text(work,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Theme.of(context).disabledColor)),
+                        )
+                      ],
+                    )
+                  ],
+                )
+              ],
             ),
-          ),
-        ),
-      ),
+          )),
     );
   }
 
