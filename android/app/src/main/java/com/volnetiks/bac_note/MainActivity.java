@@ -23,6 +23,8 @@ import fr.benco11.jlibecoledirecte.student.Cours;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodChannel;
+import io.sentry.Sentry;
+import io.sentry.SentryLevel;
 
 public class MainActivity extends FlutterActivity {
 
@@ -44,6 +46,7 @@ public class MainActivity extends FlutterActivity {
                             session.connect();
                             return "Connection réussie. ";
                         } catch (EcoleDirecteLoginException | IOException e) {
+                            Sentry.captureMessage(e.toString(), SentryLevel.ERROR);
                             e.printStackTrace();
                             return "";
                         }
@@ -66,6 +69,7 @@ public class MainActivity extends FlutterActivity {
                             String cours = session.getEmploiDuTemps();
                             return cours;
                         } catch (EcoleDirecteUnknownConnectionException e) {
+                            Sentry.captureMessage(e.toString(), SentryLevel.ERROR);
                             e.printStackTrace();
                             return "";
                         }
@@ -86,6 +90,7 @@ public class MainActivity extends FlutterActivity {
                             String cours = session.getEmploiDuTempsOn(call.argument("date"));
                             return cours;
                         } catch (EcoleDirecteUnknownConnectionException e) {
+                            Sentry.captureMessage(e.toString(), SentryLevel.ERROR);
                             e.printStackTrace();
                             return "";
                         }
@@ -106,6 +111,7 @@ public class MainActivity extends FlutterActivity {
                             String json = session.getGrades();
                             return json;
                         } catch (EcoleDirecteIOException e) {
+                            Sentry.captureMessage(e.toString(), SentryLevel.ERROR);
                             e.printStackTrace();
                         } catch (EcoleDirecteAccountTypeException e) {
                             e.printStackTrace();
@@ -128,10 +134,12 @@ public class MainActivity extends FlutterActivity {
                             String json = session.getAverageGradesString();
                             return json;
                         } catch (EcoleDirecteIOException e) {
+                            Sentry.captureMessage(e.toString(), SentryLevel.ERROR);
                             e.printStackTrace();
                         } catch (EcoleDirecteAccountTypeException e) {
                             e.printStackTrace();
                         } catch (EcoleDirecteUnknownConnectionException e) {
+                            Sentry.captureMessage(e.toString(), SentryLevel.INFO);
                             e.printStackTrace();
                         }
                         return "";

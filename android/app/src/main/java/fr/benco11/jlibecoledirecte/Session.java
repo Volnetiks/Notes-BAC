@@ -24,6 +24,8 @@ import fr.benco11.jlibecoledirecte.login.LoginJson;
 import fr.benco11.jlibecoledirecte.student.*;
 import fr.benco11.jlibecoledirecte.utils.HttpUtils;
 import io.flutter.Log;
+import io.sentry.Sentry;
+import io.sentry.SentryLevel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -627,8 +629,10 @@ public class Session {
 
 				return obj.toString();
 			} catch (IOException e) {
+				Sentry.captureMessage(e.toString(), SentryLevel.ERROR);
 				e.printStackTrace();
 			} catch (JSONException e) {
+				Sentry.captureMessage(e.toString(), SentryLevel.ERROR);
 				e.printStackTrace();
 			}
 		}

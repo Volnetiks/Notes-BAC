@@ -211,8 +211,8 @@ class _ClassDialogState extends State<ClassDialog>
   }
 
   Future<void> getWorkToDo() async {
-    String json =
-        await platform.invokeMethod("getWorkToDo", {"date": "2022-01-03"});
+    String json = await platform.invokeMethod("getWorkToDo",
+        {"date": DateFormat('y-MM-dd').format(widget.cours.startDate)});
     Map<String, dynamic> body = jsonDecode(json);
     List<dynamic> matieres = body["data"]["matieres"];
     for (int i = 0; i < matieres.length; i++) {

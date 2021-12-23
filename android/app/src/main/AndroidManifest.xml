@@ -39,5 +39,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+       <meta-data android:name="io.sentry.dsn" android:value="https://224986957a8542448fd2c330da201918@o1097667.ingest.sentry.io/6119315" />
+       <!-- Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+          We recommend adjusting this value in production. -->
+       <meta-data android:name="io.sentry.traces.sample-rate" android:value="1.0" />
     </application>
 </manifest>
