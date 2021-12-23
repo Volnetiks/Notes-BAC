@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                   showError
                       ? Column(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
                             Text(

@@ -1,4 +1,3 @@
-import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -122,7 +122,9 @@ class _CoefficientDialogState extends State<CoefficientDialog>
                       child: TextField(
                         keyboardType: TextInputType.number,
                         controller: _textEditingController,
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          widget.grade.grade = double.parse(val);
+                        },
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 15,

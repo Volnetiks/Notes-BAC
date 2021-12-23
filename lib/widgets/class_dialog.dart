@@ -180,7 +180,6 @@ class _ClassDialogState extends State<ClassDialog>
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // TODO: implement work to do
                         Text("Devoir à faire",
                             style: TextStyle(
                                 fontSize: 12,
