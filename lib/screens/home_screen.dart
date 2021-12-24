@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bac_note/models/note.dart';
 import 'package:bac_note/screens/grade_screen.dart';
 import 'package:bac_note/screens/schedule_screen.dart';
+import 'package:bac_note/screens/settings_screen.dart';
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:bac_note/widgets/grades_chart.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,14 @@ class _HomePageState extends State<HomePage>
 
           return Scaffold(
               appBar: AppBar(
+                  leading: IconButton(
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const SettingsScreen();
+                        }));
+                      },
+                      icon: const Icon(Icons.settings)),
                   centerTitle: true,
                   title: Column(
                     children: [

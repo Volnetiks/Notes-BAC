@@ -78,7 +78,6 @@ class _GradeScreenState extends State<GradeScreen> {
       if (grades[i].grade != -1.0) {
         totalGrade += (grades[i].grade * grades[i].coefficient);
         totalCoefficients += grades[i].coefficient;
-        print("${grades[i].grade} ${grades[i].coefficient}");
       }
     }
 
