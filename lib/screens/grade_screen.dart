@@ -67,6 +67,26 @@ class _GradeScreenState extends State<GradeScreen> {
     }
   }
 
+  void updateGrade(Grade newGrade) {
+    int index = grades.indexWhere((Grade grade) => grade.name == newGrade.name);
+
+    double totalGrade = 0.0;
+    double totalCoefficients = 0.0;
+
+    grades[index] == newGrade;
+    for (int i = 0; i < grades.length; i++) {
+      if (grades[i].grade != -1.0) {
+        totalGrade += (grades[i].grade * grades[i].coefficient);
+        totalCoefficients += grades[i].coefficient;
+        print("${grades[i].grade} ${grades[i].coefficient}");
+      }
+    }
+
+    setState(() {
+      grade = totalGrade / totalCoefficients;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +148,9 @@ class _GradeScreenState extends State<GradeScreen> {
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: names.length,
                               itemBuilder: (context, index) {
-                                return CoefficientTile(grade: grades[index]);
+                                return CoefficientTile(
+                                    grade: grades[index],
+                                    newGrade: updateGrade);
                               },
                               staggeredTileBuilder: (int index) {
                                 return const StaggeredTile.fit(1);
@@ -168,10 +190,13 @@ class _GradeScreenState extends State<GradeScreen> {
       if (!names.contains(averages[i]["discipline"])) {
         names[i] = averages[i]["discipline"];
 
-        totalCoefficients += coefficients[i];
-        totalGrade +=
-            double.parse(averages[i]["note"].toString().replaceAll(",", ".")) *
-                coefficients[i];
+        if (double.parse(averages[i]["note"].toString().replaceAll(",", ".")) !=
+            -1.0) {
+          totalCoefficients += coefficients[i];
+          totalGrade += double.parse(
+                  averages[i]["note"].toString().replaceAll(",", ".")) *
+              coefficients[i];
+        }
 
         grades[i] = (Grade(
             coefficient: coefficients[i],
@@ -195,6 +220,7 @@ class _GradeScreenState extends State<GradeScreen> {
             Grade(coefficient: coefficients[i], name: names[i], grade: -1);
       }
     }
+
     setState(() {
       grade = totalGrade / totalCoefficients;
     });

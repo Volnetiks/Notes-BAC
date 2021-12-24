@@ -5,11 +5,10 @@ import 'package:bac_note/widgets/coefficient_dialog.dart';
 
 class CoefficientTile extends StatefulWidget {
   final Grade grade;
+  final ValueChanged<Grade> newGrade;
 
-  const CoefficientTile({
-    Key? key,
-    required this.grade,
-  }) : super(key: key);
+  const CoefficientTile({Key? key, required this.grade, required this.newGrade})
+      : super(key: key);
 
   @override
   _CoefficientTileState createState() => _CoefficientTileState();
@@ -23,7 +22,7 @@ class _CoefficientTileState extends State<CoefficientTile> {
         showDialog(
                 context: context,
                 builder: (context) => CoefficientDialog(grade: widget.grade))
-            .then((value) => {setState(() {})});
+            .then((value) => {widget.newGrade(widget.grade)});
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 1500),
