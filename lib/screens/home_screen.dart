@@ -6,6 +6,7 @@ import 'package:bac_note/models/note.dart';
 import 'package:bac_note/screens/grade_screen.dart';
 import 'package:bac_note/screens/schedule_screen.dart';
 import 'package:bac_note/screens/settings_screen.dart';
+import 'package:bac_note/utils/platform_utils.dart' as PlatformUtils;
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:bac_note/widgets/grades_chart.dart';
 import 'package:flutter/material.dart';
@@ -238,6 +239,15 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
     List<Note> tempGrades = [];
     List notes = jsonDecode(noteJSON);
 
+    String device_info = await PlatformUtils.getOSVersionAndModel();
+
+    logDNA.log(DnaLine(
+        timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
+        line: device_info,
+        level: DnaLevel.debug,
+        env: DnaEnv.production,
+        app: "AppBAC"));
+
     logDNA.log(DnaLine(
         timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
         line: notes.toString(),
@@ -255,6 +265,13 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
           app: "AppBAC"));
       tempGrades.add(note);
     }
+
+    logDNA.log(DnaLine(
+        timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
+        line: device_info,
+        level: DnaLevel.debug,
+        env: DnaEnv.production,
+        app: "AppBAC"));
 
     setState(() {
       grades = tempGrades;
