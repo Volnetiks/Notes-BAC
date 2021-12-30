@@ -57,4 +57,27 @@ class Note {
       elementsProgramme: List<String>.from(json["elementsProgramme"]),
     );
   }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      "codeMatiere": codeMatiere,
+      "codePeriode": codePeriode,
+      "codeSousMatiere": codeSousMatiere,
+      "coef": coef,
+      "date": DateFormat("yyyy-M-d").format(date),
+      "dateSaisie": dateSaisie,
+      "devoir": devoir,
+      "libelleMatiere": libelleMatiere,
+      "maxClasse": maxClasse,
+      "minClasse": minClasse,
+      "moyenneClasse": moyenneClasse,
+      "noteSur": noteSur,
+      "typeDevoir": typeDevoir,
+      "note": note,
+      "enLettre": enLettre,
+      "nonSignificatif": nonSignificatif,
+      "valeurisee": valeurisee,
+      "elementsProgramme": elementsProgramme,
+    };
+  }
 }

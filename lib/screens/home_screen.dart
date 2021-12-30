@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:bac_note/log/logdna.dart';
+import 'package:bac_note/log/models/dna_line.dart';
 import 'package:bac_note/models/note.dart';
 import 'package:bac_note/screens/grade_screen.dart';
 import 'package:bac_note/screens/schedule_screen.dart';
@@ -225,11 +227,32 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   }
 
   Future<void> getNotes() async {
+    // LOG DNA
+    LogDNA logDNA = LogDNA(
+        apiKey: "75944a6d1dfc598bc94b4b44ba904f3d",
+        hostName: "bac_note",
+        appName: "AppBAC");
+
     String noteJSON = await platform.invokeMethod('getNotes');
+
     List<Note> tempGrades = [];
     List notes = jsonDecode(noteJSON);
+
+    logDNA.log(DnaLine(
+        timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
+        line: notes.toString(),
+        level: DnaLevel.debug,
+        env: DnaEnv.production,
+        app: "AppBAC"));
+
     for (var i = 0; i < notes.length; i++) {
       Note note = Note.fromJSON(notes[i]);
+      logDNA.log(DnaLine(
+          timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
+          line: jsonEncode(note.toJSON()),
+          level: DnaLevel.debug,
+          env: DnaEnv.production,
+          app: "AppBAC"));
       tempGrades.add(note);
     }
 
