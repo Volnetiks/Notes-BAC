@@ -1,24 +1,18 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
-import 'package:bac_note/extensions/string.dart';
-import 'package:bac_note/models/note.dart';
+import '../custom_switch.dart';
 
-import 'custom_switch.dart';
-
-class SettingsItem extends StatefulWidget {
-  const SettingsItem({
+class ThemeSettingsItem extends StatefulWidget {
+  const ThemeSettingsItem({
     Key? key,
   }) : super(key: key);
 
   @override
-  _SettingsItemState createState() => _SettingsItemState();
+  _ThemeSettingsItemState createState() => _ThemeSettingsItemState();
 }
 
-class _SettingsItemState extends State<SettingsItem> {
+class _ThemeSettingsItemState extends State<ThemeSettingsItem> {
   @override
   Widget build(BuildContext context) {
     bool value = AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark;
@@ -31,22 +25,22 @@ class _SettingsItemState extends State<SettingsItem> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              width: 50,
-              height: 50,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Theme.of(context).unselectedWidgetColor),
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Icon(Icons.mode_night,
-                    color: Theme.of(context).primaryColor, size: 45),
+                    color: Theme.of(context).primaryColor, size: 35),
               ),
             ),
             const SizedBox(width: 18),
             const Text("Mode sombre", style: TextStyle(fontSize: 15)),
             const Spacer(),
             Padding(
-              padding: EdgeInsets.only(right: 18.0),
+              padding: const EdgeInsets.only(right: 18.0),
               child: CustomSwitch(
                 activeColor: Colors.black,
                 inactiveColor: Colors.white,

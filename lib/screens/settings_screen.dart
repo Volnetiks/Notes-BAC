@@ -1,7 +1,6 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bac_note/extensions/string.dart';
-import 'package:bac_note/widgets/custom_switch.dart';
-import 'package:bac_note/widgets/settings_item.dart';
+import 'package:bac_note/widgets/settings/logout_settings.dart';
+import 'package:bac_note/widgets/settings/theme_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -33,10 +32,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
-            Text("Paramètres",
+            const Text("Paramètres",
                 style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
             const SizedBox(
               height: 35,
@@ -74,44 +73,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               height: 30,
             ),
             const Text("Paramètres", style: TextStyle(fontSize: 25)),
-            const SettingsItem()
+            const SizedBox(
+              height: 10,
+            ),
+            const ThemeSettingsItem(),
+            const LogOutSettingsItem(),
           ],
         ),
       ),
     ));
-
-    // return Scaffold(
-    //   body: Container(
-    //     color: Theme.of(context).unselectedWidgetColor,
-    //     child: Center(
-    //       child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: [
-    //           CustomSwitch(
-    //             activeColor: Colors.black,
-    //             inactiveColor: Colors.white,
-    //             inactiveTextColor: Colors.black,
-    //             offIcon: const Icon(Icons.light_mode, color: Colors.black),
-    //             onIcon: const Icon(Icons.mode_night, color: Colors.white),
-    //             onCircleColor: Colors.black,
-    //             offCircleColor: Colors.transparent,
-    //             activeText: "Dark",
-    //             inactiveText: "Light",
-    //             value: value,
-    //             onChanged: (bool value) {
-    //               final mode = AdaptiveTheme.of(context).mode;
-    //               if (mode == AdaptiveThemeMode.light) {
-    //                 AdaptiveTheme.of(context).setDark();
-    //               } else {
-    //                 AdaptiveTheme.of(context).setLight();
-    //               }
-    //             },
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   Future<void> getStudentNameWithClass() async {
