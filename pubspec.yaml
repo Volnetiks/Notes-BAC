@@ -46,6 +46,7 @@ dependencies:
   html: ^0.15.0
   http: ^0.13.4
   device_info: ^2.0.3
+  adaptive_theme: ^2.3.0
 
 flutter_icons:
   android: "launcher_icon"
