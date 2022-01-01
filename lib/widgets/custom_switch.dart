@@ -3,20 +3,20 @@ library custom_switch;
 import 'package:flutter/material.dart';
 
 class CustomSwitch extends StatefulWidget {
-  bool value;
-  ValueChanged<bool>? onChanged;
-  Color activeColor;
-  Color inactiveColor;
-  String activeText;
-  String inactiveText;
-  Color activeTextColor;
-  Color inactiveTextColor;
-  Color offCircleColor;
-  Color onCircleColor;
-  Icon offIcon;
-  Icon onIcon;
+  final bool value;
+  final ValueChanged<bool>? onChanged;
+  final Color activeColor;
+  final Color inactiveColor;
+  final String activeText;
+  final String inactiveText;
+  final Color activeTextColor;
+  final Color inactiveTextColor;
+  final Color offCircleColor;
+  final Color onCircleColor;
+  final Icon offIcon;
+  final Icon onIcon;
 
-  CustomSwitch(
+  const CustomSwitch(
       {Key? key,
       this.value = false,
       required this.onChanged,
@@ -50,8 +50,8 @@ class _CustomSwitchState extends State<CustomSwitch>
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 60));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 60));
     _circleAnimation = AlignmentTween(
             begin: widget.value ? Alignment.centerRight : Alignment.centerLeft,
             end: widget.value ? Alignment.centerLeft : Alignment.centerRight)

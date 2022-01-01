@@ -213,9 +213,6 @@ class _GradeScreenState extends State<GradeScreen> {
           oldGrade.grade +=
               double.parse(averages[i]["note"].toString().replaceAll(",", "."));
           oldGrade.grade /= 2;
-          print(averages[i]["discipline"]);
-          print(totalGrade);
-          print(totalCoefficients);
         }
       }
 

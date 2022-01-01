@@ -8,9 +8,8 @@ import 'package:bac_note/utils/secrets.dart' as secrets;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final AdaptiveThemeMode? savedThemeMode = await AdaptiveTheme.getThemeMode();
-  // runApp(MyApp(savedThemeMode: savedThemeMode));¨
   await SentryFlutter.init((options) {
-    options.dsn = secrets.SENTRY_TOKEN;
+    options.dsn = secrets.sentryToken;
     options.tracesSampleRate = 1.0;
   },
       appRunner: () => runApp(MyApp(

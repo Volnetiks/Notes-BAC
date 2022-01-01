@@ -6,7 +6,7 @@ import 'package:bac_note/models/note.dart';
 import 'package:bac_note/screens/grade_screen.dart';
 import 'package:bac_note/screens/schedule_screen.dart';
 import 'package:bac_note/screens/settings_screen.dart';
-import 'package:bac_note/utils/platform_utils.dart' as PlatformUtils;
+import 'package:bac_note/utils/platform_utils.dart' as platform_utils;
 import 'package:bac_note/widgets/grade_tile.dart';
 import 'package:bac_note/widgets/grades_chart.dart';
 import 'package:flutter/material.dart';
@@ -242,11 +242,11 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
     try {
       List notes = jsonDecode(noteJSON);
 
-      String device_info = await PlatformUtils.getOSVersionAndModel();
+      String deviceInfo = await platform_utils.getOSVersionAndModel();
 
       logDNA.log(DnaLine(
           timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
-          line: device_info,
+          line: deviceInfo,
           level: DnaLevel.debug,
           env: DnaEnv.production,
           app: "AppBAC"));
@@ -271,7 +271,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
 
       logDNA.log(DnaLine(
           timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
-          line: device_info,
+          line: deviceInfo,
           level: DnaLevel.debug,
           env: DnaEnv.production,
           app: "AppBAC"));

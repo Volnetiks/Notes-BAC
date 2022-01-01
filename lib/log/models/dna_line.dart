@@ -41,7 +41,7 @@ class DnaLine {
       );
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['timestamp'] = timestamp;
     data['line'] = line;
     data['level'] = level;
@@ -57,7 +57,7 @@ class DnaLine {
 
   /// Add a custom field to a log line
   addCustomField(CustomField customField) {
-    if (meta == null) this.meta = Map();
+    meta ??= {};
     meta!.putIfAbsent(customField.name, () => customField.value);
   }
 }
@@ -72,18 +72,18 @@ class CustomField {
 
 /// DnaLevel is a string indicating the log level. Custom values are allowed.
 class DnaLevel {
-  static final String info = "INFO";
-  static final String error = "ERROR";
-  static final String warn = "WARN";
-  static final String trace = "TRACE";
-  static final String debug = "DEBUG";
-  static final String fatal = "FATAL";
+  static const String info = "INFO";
+  static const String error = "ERROR";
+  static const String warn = "WARN";
+  static const String trace = "TRACE";
+  static const String debug = "DEBUG";
+  static const String fatal = "FATAL";
 }
 
 /// The current environment (e.g. development, production)
 class DnaEnv {
-  static final String production = "production";
-  static final String staging = "staging";
-  static final String testing = "testing";
-  static final String development = "development";
+  static const String production = "production";
+  static const String staging = "staging";
+  static const String testing = "testing";
+  static const String development = "development";
 }

@@ -33,10 +33,8 @@ class LogDNA {
           }));
 
       if (response.statusCode == 200) {
-        print(true);
         return DnaResponse(true, response.body);
       } else {
-        print(true);
         return DnaResponse(false, response.body);
       }
     } catch (e) {
