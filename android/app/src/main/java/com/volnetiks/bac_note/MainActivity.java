@@ -167,6 +167,8 @@ public class MainActivity extends FlutterActivity {
                 }
 
                 new WorkLoader().execute();
+            } else if(call.method.equals("getStudentClass")) {
+                result.success(session.getAccount().getProfile().getClasse().getLibelle());
             } else {
                 result.notImplemented();
             }
