@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class GradeScreen extends StatefulWidget {
   const GradeScreen({Key? key}) : super(key: key);
@@ -180,48 +181,56 @@ class _GradeScreenState extends State<GradeScreen> {
     double totalCoefficients = 0;
     double totalGrade = 0;
     String noteJSON = await platform.invokeMethod('getAverage');
-    List averages = jsonDecode(noteJSON);
-    averages.removeWhere((element) =>
-        element["discipline"] == "Enseignement Général" ||
-        element["discipline"] == "Enseignements de spécialité" ||
-        element["discipline"] == "Matières facultatives");
-    for (int i = 0; i < averages.length; i++) {
-      if (!names.contains(averages[i]["discipline"])) {
-        names[i] = averages[i]["discipline"];
+    try {
+      List averages = jsonDecode(noteJSON);
+      averages.removeWhere((element) =>
+          element["discipline"] == "Enseignement Général" ||
+          element["discipline"] == "Enseignements de spécialité" ||
+          element["discipline"] == "Matières facultatives");
+      for (int i = 0; i < averages.length; i++) {
+        if (!names.contains(averages[i]["discipline"])) {
+          names[i] = averages[i]["discipline"];
 
-        if (double.parse(averages[i]["note"].toString().replaceAll(",", ".")) !=
-            -1.0) {
-          totalCoefficients += coefficients[i];
-          totalGrade += double.parse(
-                  averages[i]["note"].toString().replaceAll(",", ".")) *
-              coefficients[i];
+          if (double.parse(
+                  averages[i]["note"].toString().replaceAll(",", ".")) !=
+              -1.0) {
+            totalCoefficients += coefficients[i];
+            totalGrade += double.parse(
+                    averages[i]["note"].toString().replaceAll(",", ".")) *
+                coefficients[i];
+          }
+
+          grades[i] = (Grade(
+              coefficient: coefficients[i],
+              name: names[i],
+              grade: double.parse(
+                  averages[i]["note"].toString().replaceAll(",", "."))));
+        } else {
+          int index = names
+              .indexWhere((element) => element == averages[i]["discipline"]);
+
+          Grade oldGrade = grades[index];
+          oldGrade.grade +=
+              double.parse(averages[i]["note"].toString().replaceAll(",", "."));
+          oldGrade.grade /= 2;
+          print(averages[i]["discipline"]);
+          print(totalGrade);
+          print(totalCoefficients);
         }
-
-        grades[i] = (Grade(
-            coefficient: coefficients[i],
-            name: names[i],
-            grade: double.parse(
-                averages[i]["note"].toString().replaceAll(",", "."))));
-      } else {
-        int index =
-            names.indexWhere((element) => element == averages[i]["discipline"]);
-
-        Grade oldGrade = grades[index];
-        oldGrade.grade +=
-            double.parse(averages[i]["note"].toString().replaceAll(",", "."));
-        oldGrade.grade /= 2;
       }
-    }
 
-    for (int i = 0; i < grades.length; i++) {
-      if (grades[i].name == "") {
-        grades[i] =
-            Grade(coefficient: coefficients[i], name: names[i], grade: -1);
+      for (int i = 0; i < grades.length; i++) {
+        if (grades[i].name == "") {
+          grades[i] =
+              Grade(coefficient: coefficients[i], name: names[i], grade: -1);
+        }
       }
-    }
 
-    setState(() {
-      grade = totalGrade / totalCoefficients;
-    });
+      setState(() {
+        grade = totalGrade / totalCoefficients;
+      });
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(exception, stackTrace: stackTrace);
+    }
   }
 }

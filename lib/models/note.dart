@@ -44,12 +44,19 @@ class Note {
       dateSaisie: json["dateSaisie"],
       devoir: json["devoir"],
       libelleMatiere: json["libelleMatiere"],
-      maxClasse: double.parse(json["maxClasse"]),
-      minClasse: double.parse(json["minClasse"]),
-      moyenneClasse: double.parse(json["moyenneClasse"]),
+      maxClasse:
+          json["maxClasse"] == "" ? 10.0 : double.parse(json["maxClasse"]),
+      minClasse:
+          json["minClasse"] == "" ? 10.0 : double.parse(json["minClasse"]),
+      moyenneClasse: json["moyenneClasse"] == ""
+          ? 10.0
+          : double.parse(json["moyenneClasse"]),
       noteSur: double.parse(json["noteSur"]),
       typeDevoir: json["typeDevoir"],
-      note: double.parse(json["valeur"].toString().replaceAll(",", ".")),
+      note: double.tryParse(json["valeur"].toString().replaceAll(",", ".")) !=
+              null
+          ? double.parse(json["valeur"].toString().replaceAll(",", "."))
+          : 10.0,
       enLettre: json["enLettre"].toString().toLowerCase() == "true",
       nonSignificatif:
           json["nonSignificatif"].toString().toLowerCase() == "true",

@@ -1,6 +1,7 @@
 import 'package:bac_note/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -171,33 +172,37 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> connect() async {
     if (passwdController.text.isNotEmpty && passwdController.text.isNotEmpty) {
-      String value = await platform.invokeMethod("connect", {
-        "username": usernameController.text.toString(),
-        "password": passwdController.text.toString()
-      });
-      if (value == "") {
-        setState(() {
-          showError = true;
-          passwdController.text = "";
+      try {
+        String value = await platform.invokeMethod("connect", {
+          "username": usernameController.text.toString(),
+          "password": passwdController.text.toString()
         });
-      } else {
-        Navigator.of(context).pushReplacement(PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const HomePage(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              const begin = Offset(0.0, 1.0);
-              const end = Offset.zero;
-              const curve = Curves.ease;
+        if (value == "") {
+          setState(() {
+            showError = true;
+            passwdController.text = "";
+          });
+        } else {
+          Navigator.of(context).pushReplacement(PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const HomePage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                const begin = Offset(0.0, 1.0);
+                const end = Offset.zero;
+                const curve = Curves.ease;
 
-              var tween =
-                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                var tween = Tween(begin: begin, end: end)
+                    .chain(CurveTween(curve: curve));
 
-              return SlideTransition(
-                position: animation.drive(tween),
-                child: child,
-              );
-            }));
+                return SlideTransition(
+                  position: animation.drive(tween),
+                  child: child,
+                );
+              }));
+        }
+      } catch (exception, stackTrace) {
+        await Sentry.captureException(exception, stackTrace: stackTrace);
       }
     }
   }

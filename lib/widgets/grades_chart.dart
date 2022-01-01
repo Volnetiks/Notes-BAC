@@ -36,7 +36,14 @@ class _GradesChartState extends State<GradesChart> {
 
     for (int i = 0; i < grades.length; i++) {
       totalCoefficients += double.parse(grades[i].coef);
-      averageGrade += (grades[i].note / grades[i].noteSur * 20);
+      averageGrade += (grades[i].note / grades[i].noteSur * 20) *
+          double.parse(grades[i].coef);
+
+      print(grades[i].libelleMatiere);
+      print(grades[i].note);
+      print(grades[i].noteSur);
+      print(grades[i].coef);
+      print(totalCoefficients);
 
       values.add(FlSpot(
           11 / (grades.length - 1) * i, (averageGrade) / totalCoefficients));

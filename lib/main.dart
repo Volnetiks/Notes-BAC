@@ -2,11 +2,20 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bac_note/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:bac_note/utils/secrets.dart' as secrets;
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final AdaptiveThemeMode? savedThemeMode = await AdaptiveTheme.getThemeMode();
-  runApp(MyApp(savedThemeMode: savedThemeMode));
+  // runApp(MyApp(savedThemeMode: savedThemeMode));¨
+  await SentryFlutter.init((options) {
+    options.dsn = secrets.SENTRY_TOKEN;
+    options.tracesSampleRate = 1.0;
+  },
+      appRunner: () => runApp(MyApp(
+            savedThemeMode: savedThemeMode,
+          )));
 }
 
 class MyApp extends StatelessWidget {

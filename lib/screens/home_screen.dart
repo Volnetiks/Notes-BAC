@@ -12,6 +12,7 @@ import 'package:bac_note/widgets/grades_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -237,44 +238,49 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
     String noteJSON = await platform.invokeMethod('getNotes');
 
     List<Note> tempGrades = [];
-    List notes = jsonDecode(noteJSON);
 
-    String device_info = await PlatformUtils.getOSVersionAndModel();
+    try {
+      List notes = jsonDecode(noteJSON);
 
-    logDNA.log(DnaLine(
-        timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
-        line: device_info,
-        level: DnaLevel.debug,
-        env: DnaEnv.production,
-        app: "AppBAC"));
+      String device_info = await PlatformUtils.getOSVersionAndModel();
 
-    logDNA.log(DnaLine(
-        timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
-        line: notes.toString(),
-        level: DnaLevel.debug,
-        env: DnaEnv.production,
-        app: "AppBAC"));
-
-    for (var i = 0; i < notes.length; i++) {
-      Note note = Note.fromJSON(notes[i]);
       logDNA.log(DnaLine(
           timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
-          line: jsonEncode(note.toJSON()),
+          line: device_info,
           level: DnaLevel.debug,
           env: DnaEnv.production,
           app: "AppBAC"));
-      tempGrades.add(note);
+
+      logDNA.log(DnaLine(
+          timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
+          line: notes.toString(),
+          level: DnaLevel.debug,
+          env: DnaEnv.production,
+          app: "AppBAC"));
+
+      for (var i = 0; i < notes.length; i++) {
+        Note note = Note.fromJSON(notes[i]);
+        logDNA.log(DnaLine(
+            timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
+            line: jsonEncode(note.toJSON()),
+            level: DnaLevel.debug,
+            env: DnaEnv.production,
+            app: "AppBAC"));
+        tempGrades.add(note);
+      }
+
+      logDNA.log(DnaLine(
+          timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
+          line: device_info,
+          level: DnaLevel.debug,
+          env: DnaEnv.production,
+          app: "AppBAC"));
+
+      setState(() {
+        grades = tempGrades;
+      });
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(exception, stackTrace: stackTrace);
     }
-
-    logDNA.log(DnaLine(
-        timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
-        line: device_info,
-        level: DnaLevel.debug,
-        env: DnaEnv.production,
-        app: "AppBAC"));
-
-    setState(() {
-      grades = tempGrades;
-    });
   }
 }

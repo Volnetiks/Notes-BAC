@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer' as developer;
 
 import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/cours.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({Key? key}) : super(key: key);
@@ -179,8 +179,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           classes = cours;
         });
       }
-    } on PlatformException catch (e) {
-      developer.log(e.toString());
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(exception, stackTrace: stackTrace);
     }
   }
 }
