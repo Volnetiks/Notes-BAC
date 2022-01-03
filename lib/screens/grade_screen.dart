@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GradeScreen extends StatefulWidget {
   const GradeScreen({Key? key}) : super(key: key);
@@ -68,8 +69,13 @@ class _GradeScreenState extends State<GradeScreen> {
     }
   }
 
-  void updateGrade(Grade newGrade) {
+  Future<void> updateGrade(Grade newGrade) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
     int index = grades.indexWhere((Grade grade) => grade.name == newGrade.name);
+
+    print(newGrade.name);
+    sharedPreferences.setDouble(newGrade.name, newGrade.grade);
 
     double totalGrade = 0.0;
     double totalCoefficients = 0.0;
@@ -148,6 +154,7 @@ class _GradeScreenState extends State<GradeScreen> {
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: names.length,
                               itemBuilder: (context, index) {
+                                checkForSharedPreferencesGrade(grades[index]);
                                 return CoefficientTile(
                                     grade: grades[index],
                                     newGrade: updateGrade);
@@ -228,6 +235,16 @@ class _GradeScreenState extends State<GradeScreen> {
       });
     } catch (exception, stackTrace) {
       await Sentry.captureException(exception, stackTrace: stackTrace);
+    }
+  }
+
+  Future<void> checkForSharedPreferencesGrade(Grade grade) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    print(grade.name);
+    if (sharedPreferences.containsKey(grade.name) &&
+        sharedPreferences.getDouble(grade.name)! != grade.grade) {
+      grade.grade = sharedPreferences.getDouble(grade.name)!;
+      updateGrade(grade);
     }
   }
 }

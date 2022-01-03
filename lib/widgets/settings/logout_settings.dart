@@ -46,8 +46,7 @@ class _LogOutSettingsItemState extends State<LogOutSettingsItem> {
                     SharedPreferences sharedPreferences =
                         await SharedPreferences.getInstance();
                     if (sharedPreferences.containsKey("username")) {
-                      sharedPreferences.remove("username");
-                      sharedPreferences.remove("password");
+                      sharedPreferences.clear();
                     }
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
