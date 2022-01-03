@@ -4,18 +4,28 @@ Une application utilitaire faites pour les étudiants.
 
 ## Installation
 
-Accèder à la page de [release](https://github.com/Volnetiks/Notes-BAC/releases/tag/v1.0) et cliquez sur bac_note.apk pour télécharger le fichier de l'application,
+Accéder à la page de [release](https://github.com/Volnetiks/Notes-BAC/releases/tag/v1.0) et cliquez sur bac_note.apk pour télécharger le fichier de l'application,
 il vous reste ensuite qu'à l'ouvrir et cliquer sur installer.
 
 ## Contribuer
 
 Si vous souhaitez contribuer au développement de l'application:
-Veuillez vérifier que vous avez [Flutter](https://flutter.dev/) sur votre ordinateur.
-Suivi les étapes d'installation de tout ce qui est nécessaire.
+Veuillez vérifiez que vous avez [Flutter](https://flutter.dev/) sur votre ordinateur.
+Suivi les étapes d'installation de tous ce qui est nécessaire.
 Créer un fork du projet.
+Copier le et installer les dépendences:
+```shell
+git clone https://github.com/your-username/Notes-BAC
+cd Notes-BAC
+flutter pub get
+```
+
 Faites vos modifications dessus, et ouvrez ensuite ici une pull request.
 
-Pour mettre à jour votre fork par rapport à celui-ci, utiliser git pull.
+Pour mettre à jour votre fork par rapport à celui-ci, utiliser:
+```shell
+git pull
+```
 
 ## Licence
 
