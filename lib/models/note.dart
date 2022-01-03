@@ -45,11 +45,11 @@ class Note {
       devoir: json["devoir"],
       libelleMatiere: json["libelleMatiere"],
       maxClasse:
-          json["maxClasse"] == "" ? 10.0 : double.parse(json["maxClasse"]),
+          json["maxClasse"] == "" ? -1.0 : double.parse(json["maxClasse"]),
       minClasse:
-          json["minClasse"] == "" ? 10.0 : double.parse(json["minClasse"]),
+          json["minClasse"] == "" ? -1.0 : double.parse(json["minClasse"]),
       moyenneClasse: json["moyenneClasse"] == ""
-          ? 10.0
+          ? -1.0
           : double.parse(json["moyenneClasse"]),
       noteSur: double.parse(json["noteSur"]),
       typeDevoir: json["typeDevoir"],

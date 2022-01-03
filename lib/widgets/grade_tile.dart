@@ -68,21 +68,24 @@ class _GradeTileState extends State<GradeTile> {
             ),
             const Flexible(fit: FlexFit.tight, child: SizedBox()),
             Text(
-              grade.note.toStringAsFixed(2),
+              grade.note == -1.0 ? "" : grade.note.toStringAsFixed(2),
               style: TextStyle(
                   color: grade.note > (grade.noteSur / 2)
                       ? Colors.blue
                       : Colors.red[400],
                   fontSize: 11),
             ),
-            LinearPercentIndicator(
-              width: 80.0,
-              lineHeight: 4.0,
-              percent: grade.note / grade.noteSur,
-              progressColor: grade.note > (grade.noteSur / 2)
-                  ? Colors.blue
-                  : Colors.red[500],
-            )
+            grade.note == -1.0
+                ? Text("Note non définie",
+                    style: TextStyle(color: Theme.of(context).disabledColor))
+                : LinearPercentIndicator(
+                    width: 80.0,
+                    lineHeight: 4.0,
+                    percent: grade.note / grade.noteSur,
+                    progressColor: grade.note > (grade.noteSur / 2)
+                        ? Colors.blue
+                        : Colors.red[500],
+                  )
           ])
         ],
       ),

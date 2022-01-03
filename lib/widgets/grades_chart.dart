@@ -35,15 +35,17 @@ class _GradesChartState extends State<GradesChart> {
     double totalCoefficients = 0;
 
     for (int i = 0; i < grades.length; i++) {
-      totalCoefficients += double.parse(grades[i].coef);
-      averageGrade += (grades[i].note / grades[i].noteSur * 20) *
-          double.parse(grades[i].coef);
+      if (grades[i].note != -1.0) {
+        totalCoefficients += double.parse(grades[i].coef);
+        averageGrade += (grades[i].note / grades[i].noteSur * 20) *
+            double.parse(grades[i].coef);
 
-      values.add(FlSpot(
-          11 / (grades.length - 1) * i, (averageGrade) / totalCoefficients));
+        values.add(FlSpot(
+            11 / (grades.length - 1) * i, (averageGrade) / totalCoefficients));
 
-      if (lowestGrade > grades[i].note) {
-        lowestGrade = grades[i].note;
+        if (lowestGrade > grades[i].note) {
+          lowestGrade = grades[i].note;
+        }
       }
     }
 
