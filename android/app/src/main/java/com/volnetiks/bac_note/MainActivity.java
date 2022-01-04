@@ -134,7 +134,7 @@ public class MainActivity extends FlutterActivity {
                 }
 
                 new NotesLoader().execute();
-            } else if(call.method.equals("getAverage")) {
+            } else if(call.method.equals("getAverageGrades")) {
                 class AverageLoader extends AsyncTask<String, Integer, String> {
                     @Override
                     protected String doInBackground(String... strings) {
