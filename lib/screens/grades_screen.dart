@@ -72,6 +72,18 @@ class _GradesScreenState extends State<GradesScreen> {
           element["discipline"] == "Enseignement Général" ||
           element["discipline"] == "Enseignements de spécialité" ||
           element["discipline"] == "Matières facultatives");
+
+      List uniqueAverages = averages
+          .map<String>(
+              (c) => (c as Map<String, dynamic>)['discipline'] as String)
+          .toSet()
+          .toList();
+
+      for (var i = 0; i < 9; i++) {
+        names[i] = uniqueAverages[i];
+      }
+
+      if (uniqueAverages.length < 9) {}
     } catch (exception, stackTrace) {
       await Sentry.captureException(exception, stackTrace: stackTrace);
     }
