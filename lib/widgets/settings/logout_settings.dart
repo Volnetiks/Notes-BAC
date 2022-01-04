@@ -32,7 +32,7 @@ class _LogOutSettingsItemState extends State<LogOutSettingsItem> {
               ),
             ),
             const SizedBox(width: 18),
-            const Text("Mode sombre", style: TextStyle(fontSize: 15)),
+            const Text("Se déconnecter", style: TextStyle(fontSize: 15)),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(right: 18.0),
