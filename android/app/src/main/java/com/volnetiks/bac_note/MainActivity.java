@@ -1,14 +1,22 @@
 package com.volnetiks.bac_note;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -169,6 +177,8 @@ public class MainActivity extends FlutterActivity {
                 new WorkLoader().execute();
             } else if(call.method.equals("getStudentClass")) {
                 result.success(session.getAccount().getProfile().getClasse().getLibelle());
+            } else if(call.method.equals("getStudentImage")) {
+                result.success(session.getAccount().getProfile().getPhoto());
             } else {
                 result.notImplemented();
             }
