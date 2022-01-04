@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bac_note/extensions/string.dart';
 import 'package:bac_note/widgets/settings/logout_settings.dart';
 import 'package:bac_note/widgets/settings/theme_settings.dart';
@@ -16,6 +18,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   String studentName = "Prénom de l'élève";
   String studentClass = "Classe";
+  String studentIconURL = "";
 
   @override
   void initState() {
@@ -55,8 +58,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Theme.of(context).unselectedWidgetColor),
-                    child: Icon(Icons.face,
-                        color: Theme.of(context).primaryColor, size: 85),
+                    child: studentIconURL == ""
+                        ? Icon(Icons.face,
+                            color: Theme.of(context).primaryColor, size: 85)
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(3000),
+                            child: Image.network(
+                              studentIconURL,
+                              height: 90,
+                              alignment: Alignment.topCenter,
+                              fit: BoxFit.fitWidth,
+                              headers: const {
+                                HttpHeaders.refererHeader:
+                                    "https://www.ecoledirecte.com/"
+                              },
+                            ),
+                          ),
                   ),
                   const SizedBox(width: 18),
                   Column(children: [
@@ -87,9 +104,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> getStudentNameWithClass() async {
     String name = await platform.invokeMethod("getStudentName");
     String studentClassInvoke = await platform.invokeMethod("getStudentClass");
+    String iconURL = await platform.invokeMethod("getStudentImage");
+    print(iconURL);
     setState(() {
       studentName = name;
       studentClass = studentClassInvoke.toLowerCase().capitalize();
+      studentIconURL = "https:" + iconURL;
     });
   }
 }
