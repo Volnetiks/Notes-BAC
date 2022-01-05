@@ -5,7 +5,7 @@ import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/grade.dart';
 
 class CoefficientDialog extends StatefulWidget {
-  final Grade grade;
+  final AverageGrade grade;
 
   const CoefficientDialog({
     Key? key,
