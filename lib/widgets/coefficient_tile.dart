@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:bac_note/models/grade.dart';
-import 'package:bac_note/widgets/coefficient_dialog.dart';
 
 class CoefficientTile extends StatefulWidget {
-  final Grade grade;
-  final ValueChanged<Grade> newGrade;
+  final AverageGrade averageGrade;
 
-  const CoefficientTile({Key? key, required this.grade, required this.newGrade})
+  const CoefficientTile({Key? key, required this.averageGrade})
       : super(key: key);
 
   @override
@@ -18,12 +16,7 @@ class _CoefficientTileState extends State<CoefficientTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        showDialog(
-                context: context,
-                builder: (context) => CoefficientDialog(grade: widget.grade))
-            .then((value) => {widget.newGrade(widget.grade)});
-      },
+      onTap: () {},
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 1500),
         padding: const EdgeInsets.all(15),
@@ -42,7 +35,7 @@ class _CoefficientTileState extends State<CoefficientTile> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  widget.grade.name,
+                  widget.averageGrade.name,
                   style: TextStyle(
                       fontSize: 12, color: Theme.of(context).disabledColor),
                   textAlign: TextAlign.center,
@@ -50,23 +43,30 @@ class _CoefficientTileState extends State<CoefficientTile> {
                 const SizedBox(
                   height: 5,
                 ),
-                Text("Coefficient ${widget.grade.coefficient}",
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Note: ",
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold)),
+                    Text(widget.averageGrade.grade.toString(),
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold))
+                  ],
+                ),
                 const SizedBox(
                   height: 5,
                 ),
-                Text("Note actuelle:",
+                Text("Coefficient:",
                     style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold)),
-                Text(
-                    widget.grade.grade == -1
-                        ? "Note non obtenue."
-                        : widget.grade.grade.toString(),
+                Text(widget.averageGrade.coefficient.toString(),
                     style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).disabledColor,

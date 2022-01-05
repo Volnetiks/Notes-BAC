@@ -49,8 +49,8 @@ class _GradeScreenState extends State<GradeScreen> {
     "Grand Oral",
   ];
 
-  List<Grade> grades =
-      List.filled(13, Grade(coefficient: 0, name: "", grade: 0));
+  List<AverageGrade> grades =
+      List.filled(13, AverageGrade(coefficient: 0, name: "", grade: 0));
 
   double grade = -1;
 
@@ -69,10 +69,11 @@ class _GradeScreenState extends State<GradeScreen> {
     }
   }
 
-  Future<void> updateGrade(Grade newGrade) async {
+  Future<void> updateGrade(AverageGrade newGrade) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    int index = grades.indexWhere((Grade grade) => grade.name == newGrade.name);
+    int index =
+        grades.indexWhere((AverageGrade grade) => grade.name == newGrade.name);
 
     print(newGrade.name);
     sharedPreferences.setDouble(newGrade.name, newGrade.grade);
@@ -156,8 +157,8 @@ class _GradeScreenState extends State<GradeScreen> {
                               itemBuilder: (context, index) {
                                 checkForSharedPreferencesGrade(grades[index]);
                                 return CoefficientTile(
-                                    grade: grades[index],
-                                    newGrade: updateGrade);
+                                  averageGrade: grades[index],
+                                );
                               },
                               staggeredTileBuilder: (int index) {
                                 return const StaggeredTile.fit(1);
@@ -207,7 +208,7 @@ class _GradeScreenState extends State<GradeScreen> {
                 coefficients[i];
           }
 
-          grades[i] = (Grade(
+          grades[i] = (AverageGrade(
               coefficient: coefficients[i],
               name: names[i],
               grade: double.parse(
@@ -216,7 +217,7 @@ class _GradeScreenState extends State<GradeScreen> {
           int index = names
               .indexWhere((element) => element == averages[i]["discipline"]);
 
-          Grade oldGrade = grades[index];
+          AverageGrade oldGrade = grades[index];
           oldGrade.grade +=
               double.parse(averages[i]["note"].toString().replaceAll(",", "."));
           oldGrade.grade /= 2;
@@ -225,8 +226,8 @@ class _GradeScreenState extends State<GradeScreen> {
 
       for (int i = 0; i < grades.length; i++) {
         if (grades[i].name == "") {
-          grades[i] =
-              Grade(coefficient: coefficients[i], name: names[i], grade: -1);
+          grades[i] = AverageGrade(
+              coefficient: coefficients[i], name: names[i], grade: -1);
         }
       }
 
@@ -238,7 +239,7 @@ class _GradeScreenState extends State<GradeScreen> {
     }
   }
 
-  Future<void> checkForSharedPreferencesGrade(Grade grade) async {
+  Future<void> checkForSharedPreferencesGrade(AverageGrade grade) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     print(grade.name);
     if (sharedPreferences.containsKey(grade.name) &&

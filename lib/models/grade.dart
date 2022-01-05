@@ -1,7 +1,8 @@
-class Grade {
+class AverageGrade {
   String name;
   double coefficient;
   double grade;
 
-  Grade({required this.name, required this.coefficient, required this.grade});
+  AverageGrade(
+      {required this.name, required this.coefficient, required this.grade});
 }

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:bac_note/models/grade.dart';
+import 'package:bac_note/widgets/coefficient_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -118,75 +120,11 @@ class _GradesScreenState extends State<GradesScreen> {
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: names.length,
                                   itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {},
-                                      child: AnimatedContainer(
-                                        duration:
-                                            const Duration(milliseconds: 1500),
-                                        padding: const EdgeInsets.all(15),
-                                        decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor
-                                                .withOpacity(0.4),
-                                            border: Border.all(
-                                                color: Theme.of(context)
-                                                    .unselectedWidgetColor
-                                                    .withOpacity(0.4)),
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
-                                        child: SizedBox(
-                                          width: 75,
-                                          height: 100,
-                                          child: Center(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  names[index],
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Theme.of(context)
-                                                          .disabledColor),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Text("Note: 13.84",
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Text("Coefficient:",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                Text(
-                                                    coefficients[index]
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Theme.of(context)
-                                                            .disabledColor,
-                                                        fontWeight:
-                                                            FontWeight.bold))
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
+                                    return CoefficientTile(
+                                        averageGrade: AverageGrade(
+                                            name: names[index],
+                                            coefficient: coefficients[index],
+                                            grade: 15.5));
                                   },
                                   staggeredTileBuilder: (int index) {
                                     return const StaggeredTile.fit(1);
