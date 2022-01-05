@@ -13,6 +13,7 @@ Si vous souhaitez contribuer au développement de l'application:
 Veuillez vérifiez que vous avez [Flutter](https://flutter.dev/) sur votre ordinateur.
 Suivi les étapes d'installation de tous ce qui est nécessaire.
 Créer un fork du projet.
+N'hésiter pas à créer une branche spécifique à votre version
 Copier le et installer les dépendences:
 ```shell
 git clone https://github.com/your-username/Notes-BAC
