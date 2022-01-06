@@ -51,7 +51,10 @@ class _CoefficientTileState extends State<CoefficientTile> {
                             fontSize: 15,
                             color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold)),
-                    Text(widget.averageGrade.grade.toString(),
+                    Text(
+                        widget.averageGrade.grade == -1
+                            ? "Aucune"
+                            : widget.averageGrade.grade.toString(),
                         style: TextStyle(
                             fontSize: 15,
                             color: Theme.of(context).primaryColor,

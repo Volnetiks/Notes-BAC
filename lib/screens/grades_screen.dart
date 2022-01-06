@@ -52,7 +52,7 @@ class _GradesScreenState extends State<GradesScreen> {
     "Grand Oral",
   ];
 
-  List<double> grades = List.filled(14, -1.0);
+  List<double> grades = [];
 
   @override
   void initState() {
@@ -72,72 +72,88 @@ class _GradesScreenState extends State<GradesScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-            child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: SafeArea(
-                    child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Row(
-                    children: [
-                      Column(
+            child: grades.length > 0
+                ? SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: SafeArea(
+                        child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Row(
                         children: [
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          CircularPercentIndicator(
-                            radius: 250.0,
-                            lineWidth: 17.0,
-                            animation: true,
-                            animationDuration: 700,
-                            percent: 0.8,
-                            center: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("note"),
-                                Text("mention bien",
-                                    style: TextStyle(
-                                      color: Theme.of(context).disabledColor,
-                                    ))
-                              ],
-                            ),
-                            startAngle: 180,
-                            circularStrokeCap: CircularStrokeCap.round,
-                            progressColor: Colors.green.shade500,
-                            backgroundColor:
-                                Theme.of(context).unselectedWidgetColor,
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20, right: 20, top: 10),
-                              child: StaggeredGridView.countBuilder(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 12,
-                                  crossAxisSpacing: 12,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: names.length,
-                                  itemBuilder: (context, index) {
-                                    return CoefficientTile(
-                                        averageGrade: AverageGrade(
-                                            name: names[index],
-                                            coefficient: coefficients[index],
-                                            grade: grades[index]));
-                                  },
-                                  staggeredTileBuilder: (int index) {
-                                    return const StaggeredTile.fit(1);
-                                  }),
-                            ),
-                          ),
+                          Column(
+                            children: [
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              CircularPercentIndicator(
+                                radius: 250.0,
+                                lineWidth: 17.0,
+                                animation: true,
+                                animationDuration: 700,
+                                percent: 0.8,
+                                center: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("note"),
+                                    Text("mention bien",
+                                        style: TextStyle(
+                                          color:
+                                              Theme.of(context).disabledColor,
+                                        ))
+                                  ],
+                                ),
+                                startAngle: 180,
+                                circularStrokeCap: CircularStrokeCap.round,
+                                progressColor: Colors.green.shade500,
+                                backgroundColor:
+                                    Theme.of(context).unselectedWidgetColor,
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20, top: 10),
+                                  child: StaggeredGridView.countBuilder(
+                                      crossAxisCount: 2,
+                                      mainAxisSpacing: 12,
+                                      crossAxisSpacing: 12,
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: names.length,
+                                      itemBuilder: (context, index) {
+                                        return CoefficientTile(
+                                            averageGrade: AverageGrade(
+                                                name: names[index],
+                                                coefficient:
+                                                    coefficients[index],
+                                                grade: grades
+                                                        .asMap()
+                                                        .containsKey(index)
+                                                    ? double.parse(grades[index]
+                                                        .toStringAsFixed(2))
+                                                    : -1.0));
+                                      },
+                                      staggeredTileBuilder: (int index) {
+                                        return const StaggeredTile.fit(1);
+                                      }),
+                                ),
+                              ),
+                            ],
+                          )
                         ],
-                      )
-                    ],
-                  ),
-                )))));
+                      ),
+                    )))
+                : Center(
+                    child: Text(
+                      "Aucun résultat.",
+                      style: TextStyle(
+                          fontSize: 25, color: Theme.of(context).disabledColor),
+                    ),
+                  )));
   }
 
   Future<void> getAverageGrades() async {
@@ -147,18 +163,28 @@ class _GradesScreenState extends State<GradesScreen> {
     List averages = averagesData["data"];
     for (var i = 0; i < 9; i++) {
       names[i] = averages[i]["matiere"].toLowerCase().toString().toTitleCase();
-      print(averages[i]["moyenne"]);
-      // grades[i] = averages[i]["moyenne"];
+      grades.insert(i, averages[i]["moyenne"].toDouble());
     }
 
     if (averages.length > 9) {
+      print(averages.length);
       for (var i = 9; i < averages.length; i++) {
         names.insert(
             i, averages[i]["matiere"].toLowerCase().toString().toTitleCase());
         coefficients.insert(i, 2);
-        grades.insert(i, averages[i]["moyenne"]);
+        grades.insert(i, averages[i]["moyenne"].toDouble());
       }
     }
+
+    for (var name in names) {
+      print(name);
+    }
+
+    for (var grade in grades) {
+      print(grade);
+    }
+
+    setState(() {});
 
     try {
       // List averages = jsonDecode(averagesJSON);
