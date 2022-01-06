@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:bac_note/log/logdna.dart';
 import 'package:bac_note/log/models/dna_line.dart';
 import 'package:bac_note/models/note.dart';
-import 'package:bac_note/screens/grade_screen.dart';
 import 'package:bac_note/screens/schedule_screen.dart';
 import 'package:bac_note/screens/settings_screen.dart';
 import 'package:bac_note/utils/platform_utils.dart' as platform_utils;
