@@ -13,8 +13,13 @@ class CoefficientTile extends StatefulWidget {
 }
 
 class _CoefficientTileState extends State<CoefficientTile> {
+  late TextEditingController _controller;
+
   @override
   Widget build(BuildContext context) {
+    _controller =
+        TextEditingController(text: widget.averageGrade.coefficient.toString());
+
     return GestureDetector(
       onTap: () {},
       child: AnimatedContainer(
@@ -72,6 +77,7 @@ class _CoefficientTileState extends State<CoefficientTile> {
                 SizedBox(
                   height: 30,
                   child: TextField(
+                    controller: _controller,
                     keyboardType: TextInputType.number,
                     onChanged: (val) {},
                     textAlign: TextAlign.center,

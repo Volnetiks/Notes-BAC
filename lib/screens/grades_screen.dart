@@ -54,6 +54,8 @@ class _GradesScreenState extends State<GradesScreen> {
 
   List<double> grades = [];
 
+  double bacNote = -1.0;
+
   @override
   void initState() {
     getAverageGrades();
@@ -90,16 +92,17 @@ class _GradesScreenState extends State<GradesScreen> {
                                 lineWidth: 17.0,
                                 animation: true,
                                 animationDuration: 700,
-                                percent: 0.8,
+                                percent: bacNote * 5 / 100,
                                 center: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("note"),
-                                    Text("mention bien",
+                                    Text(bacNote.toStringAsFixed(2),
+                                        style: const TextStyle(fontSize: 30)),
+                                    Text(getMention(bacNote),
                                         style: TextStyle(
-                                          color:
-                                              Theme.of(context).disabledColor,
-                                        ))
+                                            color:
+                                                Theme.of(context).disabledColor,
+                                            fontSize: 17))
                                   ],
                                 ),
                                 startAngle: 180,
@@ -157,81 +160,51 @@ class _GradesScreenState extends State<GradesScreen> {
   }
 
   Future<void> getAverageGrades() async {
-    String averagesJSON = await platform.invokeMethod('getAverageGrades');
+    try {
+      String averagesJSON = await platform.invokeMethod('getAverageGrades');
 
-    Map<String, dynamic> averagesData = jsonDecode(averagesJSON);
-    List averages = averagesData["data"];
-    for (var i = 0; i < 9; i++) {
-      names[i] = averages[i]["matiere"].toLowerCase().toString().toTitleCase();
-      grades.insert(i, averages[i]["moyenne"].toDouble());
-    }
-
-    if (averages.length > 9) {
-      print(averages.length);
-      for (var i = 9; i < averages.length; i++) {
-        names.insert(
-            i, averages[i]["matiere"].toLowerCase().toString().toTitleCase());
-        coefficients.insert(i, 2);
+      Map<String, dynamic> averagesData = jsonDecode(averagesJSON);
+      List averages = averagesData["data"];
+      for (var i = 0; i < 9; i++) {
+        names[i] =
+            averages[i]["matiere"].toLowerCase().toString().toTitleCase();
         grades.insert(i, averages[i]["moyenne"].toDouble());
       }
-    }
 
-    for (var name in names) {
-      print(name);
-    }
+      if (averages.length > 9) {
+        for (var i = 9; i < averages.length; i++) {
+          names.insert(
+              i, averages[i]["matiere"].toLowerCase().toString().toTitleCase());
+          coefficients.insert(i, 2);
+          grades.insert(i, averages[i]["moyenne"].toDouble());
+        }
+      }
 
-    for (var grade in grades) {
-      print(grade);
-    }
+      double totalGrades = 0.0;
+      double totalCoefficients = 0.0;
 
-    setState(() {});
+      for (int i = 0; i < grades.length; i++) {
+        totalGrades += grades[i] * coefficients[i];
+        totalCoefficients += coefficients[i];
+      }
 
-    try {
-      // List averages = jsonDecode(averagesJSON);
-      // averages.removeWhere((element) =>
-      //     element["discipline"] == "Enseignement Général" ||
-      //     element["discipline"] == "Enseignements de spécialité" ||
-      //     element["discipline"] == "Matières facultatives");
-
-      // List<String> uniqueAverages = averages
-      //     .map<String>(
-      //         (c) => (c as Map<String, dynamic>)['discipline'] as String)
-      //     .toSet()
-      //     .toList();
-
-      // List<String> uniqueGrades = averages
-      //     .map<String>(
-      //         (c) => (c as Map<String, dynamic>)['discipline'] as String)
-      //     .toSet()
-      //     .toList();
-
-      // for (var i = 0; i < 9; i++) {
-      //   names[i] = uniqueAverages[i].toLowerCase().toTitleCase();
-      // }
-
-      // if (uniqueAverages.length > 9) {
-      //   for (var i = 9; i < uniqueAverages.length; i++) {
-      //     names.insert(i, uniqueAverages[i].toLowerCase().toTitleCase());
-      //     coefficients.insert(i, 2);
-      //   }
-      // }
-
-      // for (var i = 0; i < averages.length; i++) {
-      //   int indexForDiscipline =
-      //       names.indexWhere((element) => element == averages[i]["discipline"]);
-
-      //   Iterable values = averages.where((element) =>
-      //       element["disciplineId"] == averages[i]["disciplineId"]);
-
-      //   values.forEach((element) {
-      //     print(element);
-      //   });
-      //   print("----------------");
-
-      //   setState(() {});
-      // }
+      setState(() {
+        bacNote = totalGrades / totalCoefficients;
+      });
     } catch (exception, stackTrace) {
       await Sentry.captureException(exception, stackTrace: stackTrace);
     }
+  }
+}
+
+String getMention(double grade) {
+  if (grade < 12) {
+    return "Aucune mention";
+  } else if (grade < 14) {
+    return "Mention assez bien";
+  } else if (grade < 16) {
+    return "Mention bien";
+  } else {
+    return "Mention très bien";
   }
 }
