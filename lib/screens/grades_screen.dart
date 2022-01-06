@@ -129,16 +129,17 @@ class _GradesScreenState extends State<GradesScreen> {
                                       itemCount: names.length,
                                       itemBuilder: (context, index) {
                                         return CoefficientTile(
-                                            averageGrade: AverageGrade(
-                                                name: names[index],
-                                                coefficient:
-                                                    coefficients[index],
-                                                grade: grades
-                                                        .asMap()
-                                                        .containsKey(index)
-                                                    ? double.parse(grades[index]
-                                                        .toStringAsFixed(2))
-                                                    : -1.0));
+                                          averageGrade: AverageGrade(
+                                              name: names[index],
+                                              coefficient: coefficients[index],
+                                              grade: grades
+                                                      .asMap()
+                                                      .containsKey(index)
+                                                  ? double.parse(grades[index]
+                                                      .toStringAsFixed(2))
+                                                  : -1.0),
+                                          updateGrade: updateGrade,
+                                        );
                                       },
                                       staggeredTileBuilder: (int index) {
                                         return const StaggeredTile.fit(1);
@@ -195,16 +196,35 @@ class _GradesScreenState extends State<GradesScreen> {
       await Sentry.captureException(exception, stackTrace: stackTrace);
     }
   }
-}
 
-String getMention(double grade) {
-  if (grade < 12) {
-    return "Aucune mention";
-  } else if (grade < 14) {
-    return "Mention assez bien";
-  } else if (grade < 16) {
-    return "Mention bien";
-  } else {
-    return "Mention très bien";
+  String getMention(double grade) {
+    if (grade < 12) {
+      return "Aucune mention";
+    } else if (grade < 14) {
+      return "Mention assez bien";
+    } else if (grade < 16) {
+      return "Mention bien";
+    } else {
+      return "Mention très bien";
+    }
+  }
+
+  Future<void> updateGrade(AverageGrade averageGrade) async {
+    int indexForValues =
+        names.indexWhere((element) => element == averageGrade.name);
+
+    coefficients[indexForValues] = averageGrade.coefficient;
+
+    double totalGrades = 0.0;
+    double totalCoefficients = 0.0;
+
+    for (int i = 0; i < grades.length; i++) {
+      totalGrades += grades[i] * coefficients[i];
+      totalCoefficients += coefficients[i];
+    }
+
+    setState(() {
+      bacNote = totalGrades / totalCoefficients;
+    });
   }
 }

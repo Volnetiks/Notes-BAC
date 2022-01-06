@@ -4,8 +4,10 @@ import 'package:bac_note/models/grade.dart';
 
 class CoefficientTile extends StatefulWidget {
   final AverageGrade averageGrade;
+  final ValueChanged<AverageGrade> updateGrade;
 
-  const CoefficientTile({Key? key, required this.averageGrade})
+  const CoefficientTile(
+      {Key? key, required this.averageGrade, required this.updateGrade})
       : super(key: key);
 
   @override
@@ -79,7 +81,27 @@ class _CoefficientTileState extends State<CoefficientTile> {
                   child: TextField(
                     controller: _controller,
                     keyboardType: TextInputType.number,
-                    onChanged: (val) {},
+                    // onChanged: (val) {
+                    //   val.isEmpty
+                    //       ? widget.averageGrade.coefficient = 0.0
+                    //       : widget.averageGrade.coefficient =
+                    //           double.tryParse(val.replaceAll(",", ".")) == null
+                    //               ? 0.0
+                    //               : double.parse(val.replaceAll(",", "."));
+
+                    //   widget.updateGrade(widget.averageGrade);
+                    // },
+                    onSubmitted: (value) {
+                      value.isEmpty
+                          ? widget.averageGrade.coefficient = 0.0
+                          : widget.averageGrade.coefficient =
+                              double.tryParse(value.replaceAll(",", ".")) ==
+                                      null
+                                  ? 0.0
+                                  : double.parse(value.replaceAll(",", "."));
+
+                      widget.updateGrade(widget.averageGrade);
+                    },
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
