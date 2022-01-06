@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:bac_note/log/logdna.dart';
 import 'package:bac_note/log/models/dna_line.dart';
 import 'package:bac_note/models/note.dart';
-import 'package:bac_note/screens/grade_screen.dart';
 import 'package:bac_note/screens/schedule_screen.dart';
 import 'package:bac_note/screens/settings_screen.dart';
 import 'package:bac_note/utils/platform_utils.dart' as platform_utils;
@@ -13,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+
+import 'grades_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -93,7 +94,7 @@ class _HomePageState extends State<HomePage>
               body: const TabBarView(children: [
                 HomeScreenWidget(),
                 ScheduleScreen(),
-                GradeScreen()
+                GradesScreen()
               ]));
         },
       ),

@@ -6,6 +6,7 @@ import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -134,7 +135,7 @@ public class MainActivity extends FlutterActivity {
                 }
 
                 new NotesLoader().execute();
-            } else if(call.method.equals("getAverage")) {
+            } else if(call.method.equals("getAverageGrades")) {
                 class AverageLoader extends AsyncTask<String, Integer, String> {
                     @Override
                     protected String doInBackground(String... strings) {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:bac_note/models/grade.dart';
-import 'package:bac_note/widgets/coefficient_dialog.dart';
 
 class CoefficientTile extends StatefulWidget {
-  final Grade grade;
-  final ValueChanged<Grade> newGrade;
+  final AverageGrade averageGrade;
+  final ValueChanged<AverageGrade> updateGrade;
 
-  const CoefficientTile({Key? key, required this.grade, required this.newGrade})
+  const CoefficientTile(
+      {Key? key, required this.averageGrade, required this.updateGrade})
       : super(key: key);
 
   @override
@@ -15,15 +15,15 @@ class CoefficientTile extends StatefulWidget {
 }
 
 class _CoefficientTileState extends State<CoefficientTile> {
+  late TextEditingController _controller;
+
   @override
   Widget build(BuildContext context) {
+    _controller =
+        TextEditingController(text: widget.averageGrade.coefficient.toString());
+
     return GestureDetector(
-      onTap: () {
-        showDialog(
-                context: context,
-                builder: (context) => CoefficientDialog(grade: widget.grade))
-            .then((value) => {widget.newGrade(widget.grade)});
-      },
+      onTap: () {},
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 1500),
         padding: const EdgeInsets.all(15),
@@ -42,7 +42,7 @@ class _CoefficientTileState extends State<CoefficientTile> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  widget.grade.name,
+                  widget.averageGrade.name,
                   style: TextStyle(
                       fontSize: 12, color: Theme.of(context).disabledColor),
                   textAlign: TextAlign.center,
@@ -50,27 +50,76 @@ class _CoefficientTileState extends State<CoefficientTile> {
                 const SizedBox(
                   height: 5,
                 ),
-                Text("Coefficient ${widget.grade.coefficient}",
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Note: ",
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold)),
+                    Text(
+                        widget.averageGrade.grade == -1
+                            ? "Aucune"
+                            : widget.averageGrade.grade.toString(),
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold))
+                  ],
+                ),
                 const SizedBox(
                   height: 5,
                 ),
-                Text("Note actuelle:",
+                Text("Coefficient:",
                     style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold)),
-                Text(
-                    widget.grade.grade == -1
-                        ? "Note non obtenue."
-                        : widget.grade.grade.toString(),
+                SizedBox(
+                  height: 30,
+                  child: TextField(
+                    controller: _controller,
+                    keyboardType: TextInputType.number,
+                    // onChanged: (val) {
+                    //   val.isEmpty
+                    //       ? widget.averageGrade.coefficient = 0.0
+                    //       : widget.averageGrade.coefficient =
+                    //           double.tryParse(val.replaceAll(",", ".")) == null
+                    //               ? 0.0
+                    //               : double.parse(val.replaceAll(",", "."));
+
+                    //   widget.updateGrade(widget.averageGrade);
+                    // },
+                    onSubmitted: (value) {
+                      value.isEmpty
+                          ? widget.averageGrade.coefficient = 0.0
+                          : widget.averageGrade.coefficient =
+                              double.tryParse(value.replaceAll(",", ".")) ==
+                                      null
+                                  ? 0.0
+                                  : double.parse(value.replaceAll(",", "."));
+
+                      widget.updateGrade(widget.averageGrade);
+                    },
+                    textAlign: TextAlign.center,
                     style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    cursorColor: Theme.of(context).primaryColor,
+                    decoration: const InputDecoration(
+                      hintText: 'Coefficient',
+                      hintStyle: TextStyle(
                         fontSize: 12,
-                        color: Theme.of(context).disabledColor,
-                        fontWeight: FontWeight.bold))
+                        color: Colors.grey,
+                      ),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

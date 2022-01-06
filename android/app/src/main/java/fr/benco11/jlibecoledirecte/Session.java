@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -163,20 +164,62 @@ public class Session {
 
 		try {
 			String r = HttpUtils.sendRequest(ECOLEDIRECTE_STUDENTS_SECTION_URL + id + ECOLEDIRECTE_STUDENTS_NOTEGET_URL, ECOLEDIRECTE_JSON_DATA_START_TOKEN + token + "\"}", "POST", true, true);
-			GradeJson gradeJson = new Gson().fromJson(r, GradeJson.class);
-			if(gradeJson.getCode() != 200) {
-				throw new EcoleDirecteUnknownConnectionException();
+
+			JSONObject object = new JSONObject(r);
+			JSONObject data = object.getJSONObject("data");
+			JSONArray array = data.getJSONArray("periodes");
+
+			JSONObject gradesItem = new JSONObject();
+
+			JSONArray gradesArray = new JSONArray();
+
+			Map<String, JSONObject> grades = new HashMap<>();
+
+			List<String> names = new ArrayList<>();
+
+			for (int i=0; i < array.length(); i++) {
+				JSONObject period = array.getJSONObject(i);
+				JSONObject ensembleMatieres = period.getJSONObject("ensembleMatieres");
+				JSONArray disciplines = ensembleMatieres.getJSONArray("disciplines");
+
+				for(int j = 0; j < disciplines.length(); j++) {
+					JSONObject discipline = disciplines.getJSONObject(j);
+					String name = discipline.getString("discipline");
+					if(name.equals("Enseignement Général") || name.equals("Enseignements de spécialité") || name.equals("Matières facultatives")) {
+						continue;
+					}
+
+					if(discipline.getString("moyenne").isEmpty()) continue;
+
+					double moyenne = Double.parseDouble(discipline.getString("moyenne").replace(",", "."));
+					// String appreciations = discipline.getString("appreciations");
+
+					JSONObject grade = new JSONObject();
+
+					grade.put("matiere", name);
+					grade.put("moyenne", moyenne);
+
+					if(!grades.containsKey(name)) {
+						names.add(name);
+						grades.put(name, grade);
+					} else {
+						JSONObject oldGrade = grades.get(name);
+						double oldMoyenne = oldGrade.getDouble("moyenne");
+						double newMoyenne = (oldMoyenne + moyenne) / 2;
+						oldGrade.put("moyenne", newMoyenne);
+						grades.replace(name, oldGrade);
+					}
+				}
 			}
 
-			ArrayList<Grade> averageGradesList = new ArrayList<>();
-			gradeJson.getData().getPeriodes().forEach(e -> e.getEnsembleMatieres().getDisciplines().forEach(a -> {
-						if(a.getAverage().length() > 0)
-							averageGradesList.add(new Grade(a.getCoef(), a.getAverage(), a.getDiscipline(), a.getId()));
-					}
-			));
+			for(int i = 0; i < grades.size(); i++) {
+				gradesArray.put(i, grades.get(names.get(i)));
+			}
 
-			return new Gson().toJson(averageGradesList);
-		} catch (IOException e) {
+			gradesItem.put("data", gradesArray);
+
+			return gradesItem.toString();
+		} catch (IOException | JSONException e) {
 			e.printStackTrace();
 			throw new EcoleDirecteIOException();
 		}
