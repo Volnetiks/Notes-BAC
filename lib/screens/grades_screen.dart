@@ -52,6 +52,8 @@ class _GradesScreenState extends State<GradesScreen> {
     "Grand Oral",
   ];
 
+  List<double> grades = List.filled(14, -1.0);
+
   @override
   void initState() {
     getAverageGrades();
@@ -124,7 +126,7 @@ class _GradesScreenState extends State<GradesScreen> {
                                         averageGrade: AverageGrade(
                                             name: names[index],
                                             coefficient: coefficients[index],
-                                            grade: 15.5));
+                                            grade: grades[index]));
                                   },
                                   staggeredTileBuilder: (int index) {
                                     return const StaggeredTile.fit(1);
@@ -140,31 +142,68 @@ class _GradesScreenState extends State<GradesScreen> {
 
   Future<void> getAverageGrades() async {
     String averagesJSON = await platform.invokeMethod('getAverageGrades');
+
+    Map<String, dynamic> averagesData = jsonDecode(averagesJSON);
+    List averages = averagesData["data"];
+    for (var i = 0; i < 9; i++) {
+      names[i] = averages[i]["matiere"].toLowerCase().toString().toTitleCase();
+      print(averages[i]["moyenne"]);
+      // grades[i] = averages[i]["moyenne"];
+    }
+
+    if (averages.length > 9) {
+      for (var i = 9; i < averages.length; i++) {
+        names.insert(
+            i, averages[i]["matiere"].toLowerCase().toString().toTitleCase());
+        coefficients.insert(i, 2);
+        grades.insert(i, averages[i]["moyenne"]);
+      }
+    }
+
     try {
-      List averages = jsonDecode(averagesJSON);
-      averages.removeWhere((element) =>
-          element["discipline"] == "Enseignement Général" ||
-          element["discipline"] == "Enseignements de spécialité" ||
-          element["discipline"] == "Matières facultatives");
+      // List averages = jsonDecode(averagesJSON);
+      // averages.removeWhere((element) =>
+      //     element["discipline"] == "Enseignement Général" ||
+      //     element["discipline"] == "Enseignements de spécialité" ||
+      //     element["discipline"] == "Matières facultatives");
 
-      List<String> uniqueAverages = averages
-          .map<String>(
-              (c) => (c as Map<String, dynamic>)['discipline'] as String)
-          .toSet()
-          .toList();
+      // List<String> uniqueAverages = averages
+      //     .map<String>(
+      //         (c) => (c as Map<String, dynamic>)['discipline'] as String)
+      //     .toSet()
+      //     .toList();
 
-      for (var i = 0; i < 9; i++) {
-        names[i] = uniqueAverages[i].toLowerCase().toTitleCase();
-      }
+      // List<String> uniqueGrades = averages
+      //     .map<String>(
+      //         (c) => (c as Map<String, dynamic>)['discipline'] as String)
+      //     .toSet()
+      //     .toList();
 
-      if (uniqueAverages.length > 9) {
-        for (var i = 9; i < uniqueAverages.length; i++) {
-          names.insert(i, uniqueAverages[i].toLowerCase().toTitleCase());
-          coefficients.insert(i, 2);
-        }
-      }
+      // for (var i = 0; i < 9; i++) {
+      //   names[i] = uniqueAverages[i].toLowerCase().toTitleCase();
+      // }
 
-      setState(() {});
+      // if (uniqueAverages.length > 9) {
+      //   for (var i = 9; i < uniqueAverages.length; i++) {
+      //     names.insert(i, uniqueAverages[i].toLowerCase().toTitleCase());
+      //     coefficients.insert(i, 2);
+      //   }
+      // }
+
+      // for (var i = 0; i < averages.length; i++) {
+      //   int indexForDiscipline =
+      //       names.indexWhere((element) => element == averages[i]["discipline"]);
+
+      //   Iterable values = averages.where((element) =>
+      //       element["disciplineId"] == averages[i]["disciplineId"]);
+
+      //   values.forEach((element) {
+      //     print(element);
+      //   });
+      //   print("----------------");
+
+      //   setState(() {});
+      // }
     } catch (exception, stackTrace) {
       await Sentry.captureException(exception, stackTrace: stackTrace);
     }
