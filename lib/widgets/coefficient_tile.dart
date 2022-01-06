@@ -69,11 +69,29 @@ class _CoefficientTileState extends State<CoefficientTile> {
                         fontSize: 12,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold)),
-                Text(widget.averageGrade.coefficient.toString(),
+                SizedBox(
+                  height: 30,
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    onChanged: (val) {},
+                    textAlign: TextAlign.center,
                     style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    cursorColor: Theme.of(context).primaryColor,
+                    decoration: const InputDecoration(
+                      hintText: 'Coefficient',
+                      hintStyle: TextStyle(
                         fontSize: 12,
-                        color: Theme.of(context).disabledColor,
-                        fontWeight: FontWeight.bold))
+                        color: Colors.grey,
+                      ),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
