@@ -108,11 +108,11 @@ class _GradesChartState extends State<GradesChart> {
           getTitles: (value) {
             switch (value.toInt()) {
               case 2:
-                return 'MAR';
+                return '';
               case 5:
-                return 'JUN';
+                return '';
               case 8:
-                return 'SEP';
+                return '';
             }
             return '';
           },
