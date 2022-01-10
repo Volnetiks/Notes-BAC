@@ -10,6 +10,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -25,14 +26,20 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   List<Cours> classes = [];
 
   ScrollController scrollController = ScrollController();
+  late AutoScrollController _autoScrollController;
 
   int selectedIndex = 0;
+  int scrollIndex = 0;
   int dateItems = 7;
 
   @override
   void initState() {
     getScheduleFromEcoleDirecte(0);
     super.initState();
+    _autoScrollController = AutoScrollController(
+        viewportBoundaryGetter: () =>
+            Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+        axis: Axis.vertical);
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -52,6 +59,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _autoScrollController.scrollToIndex(scrollIndex,
+          preferPosition: AutoScrollPosition.begin);
+    });
+
     return SafeArea(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -92,6 +104,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           )),
                       onTap: () {
                         setState(() {
+                          scrollIndex = 0;
                           selectedIndex = index;
                           getScheduleFromEcoleDirecte(index);
                         });
@@ -129,13 +142,18 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: StaggeredGridView.countBuilder(
+                        controller: _autoScrollController,
                         crossAxisCount: 2,
                         mainAxisSpacing: 20,
                         itemCount: classes.length,
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return ScheduleTile(cours: classes[index]);
+                          return AutoScrollTag(
+                              child: ScheduleTile(cours: classes[index]),
+                              controller: _autoScrollController,
+                              index: index,
+                              key: ValueKey(index));
                         },
                         staggeredTileBuilder: (int index) {
                           return const StaggeredTile.fit(2);
@@ -166,16 +184,37 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           {'date': DateFormat('yyyy-MM-dd hh:mm').format(time)});
       if (coursString.isNotEmpty) {
         List body = jsonDecode(coursString);
+        List<DateTime> dates = [];
         List<Cours> cours = [];
         for (int i = 0; i < body.length; i++) {
           Cours cour = Cours.fromJSON(body[i]);
           cours.add(cour);
+
+          dates.add(cour.startDate);
+          dates.add(cour.endDate);
         }
 
         cours.sort((Cours cours1, Cours cours2) =>
             cours1.startDate.compareTo(cours2.startDate));
 
+        dates.sort((DateTime dateTime1, DateTime dateTime2) =>
+            dateTime1.compareTo(dateTime2));
+
+        DateTime closestDate = dates.reduce((a, b) =>
+            a.difference(DateTime.now()).abs() <
+                    b.difference(DateTime.now()).abs()
+                ? a
+                : b);
+
+        print(dates.indexOf(closestDate));
+        print(dates.length);
+
+        int index = (dates.indexOf(closestDate) / 2).truncate();
+
+        print(index);
+
         setState(() {
+          scrollIndex = index;
           classes = cours;
         });
       }
