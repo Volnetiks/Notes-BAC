@@ -215,7 +215,8 @@ class _ClassDialogState extends State<ClassDialog>
     Map<String, dynamic> body = jsonDecode(json);
     List<dynamic> matieres = body["data"]["matieres"];
     for (int i = 0; i < matieres.length; i++) {
-      if (matieres[i]["matiere"] == widget.cours.text) {
+      if (matieres[i]["matiere"] == widget.cours.text &&
+          matieres[i]["aFaire"] != null) {
         Codec<String, String> stringToBase64 = utf8.fuse(base64);
         String workHTML =
             stringToBase64.decode(matieres[i]["aFaire"]["contenu"]);
