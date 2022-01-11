@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/note.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 class GradesChart extends StatefulWidget {
   final List<Note> grades;
@@ -50,6 +52,8 @@ class _GradesChartState extends State<GradesChart> {
     }
 
     averageGrade /= totalCoefficients;
+
+    initializeDateFormatting('fr_FR', null);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -106,13 +110,18 @@ class _GradesChartState extends State<GradesChart> {
               fontWeight: FontWeight.bold,
               fontSize: 16),
           getTitles: (value) {
+            DateFormat formatter = DateFormat("MMM");
             switch (value.toInt()) {
               case 2:
-                return '';
+                return formatter
+                    .format(widget.grades[widget.grades.length - 1].date);
               case 5:
-                return '';
+                return formatter.format(widget
+                    .grades[(widget.grades.length / 3 * 2 - 1).truncate()]
+                    .date);
               case 8:
-                return '';
+                return formatter.format(widget
+                    .grades[(widget.grades.length / 3 - 1).truncate()].date);
             }
             return '';
           },
