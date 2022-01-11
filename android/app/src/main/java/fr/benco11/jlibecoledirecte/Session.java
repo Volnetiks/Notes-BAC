@@ -636,6 +636,10 @@ public class Session {
 			throw new EcoleDirecteIOException();
 		}
 	}
+
+	public String getNomEtablissement() {
+		return account.getNomEtablissement();
+	}
 	
 	/**
 	 * Renvoie les données de la vie scolaire

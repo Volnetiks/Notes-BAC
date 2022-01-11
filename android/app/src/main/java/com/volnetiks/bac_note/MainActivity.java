@@ -180,6 +180,8 @@ public class MainActivity extends FlutterActivity {
                 result.success(session.getAccount().getProfile().getClasse().getLibelle());
             } else if(call.method.equals("getStudentImage")) {
                 result.success(session.getAccount().getProfile().getPhoto());
+            } else if(call.method.equals("getNomEtablissement")) {
+                result.success(session.getNomEtablissement());
             } else {
                 result.notImplemented();
             }
