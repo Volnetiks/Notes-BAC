@@ -74,7 +74,7 @@ class _GradesScreenState extends State<GradesScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-            child: grades.length > 0
+            child: grades.isNotEmpty
                 ? SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: SafeArea(

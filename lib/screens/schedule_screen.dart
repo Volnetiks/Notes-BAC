@@ -206,12 +206,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 ? a
                 : b);
 
-        print(dates.indexOf(closestDate));
-        print(dates.length);
-
         int index = (dates.indexOf(closestDate) / 2).truncate();
-
-        print(index);
 
         setState(() {
           scrollIndex = index;
