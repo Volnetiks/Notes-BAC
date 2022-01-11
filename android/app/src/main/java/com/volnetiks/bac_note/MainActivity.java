@@ -53,10 +53,12 @@ public class MainActivity extends FlutterActivity {
                         session = new Session(call.argument("username"), call.argument("password"));
                         try {
                             session.connect();
-                            return "Connection réussie. ";
-                        } catch (EcoleDirecteLoginException | IOException e) {
+                            return "Connection réussie.";
+                        } catch (IOException e) {
                             Sentry.captureMessage(e.toString(), SentryLevel.ERROR);
                             e.printStackTrace();
+                            return "";
+                        } catch (EcoleDirecteLoginException e) {
                             return "";
                         }
                     }
@@ -180,6 +182,8 @@ public class MainActivity extends FlutterActivity {
                 result.success(session.getAccount().getProfile().getClasse().getLibelle());
             } else if(call.method.equals("getStudentImage")) {
                 result.success(session.getAccount().getProfile().getPhoto());
+            } else if(call.method.equals("getNomEtablissement")) {
+                result.success(session.getNomEtablissement());
             } else {
                 result.notImplemented();
             }

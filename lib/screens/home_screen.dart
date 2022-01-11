@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bac_note/extensions/string.dart';
 import 'package:bac_note/log/logdna.dart';
 import 'package:bac_note/log/models/dna_line.dart';
 import 'package:bac_note/models/note.dart';
@@ -25,6 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   String studentName = "";
+  String schoolName = "";
 
   static const platform = MethodChannel('samples.volnetiks.dev/ecoledirecte');
 
@@ -73,7 +75,7 @@ class _HomePageState extends State<HomePage>
                           style:
                               TextStyle(color: Theme.of(context).primaryColor)),
                       Text(
-                        "Notre Dame De Toutes Aides",
+                        schoolName.toString().toTitleCase(),
                         style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).disabledColor),
@@ -103,8 +105,11 @@ class _HomePageState extends State<HomePage>
 
   Future<void> getStudentName() async {
     String name = await platform.invokeMethod("getStudentName");
+    String nomEtablissement =
+        await platform.invokeMethod('getNomEtablissement');
     setState(() {
       studentName = name;
+      schoolName = nomEtablissement;
     });
   }
 }

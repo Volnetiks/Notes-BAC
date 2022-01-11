@@ -15,6 +15,7 @@ public class Account {
 	private final String email;
 	private final String anneeScolaireCourante;
 	private final Profile profile;
+	private final String nomEtablissement;
 	
 	
 	/**
@@ -31,7 +32,7 @@ public class Account {
 	 * @param modules liste des modules
 	 */
 	
-	public Account(final int idLogin, final int id, final String uid, final String typeCompte, final String prenom, final String nom, final String email, final String anneeScolaireCourante, final Profile profile,
+	public Account(final int idLogin, final int id, final String uid, final String typeCompte, final String prenom, final String nom, final String email, final String anneeScolaireCourante, final Profile profile, final String nomEtablissement,
 			Set<Module> modules) {
 		this.nom = nom;
 		this.anneeScolaireCourante = anneeScolaireCourante;
@@ -42,6 +43,7 @@ public class Account {
 		this.id = id;
 		this.uid = uid;
 		this.profile = profile;
+		this.nomEtablissement = nomEtablissement;
 	}
 
 	/**
@@ -114,6 +116,10 @@ public class Account {
 	
 	public int getId() {
 		return id;
+	}
+
+	public String getNomEtablissement() {
+		return nomEtablissement;
 	}
 
 	/**

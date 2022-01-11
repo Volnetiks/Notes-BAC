@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:bac_note/log/logdna.dart';
+import 'package:bac_note/log/models/dna_line.dart';
 import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/widgets/coefficient_tile.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:bac_note/utils/platform_utils.dart' as platform_utils;
 
 import 'package:bac_note/extensions/string.dart';
 
@@ -74,7 +77,7 @@ class _GradesScreenState extends State<GradesScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-            child: grades.length > 0
+            child: grades.isNotEmpty
                 ? SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: SafeArea(
@@ -166,6 +169,27 @@ class _GradesScreenState extends State<GradesScreen> {
 
       Map<String, dynamic> averagesData = jsonDecode(averagesJSON);
       List averages = averagesData["data"];
+
+      LogDNA logDNA = LogDNA(
+          apiKey: "75944a6d1dfc598bc94b4b44ba904f3d",
+          hostName: "bac_note",
+          appName: "AppBAC");
+
+      String deviceInfo = await platform_utils.getOSVersionAndModel();
+
+      logDNA.log(DnaLine(
+          timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
+          line: deviceInfo,
+          level: DnaLevel.debug,
+          env: DnaEnv.production,
+          app: "AppBAC"));
+
+      logDNA.log(DnaLine(
+          timestamp: DateTime.now().toUtc().millisecondsSinceEpoch.toString(),
+          line: averages.toString(),
+          level: DnaLevel.error,
+          env: DnaEnv.production));
+
       for (var i = 0; i < 9; i++) {
         names[i] =
             averages[i]["matiere"].toLowerCase().toString().toTitleCase();

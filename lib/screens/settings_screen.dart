@@ -105,7 +105,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     String name = await platform.invokeMethod("getStudentName");
     String studentClassInvoke = await platform.invokeMethod("getStudentClass");
     String iconURL = await platform.invokeMethod("getStudentImage");
-    print(iconURL);
     setState(() {
       studentName = name;
       studentClass = studentClassInvoke.toLowerCase().capitalize();
