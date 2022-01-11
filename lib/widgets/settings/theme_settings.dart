@@ -49,8 +49,8 @@ class _ThemeSettingsItemState extends State<ThemeSettingsItem> {
                 onIcon: const Icon(Icons.mode_night, color: Colors.white),
                 onCircleColor: Colors.black,
                 offCircleColor: Colors.transparent,
-                activeText: "Dark",
-                inactiveText: "Light",
+                activeText: "On",
+                inactiveText: "Off",
                 value: value,
                 onChanged: (bool value) {
                   final mode = AdaptiveTheme.of(context).mode;
