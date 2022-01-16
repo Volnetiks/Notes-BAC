@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage>
                   style: TextStyle(color: Theme.of(context).primaryColor)),
             ),
             Tab(
-              child: Text("Emploi",
+              child: Text("EDT",
                   style: TextStyle(color: Theme.of(context).primaryColor)),
             ),
             Tab(

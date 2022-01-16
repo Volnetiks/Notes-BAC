@@ -112,7 +112,7 @@ class _GradesChartState extends State<GradesChart> {
               fontSize: 16),
           getTitles: (value) {
             DateFormat formatter = DateFormat("MMM");
-            if (widget.grades.length > 0) {
+            if (widget.grades.isNotEmpty) {
               switch (value.toInt()) {
                 case 2:
                   return formatter.format(widget

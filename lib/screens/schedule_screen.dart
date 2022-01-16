@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:collection/collection.dart';
 
 import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/cours.dart';
@@ -194,19 +195,23 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           dates.add(cour.endDate);
         }
 
-        cours.sort((Cours cours1, Cours cours2) =>
-            cours1.startDate.compareTo(cours2.startDate));
+        int index = 0;
 
-        dates.sort((DateTime dateTime1, DateTime dateTime2) =>
-            dateTime1.compareTo(dateTime2));
+        if (dates.isNotEmpty) {
+          cours.sort((Cours cours1, Cours cours2) =>
+              cours1.startDate.compareTo(cours2.startDate));
 
-        DateTime closestDate = dates.reduce((a, b) =>
-            a.difference(DateTime.now()).abs() <
-                    b.difference(DateTime.now()).abs()
-                ? a
-                : b);
+          dates.sort((DateTime dateTime1, DateTime dateTime2) =>
+              dateTime1.compareTo(dateTime2));
 
-        int index = (dates.indexOf(closestDate) / 2).truncate();
+          DateTime closestDate = dates.reduce((a, b) =>
+              a.difference(DateTime.now()).abs() <
+                      b.difference(DateTime.now()).abs()
+                  ? a
+                  : b);
+
+          index = (dates.indexOf(closestDate) / 2).truncate();
+        }
 
         setState(() {
           scrollIndex = index;
