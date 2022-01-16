@@ -25,7 +25,7 @@ class LogDNA {
     try {
       final uri =
           Uri.parse("https://logs.logdna.com/logs/ingest?hostname=$hostName"
-              "&now=$now&apikey=$apiKey&appName=$appName");
+              "&now=$now&apikey=$apiKey&app=$appName");
 
       http.Response response = await http.post(uri,
           body: jsonEncode({

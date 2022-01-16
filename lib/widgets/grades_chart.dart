@@ -81,7 +81,8 @@ class _GradesChartState extends State<GradesChart> {
                   color: Theme.of(context).scaffoldBackgroundColor),
               child: Padding(
                 padding: const EdgeInsets.only(right: 18, top: 24, bottom: 12),
-                child: LineChart(mainData(values, lowestGrade, gradientColors)),
+                child: LineChart(mainData(values,
+                    lowestGrade == -1 ? 0 : lowestGrade, gradientColors)),
               ),
             ),
           ),
@@ -111,17 +112,22 @@ class _GradesChartState extends State<GradesChart> {
               fontSize: 16),
           getTitles: (value) {
             DateFormat formatter = DateFormat("MMM");
-            switch (value.toInt()) {
-              case 2:
-                return formatter
-                    .format(widget.grades[widget.grades.length - 1].date);
-              case 5:
-                return formatter.format(widget
-                    .grades[(widget.grades.length / 3 * 2 - 1).truncate()]
-                    .date);
-              case 8:
-                return formatter.format(widget
-                    .grades[(widget.grades.length / 3 - 1).truncate()].date);
+            if (widget.grades.length > 0) {
+              switch (value.toInt()) {
+                case 2:
+                  return formatter.format(widget
+                      .grades[widget.grades.length - 1 == -1.0
+                          ? 0
+                          : widget.grades.length - 1]
+                      .date);
+                case 5:
+                  return formatter.format(widget
+                      .grades[(widget.grades.length / 3 * 2 - 1).truncate()]
+                      .date);
+                case 8:
+                  return formatter.format(widget
+                      .grades[(widget.grades.length / 3 - 1).truncate()].date);
+              }
             }
             return '';
           },
