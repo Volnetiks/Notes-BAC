@@ -55,7 +55,6 @@ public class MainActivity extends FlutterActivity {
                             session.connect();
                             return "Connection réussie.";
                         } catch (IOException e) {
-                            Sentry.captureMessage(e.toString(), SentryLevel.ERROR);
                             e.printStackTrace();
                             return "";
                         } catch (EcoleDirecteLoginException e) {
