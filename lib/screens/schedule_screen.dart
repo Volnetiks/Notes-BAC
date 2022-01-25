@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:collection/collection.dart';
 
 import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/cours.dart';
