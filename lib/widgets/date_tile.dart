@@ -1,5 +1,5 @@
+import 'package:bac_note/extensions/string.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class DateTile extends StatefulWidget {
@@ -17,8 +17,6 @@ class DateTile extends StatefulWidget {
 class _DateTileState extends State<DateTile> {
   @override
   Widget build(BuildContext context) {
-    initializeDateFormatting('fr_FR', null);
-
     return AnimatedContainer(
       duration: const Duration(milliseconds: 1500),
       padding: const EdgeInsets.all(15),
@@ -35,8 +33,9 @@ class _DateTileState extends State<DateTile> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                  DateFormat('E')
-                      .format(DateTime.now().add(Duration(days: widget.days))),
+                  DateFormat('E', 'fr_FR')
+                      .format(DateTime.now().add(Duration(days: widget.days)))
+                      .capitalize(),
                   style: TextStyle(
                       fontSize: 15, color: Theme.of(context).disabledColor)),
               const SizedBox(
