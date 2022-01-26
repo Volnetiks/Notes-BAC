@@ -56,7 +56,7 @@ class Note {
       note: double.tryParse(json["valeur"].toString().replaceAll(",", ".")) !=
               null
           ? double.parse(json["valeur"].toString().replaceAll(",", "."))
-          : 10.0,
+          : -1.0,
       enLettre: json["enLettre"].toString().toLowerCase() == "true",
       nonSignificatif:
           json["nonSignificatif"].toString().toLowerCase() == "true",
