@@ -238,6 +238,7 @@ class _GradesScreenState extends State<GradesScreen> {
         names.indexWhere((element) => element == averageGrade.name);
 
     coefficients[indexForValues] = averageGrade.coefficient;
+    grades[indexForValues] = averageGrade.grade;
 
     double totalGrades = 0.0;
     double totalCoefficients = 0.0;

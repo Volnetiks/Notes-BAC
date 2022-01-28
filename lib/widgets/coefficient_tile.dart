@@ -20,7 +20,7 @@ class _CoefficientTileState extends State<CoefficientTile> {
   @override
   Widget build(BuildContext context) {
     _controller =
-        TextEditingController(text: widget.averageGrade.coefficient.toString());
+        TextEditingController(text: widget.averageGrade.grade.toString());
 
     return GestureDetector(
       onTap: () {},
@@ -50,30 +50,9 @@ class _CoefficientTileState extends State<CoefficientTile> {
                 const SizedBox(
                   height: 5,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Note: ",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold)),
-                    Text(
-                        widget.averageGrade.grade == -1
-                            ? "Aucune"
-                            : widget.averageGrade.grade.toString(),
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold))
-                  ],
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text("Coefficient:",
+                Text("Note:",
                     style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 15,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold)),
                 SizedBox(
@@ -81,23 +60,15 @@ class _CoefficientTileState extends State<CoefficientTile> {
                   child: TextField(
                     controller: _controller,
                     keyboardType: TextInputType.number,
-                    // onChanged: (val) {
-                    //   val.isEmpty
-                    //       ? widget.averageGrade.coefficient = 0.0
-                    //       : widget.averageGrade.coefficient =
-                    //           double.tryParse(val.replaceAll(",", ".")) == null
-                    //               ? 0.0
-                    //               : double.parse(val.replaceAll(",", "."));
-
-                    //   widget.updateGrade(widget.averageGrade);
-                    // },
                     onSubmitted: (value) {
                       value.isEmpty
-                          ? widget.averageGrade.coefficient = 0.0
-                          : widget.averageGrade.coefficient =
-                              double.tryParse(value.replaceAll(",", ".")) ==
-                                      null
-                                  ? 0.0
+                          ? widget.averageGrade.grade = 0.0
+                          : widget.averageGrade.grade = double.tryParse(
+                                      value.replaceAll(",", ".")) ==
+                                  null
+                              ? 0.0
+                              : double.parse(value.replaceAll(",", ".")) > 20
+                                  ? 20
                                   : double.parse(value.replaceAll(",", "."));
 
                       widget.updateGrade(widget.averageGrade);
@@ -105,20 +76,38 @@ class _CoefficientTileState extends State<CoefficientTile> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
-                      fontSize: 12,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
                     cursorColor: Theme.of(context).primaryColor,
                     decoration: const InputDecoration(
-                      hintText: 'Coefficient',
+                      hintText: 'Note',
                       hintStyle: TextStyle(
-                        fontSize: 12,
+                        fontSize: 15,
                         color: Colors.grey,
                       ),
                       border: InputBorder.none,
                       enabledBorder: InputBorder.none,
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Coefficient: ",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold)),
+                    Text(widget.averageGrade.coefficient.toString(),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold))
+                  ],
                 ),
               ],
             ),
