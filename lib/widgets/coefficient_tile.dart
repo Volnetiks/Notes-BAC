@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:bac_note/models/grade.dart';
+import 'package:bac_note/models/average_grade.dart';
 
 class CoefficientTile extends StatefulWidget {
   final AverageGrade averageGrade;

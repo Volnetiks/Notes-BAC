@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import 'package:bac_note/extensions/string.dart';
-import 'package:bac_note/models/note.dart';
+import 'package:bac_note/models/grade.dart';
 
 class GradeTile extends StatefulWidget {
   final Note grade;
