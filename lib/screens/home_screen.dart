@@ -207,7 +207,8 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                           break;
 
                         case 'Récentes':
-                          grades.sort((a, b) => b.date.compareTo(a.date));
+                          grades.sort(
+                              (a, b) => b.dateSaisie.compareTo(a.dateSaisie));
                           break;
 
                         case 'Notes':
