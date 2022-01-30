@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/models/class.dart';
-import 'package:bac_note/widgets/dialogs/date_tile.dart';
-import 'package:bac_note/widgets/dialogs/schedule_tile.dart';
+import 'package:bac_note/widgets/date_tile.dart';
+import 'package:bac_note/widgets/schedule_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
