@@ -7,7 +7,7 @@ import 'package:bac_note/models/grade.dart';
 import 'package:bac_note/screens/schedule_screen.dart';
 import 'package:bac_note/screens/settings_screen.dart';
 import 'package:bac_note/utils/platform_utils.dart' as platform_utils;
-import 'package:bac_note/widgets/grade_tile.dart';
+import 'package:bac_note/widgets/dialogs/grade_tile.dart';
 import 'package:bac_note/widgets/grades_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

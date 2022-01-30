@@ -6,7 +6,7 @@ import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/extensions/string.dart';
 import 'package:bac_note/models/class.dart';
 
-import 'class_dialog.dart';
+import '../class_dialog.dart';
 
 class ScheduleTile extends StatefulWidget {
   final Cours cours;
