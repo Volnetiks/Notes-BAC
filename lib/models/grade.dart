@@ -12,7 +12,7 @@ class Note {
   bool enLettre, nonSignificatif, valeurisee;
   List<String> elementsProgramme;
   double note, minClasse, moyenneClasse, maxClasse, noteSur;
-  DateTime date;
+  DateTime date, dateTimeSaisie;
 
   Note(
       {required this.codeMatiere,
@@ -21,6 +21,7 @@ class Note {
       required this.coef,
       required this.date,
       required this.dateSaisie,
+      required this.dateTimeSaisie,
       required this.devoir,
       required this.libelleMatiere,
       required this.note,
@@ -42,6 +43,7 @@ class Note {
       coef: json["coef"],
       date: DateFormat("yyyy-M-d").parse(json["date"]),
       dateSaisie: json["dateSaisie"],
+      dateTimeSaisie: DateFormat("yyyy-M-d").parse(json["dateSaisie"]),
       devoir: json["devoir"],
       libelleMatiere: json["libelleMatiere"],
       maxClasse:
