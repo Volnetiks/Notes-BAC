@@ -92,7 +92,7 @@ class _GradesScreenState extends State<GradesScreen> {
                                 height: 30,
                               ),
                               CircularPercentIndicator(
-                                radius: 250.0,
+                                radius: 125.0,
                                 lineWidth: 17.0,
                                 animation: true,
                                 animationDuration: 700,
