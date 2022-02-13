@@ -10,6 +10,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:bac_note/utils/platform_utils.dart' as platform_utils;
+import '../utils/secrets.dart' as secrets;
 
 import 'package:bac_note/extensions/string.dart';
 
@@ -171,7 +172,7 @@ class _GradesScreenState extends State<GradesScreen> {
       List averages = averagesData["data"];
 
       LogDNA logDNA = LogDNA(
-          apiKey: "75944a6d1dfc598bc94b4b44ba904f3d",
+          apiKey: secrets.logDNAApiKey,
           hostName: "bac_note",
           appName: "AppBAC");
 

@@ -16,6 +16,8 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'grades_screen.dart';
 
+import '../utils/secrets.dart' as secrets;
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -237,9 +239,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   Future<void> getNotes() async {
     // LOG DNA
     LogDNA logDNA = LogDNA(
-        apiKey: "75944a6d1dfc598bc94b4b44ba904f3d",
-        hostName: "bac_note",
-        appName: "AppBAC");
+        apiKey: secrets.logDNAApiKey, hostName: "bac_note", appName: "AppBAC");
 
     String noteJSON = await platform.invokeMethod('getNotes');
 
