@@ -60,7 +60,11 @@ class Cours {
       classeCode: json["classeCode"],
       prof: json["prof"],
       matiere: json["matiere"],
-      salle: json["salle"].replaceAll("<S.LYCEE->", ""),
+      salle: json["salle"] == ""
+          ? "Salle non définie"
+          : json["salle"]
+              .replaceAll("<S.LYCEE->", "")
+              .replaceAll("<S.LABOS->", "Labos"),
       codeMatiere: json["codeMatiere"],
       typeCours: json["typeCours"],
       icone: json["icone"],
