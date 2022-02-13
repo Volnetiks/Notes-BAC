@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bac_note/log/logdna.dart';
 import 'package:bac_note/log/models/dna_line.dart';
-import 'package:bac_note/models/grade.dart';
+import 'package:bac_note/models/average_grade.dart';
 import 'package:bac_note/widgets/coefficient_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -236,6 +236,7 @@ class _GradesScreenState extends State<GradesScreen> {
         names.indexWhere((element) => element == averageGrade.name);
 
     coefficients[indexForValues] = averageGrade.coefficient;
+    grades[indexForValues] = averageGrade.grade;
 
     double totalGrades = 0.0;
     double totalCoefficients = 0.0;

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bac_note/extensions/hex_color.dart';
-import 'package:bac_note/models/cours.dart';
+import 'package:bac_note/models/class.dart';
 import 'package:bac_note/widgets/date_tile.dart';
 import 'package:bac_note/widgets/schedule_tile.dart';
 import 'package:flutter/material.dart';
