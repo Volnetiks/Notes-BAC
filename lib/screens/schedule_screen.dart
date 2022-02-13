@@ -83,7 +83,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
               child: AlignedGridView.count(
                 controller: scrollController,
-                crossAxisCount: 2,
+                crossAxisCount: 1,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 20,
                 itemCount: dateItems,
