@@ -81,8 +81,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             height: 175,
             child: Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
-              child: StaggeredGridView.countBuilder(
+              child: AlignedGridView.count(
                 controller: scrollController,
+                crossAxisCount: 2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 20,
                 itemCount: dateItems,
@@ -112,10 +113,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     ),
                   );
                 },
-                staggeredTileBuilder: (int index) {
-                  return const StaggeredTile.count(2, 1.5);
-                },
-                crossAxisCount: 2,
               ),
             ),
           ),
@@ -141,9 +138,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     classes[0].text.toLowerCase() != "congés"
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: StaggeredGridView.countBuilder(
+                    child: AlignedGridView.count(
                         controller: _autoScrollController,
-                        crossAxisCount: 2,
+                        crossAxisCount: 1,
                         mainAxisSpacing: 20,
                         itemCount: classes.length,
                         shrinkWrap: true,
@@ -154,9 +151,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               controller: _autoScrollController,
                               index: index,
                               key: ValueKey(index));
-                        },
-                        staggeredTileBuilder: (int index) {
-                          return const StaggeredTile.fit(2);
                         }),
                   )
                 : Center(

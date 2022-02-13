@@ -196,8 +196,8 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
               width: MediaQuery.of(context).size.width,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: StaggeredGridView.countBuilder(
-                    crossAxisCount: 2,
+                child: AlignedGridView.count(
+                    crossAxisCount: 1,
                     mainAxisSpacing: 20,
                     itemCount: grades.length,
                     shrinkWrap: true,
@@ -224,9 +224,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                       return GradeTile(
                         grade: grades[index],
                       );
-                    },
-                    staggeredTileBuilder: (int index) {
-                      return const StaggeredTile.fit(2);
                     }),
               ),
             ),

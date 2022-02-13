@@ -123,7 +123,7 @@ class _GradesScreenState extends State<GradesScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       left: 20, right: 20, top: 10),
-                                  child: StaggeredGridView.countBuilder(
+                                  child: AlignedGridView.count(
                                       crossAxisCount: 2,
                                       mainAxisSpacing: 12,
                                       crossAxisSpacing: 12,
@@ -144,9 +144,6 @@ class _GradesScreenState extends State<GradesScreen> {
                                                   : -1.0),
                                           updateGrade: updateGrade,
                                         );
-                                      },
-                                      staggeredTileBuilder: (int index) {
-                                        return const StaggeredTile.fit(1);
                                       }),
                                 ),
                               ),
