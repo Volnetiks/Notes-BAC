@@ -19,8 +19,10 @@ class _CoefficientTileState extends State<CoefficientTile> {
 
   @override
   Widget build(BuildContext context) {
-    _controller =
-        TextEditingController(text: widget.averageGrade.grade.toString());
+    _controller = TextEditingController(
+        text: widget.averageGrade.grade == -1.0
+            ? ""
+            : widget.averageGrade.grade.toString());
 
     return GestureDetector(
       onTap: () {},

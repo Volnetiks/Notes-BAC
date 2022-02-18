@@ -56,9 +56,9 @@ class _GradesScreenState extends State<GradesScreen> {
     "Grand Oral",
   ];
 
-  List<double> grades = [];
+  List<double> grades = List.generate(20, (index) => -1.0);
 
-  double bacNote = -1.0;
+  double bacNote = 0;
 
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _GradesScreenState extends State<GradesScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-            child: grades.isNotEmpty
+            child: grades.indexWhere((element) => element != -1.0) != -1.0
                 ? SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: SafeArea(
@@ -207,8 +207,10 @@ class _GradesScreenState extends State<GradesScreen> {
       double totalCoefficients = 0.0;
 
       for (int i = 0; i < grades.length; i++) {
-        totalGrades += grades[i] * coefficients[i];
-        totalCoefficients += coefficients[i];
+        if (grades[i] != -1.0) {
+          totalGrades += grades[i] * coefficients[i];
+          totalCoefficients += coefficients[i];
+        }
       }
 
       setState(() {
@@ -242,8 +244,10 @@ class _GradesScreenState extends State<GradesScreen> {
     double totalCoefficients = 0.0;
 
     for (int i = 0; i < grades.length; i++) {
-      totalGrades += grades[i] * coefficients[i];
-      totalCoefficients += coefficients[i];
+      if (grades[i] != -1.0) {
+        totalGrades += grades[i] * coefficients[i];
+        totalCoefficients += coefficients[i];
+      }
     }
 
     setState(() {
