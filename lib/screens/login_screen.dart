@@ -39,131 +39,139 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Column(
-            children: [
+        child: Expanded(
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            child: Stack(children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text("Connectez-vous",
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold)),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text("Utiliser vos identifiants école directe",
-                      style: TextStyle(
-                          color: Theme.of(context).disabledColor,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold)),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Image.asset(
-                    "assets/logo_ndta.png",
-                    width: 200,
-                  ),
-                  showError
-                      ? Column(
-                          children: [
-                            const SizedBox(
-                              height: 30,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text("Connectez-vous",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold)),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text("Utiliser vos identifiants école directe",
+                          style: TextStyle(
+                              color: Theme.of(context).disabledColor,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold)),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Image.asset(
+                        "assets/logo_ndta.png",
+                        width: 200,
+                      ),
+                      showError
+                          ? Column(
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Text(
+                                    "Une erreur s'est produite, veuillez vérifier vos identifiants ou réessayer plus tard",
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        TextStyle(color: Colors.red.shade400)),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            )
+                          : const SizedBox(
+                              height: 50,
                             ),
-                            Text(
-                                "Une erreur s'est produite, veuillez vérifier vos identifiants ou réessayer plus tard",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.red.shade400)),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        )
-                      : const SizedBox(
-                          height: 50,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: TextFormField(
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          keyboardType: TextInputType.visiblePassword,
+                          controller: usernameController,
+                          cursorColor: Theme.of(context).primaryColor,
+                          decoration: InputDecoration(
+                              disabledBorder: InputBorder.none,
+                              filled: true,
+                              fillColor:
+                                  Theme.of(context).unselectedWidgetColor,
+                              contentPadding: const EdgeInsets.only(left: 20),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10)),
+                              hintText: "Identifiant",
+                              hintStyle: const TextStyle(
+                                  fontSize: 17, color: Colors.grey)),
                         ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: TextFormField(
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      keyboardType: TextInputType.visiblePassword,
-                      controller: usernameController,
-                      cursorColor: Theme.of(context).primaryColor,
-                      decoration: InputDecoration(
-                          disabledBorder: InputBorder.none,
-                          filled: true,
-                          fillColor: Theme.of(context).unselectedWidgetColor,
-                          contentPadding: const EdgeInsets.only(left: 20),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(10)),
-                          hintText: "Identifiant",
-                          hintStyle: const TextStyle(
-                              fontSize: 17, color: Colors.grey)),
-                    ),
+                      ),
+                      const SizedBox(height: 15),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: TextFormField(
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          obscureText: true,
+                          controller: passwdController,
+                          cursorColor: Theme.of(context).primaryColor,
+                          decoration: InputDecoration(
+                              disabledBorder: InputBorder.none,
+                              filled: true,
+                              fillColor:
+                                  Theme.of(context).unselectedWidgetColor,
+                              contentPadding: const EdgeInsets.only(left: 20),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10)),
+                              hintText: "Mot de passe",
+                              hintStyle: const TextStyle(
+                                  fontSize: 17, color: Colors.grey)),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 15),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: TextFormField(
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      obscureText: true,
-                      controller: passwdController,
-                      cursorColor: Theme.of(context).primaryColor,
-                      decoration: InputDecoration(
-                          disabledBorder: InputBorder.none,
-                          filled: true,
-                          fillColor: Theme.of(context).unselectedWidgetColor,
-                          contentPadding: const EdgeInsets.only(left: 20),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(10)),
-                          hintText: "Mot de passe",
-                          hintStyle: const TextStyle(
-                              fontSize: 17, color: Colors.grey)),
-                    ),
+                  const SizedBox(
+                    height: 30,
                   ),
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  connect();
-                  if (isChecked) {
-                    saveIdsToPreferences();
-                  }
-                },
-                child: const Text("Connexion"),
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).primaryColor.withOpacity(0.6)),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Checkbox(
-                    value: isChecked,
-                    fillColor: MaterialStateProperty.resolveWith(
-                        (states) => Theme.of(context).unselectedWidgetColor),
-                    checkColor: Theme.of(context).primaryColor,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isChecked = value!;
-                      });
+                  ElevatedButton(
+                    onPressed: () {
+                      connect();
+                      if (isChecked) {
+                        saveIdsToPreferences();
+                      }
                     },
+                    child: const Text("Connexion"),
+                    style: ElevatedButton.styleFrom(
+                        primary:
+                            Theme.of(context).primaryColor.withOpacity(0.6)),
                   ),
-                  const Text("Se souvenir de moi")
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Checkbox(
+                        value: isChecked,
+                        fillColor: MaterialStateProperty.resolveWith((states) =>
+                            Theme.of(context).unselectedWidgetColor),
+                        checkColor: Theme.of(context).primaryColor,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isChecked = value!;
+                          });
+                        },
+                      ),
+                      const Text("Se souvenir de moi")
+                    ],
+                  )
                 ],
               )
-            ],
+            ]),
           ),
         ),
       ),
