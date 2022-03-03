@@ -46,13 +46,15 @@ class Note {
       dateTimeSaisie: DateFormat("yyyy-M-d").parse(json["dateSaisie"]),
       devoir: json["devoir"],
       libelleMatiere: json["libelleMatiere"],
-      maxClasse:
-          json["maxClasse"] == "" ? -1.0 : double.parse(json["maxClasse"]),
-      minClasse:
-          json["minClasse"] == "" ? -1.0 : double.parse(json["minClasse"]),
+      maxClasse: json["maxClasse"] == ""
+          ? -1.0
+          : double.parse(json["maxClasse"].toString().replaceAll(",", ".")),
+      minClasse: json["minClasse"] == ""
+          ? -1.0
+          : double.parse(json["minClasse"].toString().replaceAll(",", ".")),
       moyenneClasse: json["moyenneClasse"] == ""
           ? -1.0
-          : double.parse(json["moyenneClasse"]),
+          : double.parse(json["moyenneClasse"].toString().replaceAll(",", ".")),
       noteSur: double.parse(json["noteSur"]),
       typeDevoir: json["typeDevoir"],
       note: double.tryParse(json["valeur"].toString().replaceAll(",", ".")) !=
