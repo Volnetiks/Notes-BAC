@@ -14,7 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import 'grades_screen.dart';
+import 'bac_screen.dart';
 
 import '../utils/secrets.dart' as secrets;
 
