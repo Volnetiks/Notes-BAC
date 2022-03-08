@@ -1,6 +1,8 @@
+import 'package:bac_note/extensions/hex_color.dart';
 import 'package:bac_note/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +20,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   TextEditingController passwdController = TextEditingController();
 
-  bool areIdsSaved = false;
+  bool displayLoading = false;
 
   bool isChecked = false;
 
@@ -47,24 +49,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return areIdsSaved
+    return displayLoading
         ? Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(
-                    'Linear progress indicator with a fixed color',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  CircularProgressIndicator(
-                    value: controller.value,
-                    semanticsLabel: 'Linear progress indicator',
-                  ),
-                ],
-              ),
-            ),
+            body: Center(
+                child: LoadingAnimationWidget.inkDrop(
+                    color: HexColor.fromHex("#5fa2c0"), size: 50)),
           )
         : Scaffold(
             body: Center(
@@ -172,10 +161,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          connect();
-                          if (isChecked) {
-                            saveIdsToPreferences();
-                          }
+                          setState(() {
+                            connect();
+                            if (isChecked) {
+                              saveIdsToPreferences();
+                            }
+                            displayLoading = true;
+                          });
                         },
                         child: const Text("Connexion"),
                         style: ElevatedButton.styleFrom(
@@ -256,7 +248,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.containsKey("username")) {
       setState(() {
-        areIdsSaved = true;
+        displayLoading = true;
       });
       usernameController.text = sharedPreferences.getString("username")!;
       passwdController.text = sharedPreferences.getString("password")!;

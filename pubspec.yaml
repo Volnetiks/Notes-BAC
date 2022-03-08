@@ -48,6 +48,7 @@ dependencies:
   adaptive_theme: ^2.3.0
   sentry_flutter: ^6.2.2
   scroll_to_index: ^2.1.1
+  loading_animation_widget: ^1.1.0+3
 
 flutter_icons:
   android: "launcher_icon"
