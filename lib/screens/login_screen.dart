@@ -11,19 +11,29 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   static const platform = MethodChannel('samples.volnetiks.dev/ecoledirecte');
 
   TextEditingController usernameController = TextEditingController();
 
   TextEditingController passwdController = TextEditingController();
 
+  bool areIdsSaved = false;
+
   bool isChecked = false;
 
   bool showError = false;
 
+  late AnimationController controller;
+
   @override
   void initState() {
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    )..addListener(() {
+        setState(() {});
+      });
     checkForIds();
     super.initState();
   }
@@ -37,139 +47,166 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Stack(children: [
-            Column(
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text("Connectez-vous",
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold)),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text("Utiliser vos identifiants école directe",
-                        style: TextStyle(
-                            color: Theme.of(context).disabledColor,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold)),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Image.asset(
-                      "assets/logo_ndta.png",
-                      width: 200,
-                    ),
-                    showError
-                        ? Column(
-                            children: [
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              Text(
-                                  "Une erreur s'est produite, veuillez vérifier vos identifiants ou réessayer plus tard",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.red.shade400)),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          )
-                        : const SizedBox(
-                            height: 50,
+    return areIdsSaved
+        ? Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    'Linear progress indicator with a fixed color',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  CircularProgressIndicator(
+                    value: controller.value,
+                    semanticsLabel: 'Linear progress indicator',
+                  ),
+                ],
+              ),
+            ),
+          )
+        : Scaffold(
+            body: Center(
+              child: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                child: Stack(children: [
+                  Column(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 15,
                           ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: TextFormField(
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        keyboardType: TextInputType.visiblePassword,
-                        controller: usernameController,
-                        cursorColor: Theme.of(context).primaryColor,
-                        decoration: InputDecoration(
-                            disabledBorder: InputBorder.none,
-                            filled: true,
-                            fillColor: Theme.of(context).unselectedWidgetColor,
-                            contentPadding: const EdgeInsets.only(left: 20),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10)),
-                            hintText: "Identifiant",
-                            hintStyle: const TextStyle(
-                                fontSize: 17, color: Colors.grey)),
+                          Text("Connectez-vous",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold)),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Text("Utiliser vos identifiants école directe",
+                              style: TextStyle(
+                                  color: Theme.of(context).disabledColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold)),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Image.asset(
+                            "assets/logo_ndta.png",
+                            width: 200,
+                          ),
+                          showError
+                              ? Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Text(
+                                        "Une erreur s'est produite, veuillez vérifier vos identifiants ou réessayer plus tard",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.red.shade400)),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox(
+                                  height: 50,
+                                ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TextFormField(
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              keyboardType: TextInputType.visiblePassword,
+                              controller: usernameController,
+                              cursorColor: Theme.of(context).primaryColor,
+                              decoration: InputDecoration(
+                                  disabledBorder: InputBorder.none,
+                                  filled: true,
+                                  fillColor:
+                                      Theme.of(context).unselectedWidgetColor,
+                                  contentPadding:
+                                      const EdgeInsets.only(left: 20),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  hintText: "Identifiant",
+                                  hintStyle: const TextStyle(
+                                      fontSize: 17, color: Colors.grey)),
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TextFormField(
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              obscureText: true,
+                              controller: passwdController,
+                              cursorColor: Theme.of(context).primaryColor,
+                              decoration: InputDecoration(
+                                  disabledBorder: InputBorder.none,
+                                  filled: true,
+                                  fillColor:
+                                      Theme.of(context).unselectedWidgetColor,
+                                  contentPadding:
+                                      const EdgeInsets.only(left: 20),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  hintText: "Mot de passe",
+                                  hintStyle: const TextStyle(
+                                      fontSize: 17, color: Colors.grey)),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: TextFormField(
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        obscureText: true,
-                        controller: passwdController,
-                        cursorColor: Theme.of(context).primaryColor,
-                        decoration: InputDecoration(
-                            disabledBorder: InputBorder.none,
-                            filled: true,
-                            fillColor: Theme.of(context).unselectedWidgetColor,
-                            contentPadding: const EdgeInsets.only(left: 20),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10)),
-                            hintText: "Mot de passe",
-                            hintStyle: const TextStyle(
-                                fontSize: 17, color: Colors.grey)),
+                      const SizedBox(
+                        height: 30,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    connect();
-                    if (isChecked) {
-                      saveIdsToPreferences();
-                    }
-                  },
-                  child: const Text("Connexion"),
-                  style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor.withOpacity(0.6)),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Checkbox(
-                      value: isChecked,
-                      fillColor: MaterialStateProperty.resolveWith(
-                          (states) => Theme.of(context).unselectedWidgetColor),
-                      checkColor: Theme.of(context).primaryColor,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value!;
-                        });
-                      },
-                    ),
-                    const Text("Se souvenir de moi")
-                  ],
-                )
-              ],
-            )
-          ]),
-        ),
-      ),
-    );
+                      ElevatedButton(
+                        onPressed: () {
+                          connect();
+                          if (isChecked) {
+                            saveIdsToPreferences();
+                          }
+                        },
+                        child: const Text("Connexion"),
+                        style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context)
+                                .primaryColor
+                                .withOpacity(0.6)),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Checkbox(
+                            value: isChecked,
+                            fillColor: MaterialStateProperty.resolveWith(
+                                (states) =>
+                                    Theme.of(context).unselectedWidgetColor),
+                            checkColor: Theme.of(context).primaryColor,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isChecked = value!;
+                              });
+                            },
+                          ),
+                          const Text("Se souvenir de moi")
+                        ],
+                      )
+                    ],
+                  )
+                ]),
+              ),
+            ),
+          );
   }
 
   Future<void> connect() async {
@@ -218,6 +255,9 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> checkForIds() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.containsKey("username")) {
+      setState(() {
+        areIdsSaved = true;
+      });
       usernameController.text = sharedPreferences.getString("username")!;
       passwdController.text = sharedPreferences.getString("password")!;
       connect();
